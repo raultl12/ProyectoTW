@@ -1,0 +1,36 @@
+/*
+Paletas de colores
+Paleta 1
+    1->333333
+    2->48E5C2
+    3->FCFAF9
+
+Paleta 2
+    1->022B3A
+    2->1F7A8C
+    3->BFDBF7
+
+Paleta 3
+    1->292F36
+    2->4ECDC4
+    3->F7FFF7
+
+Paleta usada: 3
+*/
+
+*{
+    margin: 0;
+    padding: 0;
+}
+
+p{
+    color: #F7FFF7;
+}
+
+body{
+    background-color: #292F36;
+}
+
+header{
+    background-color: #4ECDC4;
+}
