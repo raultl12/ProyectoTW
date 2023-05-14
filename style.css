@@ -23,6 +23,21 @@ Paleta usada: 3
     padding: 0;
 }
 
+h1, h2{
+    color: #F7FFF7;
+    display: flex;
+    vertical-align: middle;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+}
+
+h2{
+    border-top: 1px solid #4ECDC4;
+    border-bottom: 1px solid #4ECDC4;
+    padding: 10px;
+}
+
 p{
     color: #F7FFF7;
 }
@@ -32,5 +47,59 @@ body{
 }
 
 header{
-    background-color: #4ECDC4;
+    background-color: #292F36;
+}
+
+nav{
+    border: 1px solid #4ECDC4;
+    margin: 1rem 1rem;
+    padding: 0.5rem;
+    border-radius: 5px;
+}
+
+ul{
+    display: flex;
+    justify-content: space-around;
+}
+
+li{
+    display: inline;
+    justify-content: space-between;
+    background-color: #292F36;
+    padding: 0.5rem;
+    border-radius: 5px;
+}
+
+a{
+    text-decoration: none;
+    color: #F7FFF7;
+    
+}
+
+a:hover{
+    border-bottom: 2px solid #4ECDC4;
+}
+
+footer{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-top: 1px solid #4ECDC4;
+    margin-top: 2%;
+}
+
+.pageLogo{
+    display: inline;
+    max-width: 10%;
+    max-height: 10%;
+    margin-left: 5%;
+}
+
+.cabecera{
+    display: flex;
+}
+
+.contenido{
+    border-top: 1px solid #4ECDC4;
+    padding-top: 10px;
 }
