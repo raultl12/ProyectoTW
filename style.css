@@ -1,18 +1,7 @@
 /*
-Paletas de colores
-Paleta 1
-    1->333333
-    2->48E5C2
-    3->FCFAF9
-
-Paleta 2
-    1->022B3A
-    2->1F7A8C
-    3->BFDBF7
-
 Paleta 3
-    1->292F36
-    2->4ECDC4
+    1->292F36 rgb(41, 47, 54)
+    2->4ECDC4 rgb(78, 205, 196)
     3->F7FFF7
 
 Paleta usada: 3
@@ -54,6 +43,8 @@ nav{
     margin: 1rem 1rem;
     padding: 0.5rem;
     border-radius: 5px;
+    border-radius: 5px;
+    border: 1px solid rgba(78, 205, 196, 0.5);
 }
 
 ul{
@@ -64,29 +55,19 @@ ul{
 li{
     display: inline;
     padding: 0.5rem;
-    border-radius: 5px;
-    border: 1px solid rgba(78, 205, 196, 0.5);
-    transition: background-color 0.3s ease-in-out;
 }
 
 a{
     box-sizing:content-box;
     text-decoration: none;
     color: #F7FFF7;
-}
-
-nav a{
-    border-bottom: 2px solid rgba(41, 47, 54, 0);
+    border-bottom: 2px solid rgba(78, 205, 196, 0);
     transition: border 0.3s ease-in-out;
 }
 
-nav a:hover{
-    border-bottom: 2px solid rgba(41, 47, 54, 1);
-}
+a:hover{
+    border-bottom: 2px solid rgba(78, 205, 196, 1);
 
-li:hover{
-    background-color: rgba(78, 205, 196, 0.8);
-    color: #292F36;
 }
 
 footer{
@@ -98,14 +79,13 @@ footer{
     padding: 1rem;
 }
 
-footer a{
-    border-bottom: 2px solid rgba(78, 205, 196, 0);
-    transition: border 0.3s ease-in-out;
+aside{
+    box-sizing: border-box;
+    padding: 1rem;
+    border-left: 1px solid #4ECDC4;
 }
 
-footer a:hover{
-    border-bottom: 2px solid rgba(78, 205, 196, 1);
-}
+
 
 .pageLogo{
     display: inline;
@@ -120,7 +100,8 @@ footer a:hover{
 
 .contenido{
     border-top: 1px solid #4ECDC4;
-    padding-top: 10px;
+    padding-top: 20px;
+    margin: 0 1.5rem 0 1.5rem;
     display: grid;
     grid-template-columns: 80% 20%;
     grid-template-rows: 100%;
