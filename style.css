@@ -51,7 +51,6 @@ header{
 }
 
 nav{
-    border: 1px solid #4ECDC4;
     margin: 1rem 1rem;
     padding: 0.5rem;
     border-radius: 5px;
@@ -64,20 +63,30 @@ ul{
 
 li{
     display: inline;
-    justify-content: space-between;
-    background-color: #292F36;
     padding: 0.5rem;
     border-radius: 5px;
+    border: 1px solid rgba(78, 205, 196, 0.5);
+    transition: background-color 0.3s ease-in-out;
 }
 
 a{
+    box-sizing:content-box;
     text-decoration: none;
     color: #F7FFF7;
-    
 }
 
-a:hover{
-    border-bottom: 2px solid #4ECDC4;
+nav a{
+    border-bottom: 2px solid rgba(41, 47, 54, 0);
+    transition: border 0.3s ease-in-out;
+}
+
+nav a:hover{
+    border-bottom: 2px solid rgba(41, 47, 54, 1);
+}
+
+li:hover{
+    background-color: rgba(78, 205, 196, 0.8);
+    color: #292F36;
 }
 
 footer{
@@ -85,7 +94,17 @@ footer{
     align-items: center;
     justify-content: center;
     border-top: 1px solid #4ECDC4;
-    margin-top: 2%;
+    margin-top: 2rem;
+    padding: 1rem;
+}
+
+footer a{
+    border-bottom: 2px solid rgba(78, 205, 196, 0);
+    transition: border 0.3s ease-in-out;
+}
+
+footer a:hover{
+    border-bottom: 2px solid rgba(78, 205, 196, 1);
 }
 
 .pageLogo{
@@ -102,4 +121,7 @@ footer{
 .contenido{
     border-top: 1px solid #4ECDC4;
     padding-top: 10px;
+    display: grid;
+    grid-template-columns: 80% 20%;
+    grid-template-rows: 100%;
 }
