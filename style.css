@@ -26,7 +26,7 @@ h2{
     padding: 10px;
 }
 
-p{
+p, label{
     color: #F7FFF7;
 }
 
@@ -102,4 +102,16 @@ aside{
     display: grid;
     grid-template-columns: 80% 20%;
     grid-template-rows: 100%;
+}
+
+/*******************/
+
+/*select{
+    background-color: black;
+    color: #F7FFF7;
+    border: 1px solid yellow;
+}*/
+
+input{
+    border: 1px solid rgb(75, 75, 75);
 }
