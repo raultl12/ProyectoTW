@@ -126,4 +126,64 @@
             </nav>
         HTML;
     }
+
+    function mostrarIncidencias($numIncidencias, $tipoUsuario){
+        global $lugarIncidencia;
+        global $fechaIncidencia;
+        global $creadorIncidencia;
+        global $palabrasIncidencia;
+        global $estadoIncidencia;
+        global $positivasIncidencia;
+        global $negativasIncidencia;
+
+        for ($i = 0; $i < $numIncidencias; $i++){
+            echo <<<HTML
+                <div class="incidencia">
+                    <h2>name php</h2>
+
+                    <div class="detalles">
+                        <label>Lugar: $lugarIncidencia[$i]</label>
+                        <label>Fecha: $fechaIncidencia[$i]</label>
+                        <label>Creador por: $creadorIncidencia[$i]</label>
+                        <label>Palabras clave: $palabrasIncidencia[$i]</label>
+                        <label>Estado: $estadoIncidencia[$i]</label>
+                        <label>Valoraciones: Pos: $positivasIncidencia[$i] Neg: $negativas_incidencia[$i]</label>
+
+                        <p>
+                            Comentario incidencia
+                        </p>
+            HTML;
+
+            // mostrar de alguna manera x imagenes 
+            // correspondientes a la incidencia
+            
+            for ($j = 0; $j < ; $j++){
+                echo "<img src=\"\" alt=\"\">"
+            }
+
+            echo <<<HTML
+                    </div>
+
+                    <div class="comentarios">
+                        <label>Usuario</label>
+                        <label>Comentario</label>
+
+                        <div class="iconos">
+                            <a><img src="./img/plus.png" alt="Voto positivo" name="voto_pos"></a>
+                            <a><img src="./img/minus.png" alt="Voto negativo" name="voto_neg"></a>
+                            <a><img src="./img/comment.png" alt="Añadir comentario" name="nuevo_com"></a>
+            HTML;
+
+            if ($tipoUsuario == "administrador"){
+                echo "<a><img src=\"./img/editar.png\" alt=\"Editar comentario\" name=\"edit_com\"></a>";
+                echo "<a><img src=\"./img/basura.png\" alt=\"Borrar comentario\" name=\"del_com\"></a>";
+            }
+
+            echo <<<HTML
+                        </div>
+                    </div>
+                </div>
+            HTML;
+        }
+    }
 ?>

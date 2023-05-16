@@ -115,3 +115,16 @@ aside{
 input{
     border: 1px solid rgb(75, 75, 75);
 }
+
+a > img {
+    width: 25px;
+    height: 25px;
+}
+
+.iconos{
+    text-align: right;
+}
+
+.iconos a{
+    margin-right: 10px;
+}
