@@ -62,7 +62,7 @@
         HTML;
     }
 
-    function MostrarHeader(){
+    function MostrarHeader($tipoUsuario){
         echo <<<HTML
         <header>
             <div class="cabecera">
@@ -71,19 +71,10 @@
             </div>
             
             <h2>¿Algo va mal? Publica tu queja</h2>
-
-            <nav>
-                <ul>
-                    <li><a href="./incidencias.html">Ver incidencias</a></li>
-                    <li><a href="">Nueva incidencia</a></li>
-                    <li><a href="">Mis incidencias</a></li>
-                    <li><a href="">Gestión de usuarios</a></li>
-                    <li><a href="">Ver log</a></li>
-                    <li><a href="">Gestión de BBDD</a></li>
-                </ul>
-            </nav>
         </header>
         HTML;
+
+        MostrarNav($tipoUsuario);
     }
 
     function MostrarFooter(){
@@ -94,6 +85,45 @@
                 y <a href="https://www.linkedin.com/in/mario-pi%C3%B1a-munera-465116225/">Mario Piña Munera</a>
             </p>
         </footer>
+        HTML;
+    }
+
+    function MostrarNav($tipoUsuario){
+        echo <<<HTML
+            <nav>
+                <ul>
+        HTML;
+
+        switch($tipoUsuario){
+            case "miembro":
+                echo <<<HTML
+                    <li><a href="./incidencias.html">Ver incidencias</a></li>
+                    <li><a href="">Nueva incidencia</a></li>
+                    <li><a href="">Mis incidencias</a></li>
+                HTML;
+                break;
+
+            case "administrador":
+                echo <<<HTML
+                    <li><a href="./incidencias.html">Ver incidencias</a></li>
+                    <li><a href="">Nueva incidencia</a></li>
+                    <li><a href="">Mis incidencias</a></li>
+                    <li><a href="">Gestión de usuarios</a></li>
+                    <li><a href="">Ver log</a></li>
+                    <li><a href="">Gestión de BBDD</a></li>
+                HTML;
+                break;
+
+            default:
+                echo "<li><a href=\"./incidencias.html\">Ver incidencias</a></li>";
+                break;
+
+            
+        }
+
+        echo <<<HTML
+                </ul>
+            </nav>
         HTML;
     }
 ?>
