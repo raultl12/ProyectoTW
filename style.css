@@ -106,11 +106,11 @@ aside{
 
 /*******************/
 
-/*select{
-    background-color: black;
-    color: #F7FFF7;
-    border: 1px solid yellow;
-}*/
+.incidencia{
+    border: 1px solid #4ECDC4;
+    padding: 10px;
+    margin-right: 10px;
+}
 
 input{
     border: 1px solid rgb(75, 75, 75);
