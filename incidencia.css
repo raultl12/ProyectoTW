@@ -33,3 +33,12 @@ a > img {
 .iconos a{
     margin-right: 10px;
 }
+
+.comentario{
+    display: grid;
+    grid-template-columns: 10% 90%;
+}
+
+.comentario label{
+    display: block;
+}
