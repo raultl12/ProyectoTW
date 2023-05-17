@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Incidencias</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="incidencia.css">
 </head>
 <body>
     <header>
@@ -26,9 +27,12 @@
 
     <div class="contenido">
         <main>
+            <!--Voy a dejar comentado el formulario de busqueda por ahora
+                luego lo hacemos en un html a parte para dejarlo bonito y meterlo en una funcion php
+            
             <section class="formBusqueda">
                 <form action="" method="">
-                    <h1>Criterios de búsqueda</h1>
+                    <h2>Criterios de búsqueda</h2>
 
                     <div class="ordenar">
                         <h2>Ordenar por:</h2>
@@ -69,30 +73,39 @@
                     </div>
                 </form>
             </section>
-            <br><br>
+            <br><br>-->
             <section>
                 <div class="incidencia">
                     <h2>Titulo Incidencia</h2>
-
+        
                     <div class="detalles">
-                        <label>Lugar: </label>
-                        <label>Fecha: </label>
-                        <label>Creador por:</label>
-                        <label>Palabras clave: </label>
-                        <label>Estado: </label>
-                        <label>Valoraciones: </label>
-
+                        <div class="infoGeneral">
+                            <label>Lugar: </label>
+                            <label>Fecha: </label>
+                            <label>Creador por:</label>
+                            <label>Palabras clave: </label>
+                            <label>Estado: </label>
+                            <label>Valoraciones: </label>
+                        </div>
+        
                         <p>
-
+                            Descripcion de la incidencia
                         </p>
-
-                        <img src="" alt="">
+        
+                        <div class="fotos">
+                            <img src="img/basura.png" alt="">
+                            <img src="img/editar.png" alt="">
+                            <img src="img/megafono.png" alt="">
+                        </div>
+        
                     </div>
-
+        
                     <div class="comentarios">
-                        <label>Usuario</label>
-                        <label>Comentario</label>
-
+                        <div class="infoComentario">
+                            <label>Usuario</label>
+                            <label>Fecha</label>
+                        </div>
+        
                         <div class="iconos">
                             <a href=""><img src="./img/plus.png" alt=""></a>
                             <a href=""><img src="./img/minus.png" alt=""></a>
