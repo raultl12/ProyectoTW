@@ -97,7 +97,7 @@
         switch($tipoUsuario){
             case "miembro":
                 echo <<<HTML
-                    <li><a href="./incidencias.html">Ver incidencias</a></li>
+                    <li><a href="./incidencias.php">Ver incidencias</a></li>
                     <li><a href="">Nueva incidencia</a></li>
                     <li><a href="">Mis incidencias</a></li>
                 HTML;
@@ -105,7 +105,7 @@
 
             case "administrador":
                 echo <<<HTML
-                    <li><a href="./incidencias.html">Ver incidencias</a></li>
+                    <li><a href="./incidencias.php">Ver incidencias</a></li>
                     <li><a href="">Nueva incidencia</a></li>
                     <li><a href="">Mis incidencias</a></li>
                     <li><a href="">Gestión de usuarios</a></li>
@@ -115,7 +115,7 @@
                 break;
 
             default:
-                echo "<li><a href=\"./incidencias.html\">Ver incidencias</a></li>";
+                echo "<li><a href=\"./incidencias.php\">Ver incidencias</a></li>";
                 break;
 
             
@@ -157,8 +157,8 @@
             // mostrar de alguna manera x imagenes 
             // correspondientes a la incidencia
             
-            for ($j = 0; $j < ; $j++){
-                echo "<img src=\"\" alt=\"\">"
+            for ($j = 0; $j < 5; $j++){
+                echo "<img src=\"\" alt=\"\">";
             }
 
             echo <<<HTML
