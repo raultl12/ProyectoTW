@@ -1,0 +1,63 @@
+<!--Este fichero es para mostar solo la incidencia, 
+    si se abre el archivo solo tiene que aparecer lo que sería una incidencia, nada mas
+    es para separarlo del resto, aplicar el estuilo para que se vea bien 
+    y luego meter el html en un php
+
+    Tambien vamos a separar el estilo de la incidencia en otro archivo css
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="incidencia.css">
+    <title>Incidencia</title>
+</head>
+<body>
+    <section>
+        <div class="incidencia">
+            <h2>Titulo Incidencia</h2>
+
+            <div class="detalles">
+                <div class="infoGeneral">
+                    <label>Lugar: </label>
+                    <label>Fecha: </label>
+                    <label>Creador por:</label>
+                    <label>Palabras clave: </label>
+                    <label>Estado: </label>
+                    <label>Valoraciones: </label>
+                </div>
+
+                <p>
+                    Descripcion de la incidencia
+                </p>
+
+                <div class="fotos">
+                    <img src="img/basura.png" alt="">
+                    <img src="img/editar.png" alt="">
+                    <img src="img/megafono.png" alt="">
+                </div>
+
+            </div>
+
+            <div class="comentarios">
+                <div class="infoComentario">
+                    <label>Usuario</label>
+                    <label>Fecha</label>
+                </div>
+
+                <div class="iconos">
+                    <a href=""><img src="./img/plus.png" alt=""></a>
+                    <a href=""><img src="./img/minus.png" alt=""></a>
+                    <a href=""><img src="./img/comment.png" alt=""></a>
+                    <a href=""><img src="./img/editar.png" alt=""></a>
+                    <a href=""><img src="./img/basura.png" alt=""></a>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

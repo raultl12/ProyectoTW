@@ -1,0 +1,35 @@
+.incidencia{
+    border: 1px solid #4ECDC4;
+    padding: 10px;
+    margin-right: 10px;
+}
+
+.fotos{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+
+    
+}
+
+.fotos img{
+    max-width: 20%;
+}
+
+input{
+    border: 1px solid rgb(75, 75, 75);
+}
+
+a > img {
+    width: 25px;
+    height: 25px;
+}
+
+.iconos{
+    text-align: right;
+}
+
+.iconos a{
+    margin-right: 10px;
+}
