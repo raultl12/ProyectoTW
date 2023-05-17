@@ -147,7 +147,7 @@
                         <label>Creador por: $creadorIncidencia[$i]</label>
                         <label>Palabras clave: $palabrasIncidencia[$i]</label>
                         <label>Estado: $estadoIncidencia[$i]</label>
-                        <label>Valoraciones: Pos: $positivasIncidencia[$i] Neg: $negativas_incidencia[$i]</label>
+                        <label>Valoraciones: Pos: $positivasIncidencia[$i] Neg: $negativasIncidencia[$i]</label>
 
                         <p>
                             Comentario incidencia
