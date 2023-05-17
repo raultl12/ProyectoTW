@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="incidencia.css">
+    <link rel="stylesheet" href="listadoIncidencias.css">
+    <title>Lista Inciencias</title>
+</head>
+<body>
+    <h2>Listado de Incidencias</h2>
+    <section class="formBusqueda">
+        <form action="" method="">
+            <h2>Criterios de búsqueda</h2>
+
+            <div class="ordenar">
+                <h2>Ordenar por:</h2>
+
+                <div class="opcionesOrdenar">
+                    <label><input type="radio" name="ordenar"> Antigüedad (primero las más recientes)</label>
+                    <label><input type="radio" name="ordenar"> Número de positivos (de más a menos)</label>
+                    <label><input type="radio" name="ordenar"> Número de positivos netos (de más a menos)</label>
+                </div>
+            </div>
+
+            <div class="busqueda">
+                <h2>Incidencias que contengan:</h2>
+
+                <label>Texto de búsqueda: </label>
+                <input type="text" name="">
+
+                <label>Lugar:</label>
+                <input type="text" name="">
+            </div>
+
+            <div class="estado">
+                <label><input type="checkbox"> Pendiente </label>
+                <label><input type="checkbox"> Comprobada </label>
+                <label><input type="checkbox"> Tramitada </label>
+                <label><input type="checkbox"> Irresoluble </label>
+                <label><input type="checkbox"> Resuelta </label>
+            </div>
+
+            <div class="opciones">
+                <label>Incidencias por página</label>
+                <select name="">
+                    <option value="1"></option>
+                    <option value="3"></option>
+                    <option value="5"></option>
+                    <option value="10"></option>
+                </select>
+
+                <input type="submit" value="Aplicar criterios de búsqueda">
+            </div>
+        </form>
+    </section>
+</body>
+</html>

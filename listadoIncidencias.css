@@ -1,0 +1,15 @@
+.formBusqueda h2{
+    border: 0;
+    justify-content: left;
+}
+
+.opcionesOrdenar{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    flex-wrap: nowrap;
+
+    margin: 0 2rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #4ECDC4;
+}
