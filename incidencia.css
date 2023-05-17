@@ -9,8 +9,8 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-around;
-
-    
+    margin-top: 20px;
+    flex-wrap: wrap;
 }
 
 .fotos img{
@@ -28,6 +28,7 @@ a > img {
 
 .iconos{
     text-align: right;
+    margin-top: 1rem;
 }
 
 .iconos a{
@@ -35,10 +36,79 @@ a > img {
 }
 
 .comentario{
-    display: grid;
-    grid-template-columns: 10% 90%;
+    display: flex;
+    flex-direction: row;  
+    margin-top: 15px; 
+    background-color: #2875703f;
+    padding: 0.6rem;
+    border-radius: 0.3rem;
 }
 
 .comentario label{
     display: block;
+}
+
+.infoGeneral label{
+    margin-right: 25px;
+    white-space: nowrap;
+}
+
+.infoGeneral label{
+    font-weight: bold;
+}
+
+em{
+    color: #4ECDC4;
+    font-weight: normal;
+}
+
+.infoGeneral{
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.infoComentario{
+    border-right: 1px solid #4ECDC4;
+    display: flex;
+    flex-direction: column;
+    white-space: nowrap;
+    padding: 0.5rem;
+    font-weight: bold;
+}
+
+.infoComentario label:last-child{
+    font-size: small;
+    font-weight: normal;
+    color: #4ECDC4;
+}
+
+.comentario p{
+    padding-left: 0.5rem;
+}
+
+.iconos img:hover {
+    animation: shake 0.3s;
+  }
+  
+@keyframes shake {
+    0% {
+        transform: rotate(0);
+    }
+    25% {
+        transform: rotate(25deg);
+    }
+    75% {
+        transform: rotate(-25deg);
+    }
+    100% {
+        transform: rotate(0);
+    }
+}
+
+.incidencia {
+    margin-bottom: 0.5rem;
+}
+
+.incidencia h2{
+    border-top: 0;
 }
