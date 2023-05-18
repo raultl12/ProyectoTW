@@ -5,7 +5,7 @@
 
     HTMLInicio();
     MostrarHeader(getSession("tipoCliente")); //Cambiar por el valor de la cookie de sesion
-    //Poner aqui el codigo de generacion de incidencia
+    MostrarContenido();
     MostrarFooter();
     HTMLFin();
 ?>

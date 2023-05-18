@@ -3,11 +3,10 @@
 
     session_start();
     setSession("tipoCliente", "administrador");
-    
 
     HTMLInicio();
-    MostrarHeader(getSession("tipoCliente"));
-    MostrarMain();
+    MostrarHeader(getSession("tipoCliente")); //Cambiar por el valor de la cookie de sesion
+    MostrarContenido();
     MostrarFooter();
     HTMLFin();
 ?>

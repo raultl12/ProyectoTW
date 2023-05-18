@@ -8,46 +8,6 @@
         return $_SESSION[$nombreVariable];
     }
 
-    function MostrarMain(){
-        echo <<<HTML
-        <div class="contenido">
-            <main>
-                <p>Contenido principal de la pagina</p>
-                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Reprehenderit architecto dolorum earum beatae, quisquam quibusdam at quas vero inventore, praesentium excepturi? Voluptate earum magnam, delectus animi iusto molestiae voluptas aliquid?</p>
-                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Reprehenderit architecto dolorum earum beatae, quisquam quibusdam at quas vero inventore, praesentium excepturi? Voluptate earum magnam, delectus animi iusto molestiae voluptas aliquid?</p>
-                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Reprehenderit architecto dolorum earum beatae, quisquam quibusdam at quas vero inventore, praesentium excepturi? Voluptate earum magnam, delectus animi iusto molestiae voluptas aliquid?</p>
-                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Reprehenderit architecto dolorum earum beatae, quisquam quibusdam at quas vero inventore, praesentium excepturi? Voluptate earum magnam, delectus animi iusto molestiae voluptas aliquid?</p>
-                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Reprehenderit architecto dolorum earum beatae, quisquam quibusdam at quas vero inventore, praesentium excepturi? Voluptate earum magnam, delectus animi iusto molestiae voluptas aliquid?</p>
-                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Reprehenderit architecto dolorum earum beatae, quisquam quibusdam at quas vero inventore, praesentium excepturi? Voluptate earum magnam, delectus animi iusto molestiae voluptas aliquid?</p>
-                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Reprehenderit architecto dolorum earum beatae, quisquam quibusdam at quas vero inventore, praesentium excepturi? Voluptate earum magnam, delectus animi iusto molestiae voluptas aliquid?</p>
-                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Reprehenderit architecto dolorum earum beatae, quisquam quibusdam at quas vero inventore, praesentium excepturi? Voluptate earum magnam, delectus animi iusto molestiae voluptas aliquid?</p>
-                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Reprehenderit architecto dolorum earum beatae, quisquam quibusdam at quas vero inventore, praesentium excepturi? Voluptate earum magnam, delectus animi iusto molestiae voluptas aliquid?</p>
-                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Reprehenderit architecto dolorum earum beatae, quisquam quibusdam at quas vero inventore, praesentium excepturi? Voluptate earum magnam, delectus animi iusto molestiae voluptas aliquid?</p>
-                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Reprehenderit architecto dolorum earum beatae, quisquam quibusdam at quas vero inventore, praesentium excepturi? Voluptate earum magnam, delectus animi iusto molestiae voluptas aliquid?</p>
-                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Reprehenderit architecto dolorum earum beatae, quisquam quibusdam at quas vero inventore, praesentium excepturi? Voluptate earum magnam, delectus animi iusto molestiae voluptas aliquid?</p>
-                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Reprehenderit architecto dolorum earum beatae, quisquam quibusdam at quas vero inventore, praesentium excepturi? Voluptate earum magnam, delectus animi iusto molestiae voluptas aliquid?</p>
-                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Reprehenderit architecto dolorum earum beatae, quisquam quibusdam at quas vero inventore, praesentium excepturi? Voluptate earum magnam, delectus animi iusto molestiae voluptas aliquid?</p>
-                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Reprehenderit architecto dolorum earum beatae, quisquam quibusdam at quas vero inventore, praesentium excepturi? Voluptate earum magnam, delectus animi iusto molestiae voluptas aliquid?</p>
-                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Reprehenderit architecto dolorum earum beatae, quisquam quibusdam at quas vero inventore, praesentium excepturi? Voluptate earum magnam, delectus animi iusto molestiae voluptas aliquid?</p>
-                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Reprehenderit architecto dolorum earum beatae, quisquam quibusdam at quas vero inventore, praesentium excepturi? Voluptate earum magnam, delectus animi iusto molestiae voluptas aliquid?</p>
-                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Reprehenderit architecto dolorum earum beatae, quisquam quibusdam at quas vero inventore, praesentium excepturi? Voluptate earum magnam, delectus animi iusto molestiae voluptas aliquid?</p>
-                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Reprehenderit architecto dolorum earum beatae, quisquam quibusdam at quas vero inventore, praesentium excepturi? Voluptate earum magnam, delectus animi iusto molestiae voluptas aliquid?</p>
-                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Reprehenderit architecto dolorum earum beatae, quisquam quibusdam at quas vero inventore, praesentium excepturi? Voluptate earum magnam, delectus animi iusto molestiae voluptas aliquid?</p>
-                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Reprehenderit architecto dolorum earum beatae, quisquam quibusdam at quas vero inventore, praesentium excepturi? Voluptate earum magnam, delectus animi iusto molestiae voluptas aliquid?</p>
-                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Reprehenderit architecto dolorum earum beatae, quisquam quibusdam at quas vero inventore, praesentium excepturi? Voluptate earum magnam, delectus animi iusto molestiae voluptas aliquid?</p>
-                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Reprehenderit architecto dolorum earum beatae, quisquam quibusdam at quas vero inventore, praesentium excepturi? Voluptate earum magnam, delectus animi iusto molestiae voluptas aliquid?</p>
-                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Reprehenderit architecto dolorum earum beatae, quisquam quibusdam at quas vero inventore, praesentium excepturi? Voluptate earum magnam, delectus animi iusto molestiae voluptas aliquid?</p>
-                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Reprehenderit architecto dolorum earum beatae, quisquam quibusdam at quas vero inventore, praesentium excepturi? Voluptate earum magnam, delectus animi iusto molestiae voluptas aliquid?</p>
-                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Reprehenderit architecto dolorum earum beatae, quisquam quibusdam at quas vero inventore, praesentium excepturi? Voluptate earum magnam, delectus animi iusto molestiae voluptas aliquid?</p>
-                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Reprehenderit architecto dolorum earum beatae, quisquam quibusdam at quas vero inventore, praesentium excepturi? Voluptate earum magnam, delectus animi iusto molestiae voluptas aliquid?</p>
-            </main>
-            <aside>
-                <p>Barra aside</p>
-            </aside>
-        </div>
-        HTML;
-    }
-
     function HTMLInicio(){
         echo <<<HTML
         <!DOCTYPE html>
@@ -57,6 +17,9 @@
             <meta http-equiv="X-UA-Compatible" content="IE=edge">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <link rel="stylesheet" href="../css/style.css">
+            <link rel="stylesheet" href="../css/incidencia.css">
+            <link rel="stylesheet" href="../css/listadoIncidencias.css">
+            
             <title>Proyecto</title>
         </head>
         <body>
@@ -105,7 +68,7 @@
         switch($tipoUsuario){
             case "miembro":
                 echo <<<HTML
-                    <li><a href="../php/incidencias.php">Ver incidencias</a></li>
+                    <li><a href="../php/index.php">Ver incidencias</a></li>
                     <li><a href="">Nueva incidencia</a></li>
                     <li><a href="">Mis incidencias</a></li>
                 HTML;
@@ -113,7 +76,7 @@
 
             case "administrador":
                 echo <<<HTML
-                    <li><a href="../php/incidencias.php">Ver incidencias</a></li>
+                    <li><a href="../php/index.php">Ver incidencias</a></li>
                     <li><a href="">Nueva incidencia</a></li>
                     <li><a href="">Mis incidencias</a></li>
                     <li><a href="">Gestión de usuarios</a></li>
@@ -123,7 +86,7 @@
                 break;
 
             default:
-                echo "<li><a href=\"../php/incidencias.php\">Ver incidencias</a></li>";
+                echo "<li><a href=\"../php/index.php\">Ver incidencias</a></li>";
                 break;
 
             
@@ -135,69 +98,8 @@
         HTML;
     }
 
-    function mostrarIncidencias($numIncidencias, $tipoUsuario){
-        global $lugarIncidencia;
-        global $fechaIncidencia;
-        global $creadorIncidencia;
-        global $palabrasIncidencia;
-        global $estadoIncidencia;
-        global $positivasIncidencia;
-        global $negativasIncidencia;
-
-        for ($i = 0; $i < $numIncidencias; $i++){
-            echo <<<HTML
-                <div class="incidencia">
-                    <h2>name php</h2>
-
-                    <div class="detalles">
-                        <label>Lugar: $lugarIncidencia[$i]</label>
-                        <label>Fecha: $fechaIncidencia[$i]</label>
-                        <label>Creador por: $creadorIncidencia[$i]</label>
-                        <label>Palabras clave: $palabrasIncidencia[$i]</label>
-                        <label>Estado: $estadoIncidencia[$i]</label>
-                        <label>Valoraciones: Pos: $positivasIncidencia[$i] Neg: $negativasIncidencia[$i]</label>
-
-                        <p>
-                            Comentario incidencia
-                        </p>
-            HTML;
-
-            // mostrar de alguna manera x imagenes 
-            // correspondientes a la incidencia
-            
-            for ($j = 0; $j < 5; $j++){
-                echo "<img src=\"\" alt=\"\">";
-            }
-
-            echo <<<HTML
-                    </div>
-
-                    <div class="comentarios">
-                        <label>Usuario</label>
-                        <label>Comentario</label>
-
-                        <div class="iconos">
-                            <a><img src="../img/plus.png" alt="Voto positivo" name="voto_pos"></a>
-                            <a><img src="../img/minus.png" alt="Voto negativo" name="voto_neg"></a>
-                            <a><img src="../img/comment.png" alt="Añadir comentario" name="nuevo_com"></a>
-            HTML;
-
-            if ($tipoUsuario == "administrador"){
-                echo "<a><img src=\"../img/editar.png\" alt=\"Editar comentario\" name=\"edit_com\"></a>";
-                echo "<a><img src=\"../img/basura.png\" alt=\"Borrar comentario\" name=\"del_com\"></a>";
-            }
-
-            echo <<<HTML
-                        </div>
-                    </div>
-                </div>
-            HTML;
-        }
-    }
-
-    function mostrarIncidencia(){
+    function MostrarIncidencia(){
         echo <<<HTML
-        <section>
             <div class="incidencia">
                 <h2>Titulo Incidencia</h2>
 
@@ -257,7 +159,96 @@
                     <a href=""><img src="../img/basura.png" alt=""></a>
                 </div>
             </div>
-        </section>
+        HTML;
+    }
+
+    function MostrarAside(){
+        echo <<<HTML
+                <aside>
+                    <p> Barra aside</p>
+                </aside>
+        HTML;
+    }
+
+    function MostrarContenido(){
+        echo <<<HTML
+            <div class="contenido">
+                <main>
+        HTML;
+
+        MostrarFormularioBusqueda();
+
+        echo <<<HTML
+                    <section>
+        HTML;
+        
+        MostrarIncidencia();
+        MostrarIncidencia();
+        MostrarIncidencia();
+        
+
+        echo <<<HTML
+                    </section>
+            </main>
+        HTML;
+        MostrarAside();
+        echo "</div>";
+    }
+
+    function MostrarFormularioBusqueda(){
+        echo <<<HTML
+            <section class="formBusqueda">
+                <h2>Listado de Incidencias</h2>
+                <form action="" method="">
+                    <h2>Criterios de búsqueda</h2>
+
+                    <div class="ordenar">
+                        <h2>Ordenar por:</h2>
+
+                        <div class="opcionesOrdenar">
+                            <label><input type="radio" name="ordenar"> Antigüedad (primero las más recientes)</label>
+                            <label><input type="radio" name="ordenar"> Número de positivos (de más a menos)</label>
+                            <label><input type="radio" name="ordenar"> Número de positivos netos (de más a menos)</label>
+                        </div>
+                    </div>
+
+                    <div class="busqueda">
+                        <h2>Incidencias que contengan:</h2>
+
+                        <label>Texto de búsqueda: <input type="text" name=""></label>
+                        
+
+                        <label>Lugar:<input type="text" name=""></label>
+                        
+                    </div>
+
+                    <div class="estado">
+                        <h2>Estado</h2>
+
+                        <div class="inputsEstado">
+                            <label><input type="checkbox"> Pendiente </label>
+                            <label><input type="checkbox"> Comprobada </label>
+                            <label><input type="checkbox"> Tramitada </label>
+                            <label><input type="checkbox"> Irresoluble </label>
+                            <label><input type="checkbox"> Resuelta </label>
+                        </div>
+                    </div>
+
+                    <div class="opciones">
+                        <div class="incidenciasPagina">
+                            <label>Incidencias por página</label>
+                            <select name="">
+                                <option value="1">1 item</option>
+                                <option value="3">3 items</option>
+                                <option value="5">5 items</option>
+                                <option value="10">10 items</option>
+                            </select>
+                        </div>
+                        <input type="submit" value="Aplicar criterios de búsqueda">
+
+                    </div>
+                </form>
+            </section>
         HTML;
     }
 ?>
