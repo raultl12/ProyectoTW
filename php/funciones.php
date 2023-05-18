@@ -66,7 +66,7 @@
         echo <<<HTML
         <header>
             <div class="cabecera">
-                <img src="./img/megafono.png" alt="megafono" class="pageLogo">
+                <img src="../img/megafono.png" alt="megafono" class="pageLogo">
                 <h1>Quéjate ¡no te calles!</h1>
             </div>
             
@@ -97,7 +97,7 @@
         switch($tipoUsuario){
             case "miembro":
                 echo <<<HTML
-                    <li><a href="./incidencias.php">Ver incidencias</a></li>
+                    <li><a href="../incidencias.php">Ver incidencias</a></li>
                     <li><a href="">Nueva incidencia</a></li>
                     <li><a href="">Mis incidencias</a></li>
                 HTML;
@@ -105,7 +105,7 @@
 
             case "administrador":
                 echo <<<HTML
-                    <li><a href="./incidencias.php">Ver incidencias</a></li>
+                    <li><a href="../incidencias.php">Ver incidencias</a></li>
                     <li><a href="">Nueva incidencia</a></li>
                     <li><a href="">Mis incidencias</a></li>
                     <li><a href="">Gestión de usuarios</a></li>
@@ -115,7 +115,7 @@
                 break;
 
             default:
-                echo "<li><a href=\"./incidencias.php\">Ver incidencias</a></li>";
+                echo "<li><a href=\"../incidencias.php\">Ver incidencias</a></li>";
                 break;
 
             
@@ -169,14 +169,14 @@
                         <label>Comentario</label>
 
                         <div class="iconos">
-                            <a><img src="./img/plus.png" alt="Voto positivo" name="voto_pos"></a>
-                            <a><img src="./img/minus.png" alt="Voto negativo" name="voto_neg"></a>
-                            <a><img src="./img/comment.png" alt="Añadir comentario" name="nuevo_com"></a>
+                            <a><img src="../img/plus.png" alt="Voto positivo" name="voto_pos"></a>
+                            <a><img src="../img/minus.png" alt="Voto negativo" name="voto_neg"></a>
+                            <a><img src="../img/comment.png" alt="Añadir comentario" name="nuevo_com"></a>
             HTML;
 
             if ($tipoUsuario == "administrador"){
-                echo "<a><img src=\"./img/editar.png\" alt=\"Editar comentario\" name=\"edit_com\"></a>";
-                echo "<a><img src=\"./img/basura.png\" alt=\"Borrar comentario\" name=\"del_com\"></a>";
+                echo "<a><img src=\"../img/editar.png\" alt=\"Editar comentario\" name=\"edit_com\"></a>";
+                echo "<a><img src=\"../img/basura.png\" alt=\"Borrar comentario\" name=\"del_com\"></a>";
             }
 
             echo <<<HTML
