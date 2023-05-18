@@ -17,29 +17,44 @@
             <img src="../img/basura.png" alt="">
 
             <div class="nuevo">
-                <input type="submit" value="Seleccionar archivo">
+                <input type="submit" name="photo-selected" value="Seleccionar archivo">
                 <label>Archivo.img</label>
             </div>
         </div>
 
-        <label>Nombre:</label>
+        <p>Nombre:</p>
         <input type="text" placeholder="Introduzca su nombre">
 
-        <label>Apellidos:</label>
+        <p>Apellidos:</p>
         <input type="text" placeholder="Introduzca su/s apellido/s">
 
-        <label>Email:</label>
+        <p>Email:</p>
         <input type="email" placeholder="ex@am.ple">
 
         <!--
-            <label>Clave:</label>
+            <p>Clave:</p>
             <input type="password"><input type="password"> 
         -->
 
-        <label>Dirección:</label>
+        <p>Dirección:</p>
         <input type="text">
 
-        
+        <p>Telefono:</p>
+        <input type="tel">
+
+        <p>Rol:</p>
+        <select name="" id="">
+            <option value="admin">Administrador</option>
+            <option value="colab">Colaborador</option>
+        </select>
+
+        <p>Estado:</p>
+        <select name="" id="">
+            <option value="activo">Activo</option>
+            <option value="inactivo">Inactivo</option>
+        </select>
+
+        <input type="submit" name="change-saved" value="Confirmar modificación">
     </form>
 </body>
 </html>
