@@ -7,3 +7,16 @@
 .foto img{
     max-width: 30%;
 }
+
+.nuevo{
+    display: flex;
+    flex-direction: column;
+    align-self: flex-end;
+    padding-bottom: 1.2rem;
+    padding-left: 1rem;
+}
+
+.nuevo label{
+    margin-top: 0.3rem;
+}
+
