@@ -1,5 +1,13 @@
 
 <?php
+    function setSession($nombreVariable, $valor){
+        $_SESSION[$nombreVariable] = $valor;
+    }
+
+    function getSession($nombreVariable){
+        return $_SESSION[$nombreVariable];
+    }
+
     function MostrarMain(){
         echo <<<HTML
         <div class="contenido">
@@ -48,7 +56,7 @@
             <meta charset="UTF-8">
             <meta http-equiv="X-UA-Compatible" content="IE=edge">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <link rel="stylesheet" href="style.css">
+            <link rel="stylesheet" href="../css/style.css">
             <title>Proyecto</title>
         </head>
         <body>
@@ -97,7 +105,7 @@
         switch($tipoUsuario){
             case "miembro":
                 echo <<<HTML
-                    <li><a href="../incidencias.php">Ver incidencias</a></li>
+                    <li><a href="../php/incidencias.php">Ver incidencias</a></li>
                     <li><a href="">Nueva incidencia</a></li>
                     <li><a href="">Mis incidencias</a></li>
                 HTML;
@@ -105,7 +113,7 @@
 
             case "administrador":
                 echo <<<HTML
-                    <li><a href="../incidencias.php">Ver incidencias</a></li>
+                    <li><a href="../php/incidencias.php">Ver incidencias</a></li>
                     <li><a href="">Nueva incidencia</a></li>
                     <li><a href="">Mis incidencias</a></li>
                     <li><a href="">Gestión de usuarios</a></li>
@@ -115,7 +123,7 @@
                 break;
 
             default:
-                echo "<li><a href=\"../incidencias.php\">Ver incidencias</a></li>";
+                echo "<li><a href=\"../php/incidencias.php\">Ver incidencias</a></li>";
                 break;
 
             
@@ -185,5 +193,71 @@
                 </div>
             HTML;
         }
+    }
+
+    function mostrarIncidencia(){
+        echo <<<HTML
+        <section>
+            <div class="incidencia">
+                <h2>Titulo Incidencia</h2>
+
+                <div class="detalles">
+                    <div class="infoGeneral">
+                        <label>Lugar: <em>Granada</em></label>
+                        <label>Fecha: <em>25-05-04</em></label>
+                        <label>Creador por: <em>Cristina</em></label>
+                        <label>Palabras clave: <em>Titulo, incidencia</em></label>
+                        <label>Estado: <em>Pendiente</em></label>
+                        <label>Valoraciones: <em>Pos: 15 Neg: 41</em></label>
+                    </div>
+
+                    <p>
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt sequi laudantium molestias quas ab, voluptatem aperiam? Corporis quidem, illo excepturi harum consequuntur fugiat cupiditate. Error vitae mollitia consequatur eum aut?
+                    </p>
+
+                    <div class="fotos">
+                        <img src="../img/basura.png" alt="">
+                        <img src="../img/editar.png" alt="">
+                        <img src="../img/megafono.png" alt="">
+                    </div>
+
+                </div>
+
+                <div class="seccionComentarios">
+                    <div class="comentario">
+                        <div class="infoComentario">
+                            <label>Usuario</label>
+                            <label>2023-05-69 16:69:69</label>
+                        </div>
+        
+                        <p>
+                            Este es el texto del comentario
+                            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ipsum ducimus ea consequatur velit vitae et provident odit corporis ex. Sed ea ex vitae magni maxime, a magnam et adipisci eligendi.
+                        </p>
+                    </div>
+
+                    <div class="comentario">
+                        <div class="infoComentario">
+                            <label>Usuario</label>
+                            <label>2023-05-69 16:69:69</label>
+                        </div>
+        
+                        <p>
+                            Este es el texto del comentario
+                            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ipsum ducimus ea consequatur velit vitae et provident odit corporis ex. Sed ea ex vitae magni maxime, a magnam et adipisci eligendi.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="iconos">
+                    <a href=""><img src="../img/plus.png" alt=""></a>
+                    <a href=""><img src="../img/minus.png" alt=""></a>
+                    <a href=""><img src="../img/comment.png" alt=""></a>
+                    <a href=""><img src="../img/editar.png" alt=""></a>
+                    <a href=""><img src="../img/basura.png" alt=""></a>
+                </div>
+            </div>
+        </section>
+        HTML;
     }
 ?>

@@ -1,8 +1,12 @@
 <?php
     require_once 'funciones.php';
 
+    session_start();
+    setSession("tipoCliente", "administrador");
+    
+
     HTMLInicio();
-    MostrarHeader("anonimo"); //Cambiar por el valor de la cookie de sesion
+    MostrarHeader(getSession("tipoCliente"));
     MostrarMain();
     MostrarFooter();
     HTMLFin();

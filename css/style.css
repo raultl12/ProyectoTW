@@ -19,15 +19,11 @@ input:hover{
     cursor: pointer;
 }
 
-input[type="text"], input[type="submit"]{
-    background-color: #4ecdc570;
-    color: #F7FFF7;
-}
-
 input[type="submit"]{
     padding: 0.8rem;
     border-radius: 1rem;
     background-color: #292F36;
+    color: #F7FFF7;
     transition: background-color 0.3s ease-in-out;
 }
 
@@ -131,6 +127,13 @@ aside{
 
 input{
     accent-color: #4ECDC4;
+    border: 1px solid rgb(75, 75, 75);
+    background-color: #4ecdc570;
+    color: #F7FFF7;
+}
+
+input::placeholder{
+    color: white;
 }
 
 .pageLogo{
