@@ -10,8 +10,8 @@
     <title>Lista Inciencias</title>
 </head>
 <body>
-    <h2>Listado de Incidencias</h2>
     <section class="formBusqueda">
+        <h2>Listado de Incidencias</h2>
         <form action="" method="">
             <h2>Criterios de búsqueda</h2>
 
@@ -28,31 +28,37 @@
             <div class="busqueda">
                 <h2>Incidencias que contengan:</h2>
 
-                <label>Texto de búsqueda: </label>
-                <input type="text" name="">
+                <label>Texto de búsqueda: <input type="text" name=""></label>
+                
 
-                <label>Lugar:</label>
-                <input type="text" name="">
+                <label>Lugar:<input type="text" name=""></label>
+                
             </div>
 
             <div class="estado">
-                <label><input type="checkbox"> Pendiente </label>
-                <label><input type="checkbox"> Comprobada </label>
-                <label><input type="checkbox"> Tramitada </label>
-                <label><input type="checkbox"> Irresoluble </label>
-                <label><input type="checkbox"> Resuelta </label>
+                <h2>Estado</h2>
+
+                <div class="inputsEstado">
+                    <label><input type="checkbox"> Pendiente </label>
+                    <label><input type="checkbox"> Comprobada </label>
+                    <label><input type="checkbox"> Tramitada </label>
+                    <label><input type="checkbox"> Irresoluble </label>
+                    <label><input type="checkbox"> Resuelta </label>
+                </div>
             </div>
 
             <div class="opciones">
-                <label>Incidencias por página</label>
-                <select name="">
-                    <option value="1"></option>
-                    <option value="3"></option>
-                    <option value="5"></option>
-                    <option value="10"></option>
-                </select>
-
+                <div class="incidenciasPagina">
+                    <label>Incidencias por página</label>
+                    <select name="">
+                        <option value="1">1 item</option>
+                        <option value="3">3 items</option>
+                        <option value="5">5 items</option>
+                        <option value="10">10 items</option>
+                    </select>
+                </div>
                 <input type="submit" value="Aplicar criterios de búsqueda">
+
             </div>
         </form>
     </section>

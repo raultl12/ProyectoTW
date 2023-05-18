@@ -1,3 +1,14 @@
+.formBusqueda{
+    margin: 1rem 1rem 1rem 0;
+    padding: 1rem;
+
+    border: 1px solid #4ECDC4;
+}
+
+.formBusqueda > h2:first-child{
+    justify-content: center;
+}
+
 .formBusqueda h2{
     border: 0;
     justify-content: left;
@@ -12,4 +23,42 @@
     margin: 0 2rem;
     padding-bottom: 0.5rem;
     border-bottom: 1px solid #4ECDC4;
+}
+
+.busqueda{
+    display: flex;
+    flex-direction: column;
+    margin: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #4ECDC4;
+}
+
+.busqueda label{
+    display: flex;
+    justify-content: space-between;
+
+    margin: 0 50% 0.5rem 1rem;
+}
+
+.busqueda input{
+    width: 65%;
+}
+
+.inputsEstado{
+    margin: 1rem 0 2rem 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.opciones{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.incidenciasPagina{
+    margin-bottom: 1rem;
 }

@@ -11,6 +11,51 @@ Paleta usada: 3
     padding: 0;
 }
 
+*::selection{
+    background-color: #4ecdc570;
+}
+
+input:hover{
+    cursor: pointer;
+}
+
+input[type="text"], input[type="submit"]{
+    background-color: #4ecdc570;
+    color: #F7FFF7;
+}
+
+input[type="submit"]{
+    padding: 0.8rem;
+    border-radius: 1rem;
+    background-color: #292F36;
+    transition: background-color 0.3s ease-in-out;
+}
+
+input[type="submit"]:hover{
+    padding: 0.8rem;
+    border-radius: 1rem;
+    background-color: #4ecdc570;
+}
+
+select{
+    background-color: #292F36;
+    color: #F7FFF7;
+    border: none;
+}
+
+select:focus{
+    border: 1px solid #4ECDC4;
+}
+
+select:hover{
+    cursor: pointer;
+}
+
+select option{
+    font-weight: bold;
+}
+
+
 h1, h2{
     color: #F7FFF7;
     display: flex;
