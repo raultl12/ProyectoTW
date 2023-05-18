@@ -11,50 +11,62 @@
 <body>
     <h2>Edición de usuario</h2>
 
-    <form action="" method="">
-        <div class="container">
-            <div class="foto">
-                <label>Foto: </label>
-                <img src="../img/basura.png" alt="">
+    <f action="" method="">
+        <div class="foto">
+            <label>Foto: </label>
+            <img src="../img/basura.png" alt="">
 
-                <div class="nuevo">
-                    <input type="submit" name="photo-selected" value="Seleccionar archivo">
-                    <label>Archivo.img</label>
-                </div>
+            <div class="nuevo">
+                <input type="submit" name="photo-selected" value="Seleccionar archivo">
+                <label>Archivo.img</label>
             </div>
         </div>
 
-        <label>Nombre:</label>
-        <input type="text" placeholder="Introduzca su nombre">
+        <div>
+            <label>Nombre:</label>
+            <input type="text" id="nombre" placeholder="Introduzca su nombre">
+        </div>
 
-        <label>Apellidos:</label>
-        <input type="text" placeholder="Introduzca su/s apellido/s">
+        <div>
+            <label>Apellidos:</label>
+            <input type="text" placeholder="Introduzca su/s apellido/s">
+        </div>
 
-        <label>Email:</label>
-        <input type="email" placeholder="ex@am.ple">
+        <div>
+            <label>Email:</label>
+            <input type="email" placeholder="ex@am.ple">
+        </div>
 
-        <!--
+        <div>
             <label>Clave:</label>
             <input type="password"><input type="password"> 
-        -->
+        </div>
 
-        <label>Dirección:</label>
-        <input type="text">
+        <div>
+            <label>Dirección:</label>
+            <input type="text">
+        </div>
 
-        <label>Telefono:</label>
-        <input type="tel">
+        <div>
+            <label>Telefono:</label>
+            <input type="tel">
+        </div>
 
-        <label>Rol:</label>
-        <select name="" id="">
-            <option value="admin">Administrador</option>
-            <option value="colab">Colaborador</option>
-        </select>
+        <div>
+            <label>Rol:</label>
+            <select name="" id="">
+                <option value="admin">Administrador</option>
+                <option value="colab">Colaborador</option>
+            </select>
+        </div>
 
-        <label>Estado:</label>
-        <select name="" id="">
-            <option value="activo">Activo</option>
-            <option value="inactivo">Inactivo</option>
-        </select>
+        <div>
+            <label>Estado:</label>
+            <select name="" id="">
+                <option value="activo">Activo</option>
+                <option value="inactivo">Inactivo</option>
+            </select>
+        </div>
 
         <input type="submit" name="change-saved" value="Confirmar modificación">
     </form>
