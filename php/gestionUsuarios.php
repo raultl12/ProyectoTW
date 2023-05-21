@@ -5,7 +5,12 @@
 
     HTMLInicio();
     MostrarHeader(getSession("tipoCliente"));
-    MostrarContenidoIncidencias();
+    if(getSession("tipoCliente") != "administrador"){
+        MostrarAccesoDenegado();
+    }
+    else{
+        MostrarContenidoGestionUsuarios();
+    }
     MostrarFooter();
     HTMLFin();
 ?>

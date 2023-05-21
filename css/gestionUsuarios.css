@@ -1,0 +1,78 @@
+.menu h2{
+    border: 0;
+}
+
+.menu{
+    border: 1px solid #4ECDC4;
+    border-radius: 0.5rem;
+    margin: 1rem;
+}
+
+.menu label{
+    display: block;
+    margin: 1rem 0 1rem 0.5rem;
+}
+
+.opciones{
+    display: flex;
+    align-items: flex-start;
+    margin-left: 0.5rem;
+}
+
+.opciones a{
+    margin: 0.2rem;
+}
+
+.usuario{
+    display: grid;
+    grid-template-columns: 10% 80% 10%;
+    margin: 2rem;
+}
+
+.listado img{
+    max-width: 100px;
+}
+
+.botones{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.botones img{
+    max-width: 40px;
+}
+
+.infoUsuario{
+    display: flex;
+    flex-direction: column;
+    margin: auto 0 auto 0;
+}
+
+.listado .usuario:nth-child(even){
+    border: 1px solid #4ecdc58a;
+}
+  
+.listado .usuario:nth-child(odd){
+    background-color: #2875703f;
+    
+}
+
+.botones img:hover {
+    animation: shake 0.3s;
+}
+  
+@keyframes shake {
+    0% {
+        transform: rotate(0);
+    }
+    25% {
+        transform: rotate(25deg);
+    }
+    75% {
+        transform: rotate(-25deg);
+    }
+    100% {
+        transform: rotate(0);
+    }
+}

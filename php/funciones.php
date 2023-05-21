@@ -19,6 +19,7 @@
             <link rel="stylesheet" href="../css/style.css">
             <link rel="stylesheet" href="../css/incidencia.css">
             <link rel="stylesheet" href="../css/listadoIncidencias.css">
+            <link rel="stylesheet" href="../css/gestionUsuarios.css">
             
             <title>Proyecto</title>
         </head>
@@ -79,7 +80,7 @@
                     <li><a href="../php/index.php">Ver incidencias</a></li>
                     <li><a href="">Nueva incidencia</a></li>
                     <li><a href="">Mis incidencias</a></li>
-                    <li><a href="">Gestión de usuarios</a></li>
+                    <li><a href="../php/gestionUsuarios.php">Gestión de usuarios</a></li>
                     <li><a href="">Ver log</a></li>
                     <li><a href="">Gestión de BBDD</a></li>
                 HTML;
@@ -170,7 +171,7 @@
         HTML;
     }
 
-    function MostrarContenido(){
+    function MostrarContenidoIncidencias(){
         echo <<<HTML
             <div class="contenido">
                 <main>
@@ -250,5 +251,85 @@
                 </form>
             </section>
         HTML;
+    }
+
+    function MostrarContenidoGestionUsuarios(){
+        echo <<<HTML
+            <div class="menu">
+                <h2>Gestion de Usuario</h2>
+                <label>Indique la accion a realizar</label>
+
+                <div class="opciones">
+                    <a href="">Listado</a>
+                    <a href="">Añadir nuevo</a>
+                </div>
+            </div>
+
+            <div class="listado">
+                <div class="usuario">
+                    <img src="../img/basura.png" alt="fotoPerfil">
+
+                    <div class="infoUsuario">
+                        <label>Usuario: <em>Mario Piña Munera</em> Email: <em>mariomario</em></label>
+                        <label>Direccion: <em>su casa</em></label>
+                        <label>Rol: <em>administrador</em> Estado: <em>Activo</em></label>
+                    </div>
+
+                    <div class="botones">
+                        <img src="../img/editar.png" alt="editar">
+                        <img src="../img/basura.png" alt="borrar">
+                    </div>
+                </div>
+
+                <div class="usuario">
+                    <img src="../img/basura.png" alt="fotoPerfil">
+
+                    <div class="infoUsuario">
+                        <label>Usuario: <em>Mario Piña Munera</em> Email: <em>mariomario</em></label>
+                        <label>Direccion: <em>su casa</em></label>
+                        <label>Rol: <em>administrador</em> Estado: <em>Activo</em></label>
+                    </div>
+
+                    <div class="botones">
+                        <img src="../img/editar.png" alt="editar">
+                        <img src="../img/basura.png" alt="borrar">
+                    </div>
+                </div>
+
+                <div class="usuario">
+                    <img src="../img/basura.png" alt="fotoPerfil">
+
+                    <div class="infoUsuario">
+                        <label>Usuario: <em>Mario Piña Munera</em> Email: <em>mariomario</em></label>
+                        <label>Direccion: <em>su casa</em></label>
+                        <label>Rol: <em>administrador</em> Estado: <em>Activo</em></label>
+                    </div>
+
+                    <div class="botones">
+                        <img src="../img/editar.png" alt="editar">
+                        <img src="../img/basura.png" alt="borrar">
+                    </div>
+                </div>
+
+                <div class="usuario">
+                    <img src="../img/basura.png" alt="fotoPerfil">
+
+                    <div class="infoUsuario">
+                        <label>Usuario: <em>Mario Piña Munera</em> Email: <em>mariomario</em></label>
+                        <label>Direccion: <em>su casa</em></label>
+                        <label>Rol: <em>administrador</em> Estado: <em>Activo</em></label>
+                    </div>
+
+                    <div class="botones">
+                        <img src="../img/editar.png" alt="editar">
+                        <img src="../img/basura.png" alt="borrar">
+                    </div>
+                </div>
+            </div>
+        HTML;
+    }
+
+    function MostrarAccesoDenegado(){
+        echo "<h2>No tienes permiso para estar aqui</h2>";
     }
 ?>

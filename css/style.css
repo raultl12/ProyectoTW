@@ -82,8 +82,7 @@ header{
 nav{
     margin: 1rem 1rem;
     padding: 0.5rem;
-    border-radius: 5px;
-    border-radius: 5px;
+    border-radius: 0.5rem;
     border: 1px solid rgba(78, 205, 196, 0.5);
 }
 

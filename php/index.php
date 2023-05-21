@@ -2,11 +2,11 @@
     require_once 'funciones.php';
 
     session_start();
-    setSession("tipoCliente", "administrador");
+    setSession("tipoCliente", "anonimo");
 
     HTMLInicio();
-    MostrarHeader(getSession("tipoCliente")); //Cambiar por el valor de la cookie de sesion
-    MostrarContenido();
+    MostrarHeader(getSession("tipoCliente"));
+    MostrarContenidoIncidencias();
     MostrarFooter();
     HTMLFin();
 ?>
