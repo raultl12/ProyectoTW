@@ -10,16 +10,19 @@
 <body>
     <aside>
         <div class="usuario">
-            <label>Nombre</label>
-            <label>Rol</label>
-
+            <p>Nombre</p>
+            <p>Rol</p>
+            
             <img src="../img/plus.png" alt="Foto usuario">
-            <form action="/php/edicionUsuario.php" method="POST"><input type="submit" value="Editar"></form>
-            <form action="" method="PSOT"><input type="submit" value="Logout"></form>
+            
+            <div class="envios">
+                <form action="/php/edicionUsuario.php" method="POST"><input type="submit" value="Editar"></form>
+                <form action="" method="POST"><input type="submit" value="Logout"></form>
+            </div>
         </div>
 
         <div class="rankings">
-            <div>
+            <div class="quejas">
                 <h3>Top quejicas</h3>
 
                 <ol>
@@ -29,7 +32,7 @@
                 </ol>
             </div>
 
-            <div>
+            <div class="opiniones">
                 <h3>Top opinionistas</h3>
 
                 <ol>

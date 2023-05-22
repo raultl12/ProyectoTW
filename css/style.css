@@ -9,7 +9,6 @@ Paleta usada: 3
 *{
     margin: 0;
     padding: 0;
-    /*background-image: url("../img/fondo.png");*/
 }
 
 *::selection{
@@ -131,7 +130,6 @@ a{
 
 a:hover{
     border-bottom: 2px solid rgba(78, 205, 196, 1);
-
 }
 
 footer{
@@ -149,6 +147,41 @@ aside{
     box-sizing: border-box;
     padding: 1rem;
     border-left: 1px solid #4ECDC4;
+    display: flex;
+    flex-direction: column;
+    color: #F7FFF7;
+    text-align: center;
+}
+
+aside p{
+    text-align: left;
+}
+
+aside form{
+    display: inline;
+    white-space: nowrap;
+}
+
+aside img{
+    max-width: 10rem;
+}
+
+aside h3{
+    padding: 0.8rem;
+    border-radius: 5px;
+    background-color: #2875703f;
+}
+
+ol li{
+    display: block;
+    color: #F7FFF7;
+    list-style: decimal;
+}
+
+.quejas, .opiniones{
+    margin-top: 1.5rem;
+    border: 1px solid #4ECDC4;
+    border-radius: 5px;
 }
 
 /************ ASIDE *************/

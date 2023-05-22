@@ -167,7 +167,39 @@
     function MostrarAside(){
         echo <<<HTML
                 <aside>
-                    <p> Barra aside</p>
+                    <div class="usuario-aside">
+                        <p>Nombre</p>
+                        <p>Rol</p>
+                        
+                        <img src="../img/plus.png" alt="Foto usuario">
+                        
+                        <div class="envios">
+                            <form action="/php/edicionUsuario.php" method="POST"><input type="submit" value="Editar"></form>
+                            <form action="" method="POST"><input type="submit" value="Logout"></form>
+                        </div>
+                    </div>
+
+                    <div class="rankings">
+                        <div class="quejas">
+                            <h3>Top quejicas</h3>
+
+                            <ol>
+                                <li>(quejas) Tim Berners Lee</li>
+                                <li>(quejas) Lucía Ansino Ariza</li>
+                                <li>(quejas) Mario Guisado García</li>
+                            </ol>
+                        </div>
+
+                        <div class="opiniones">
+                            <h3>Top opinionistas</h3>
+
+                            <ol>
+                                <li>(opiniones) Tim Berners Lee</li>
+                                <li>(opiniones) Lucía Ansino Ariza</li>
+                                <li>(opiniones) Mario Guisado García</li>
+                            </ol>
+                        </div>
+                    </div>
                 </aside>
         HTML;
     }
