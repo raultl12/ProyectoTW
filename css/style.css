@@ -9,6 +9,7 @@ Paleta usada: 3
 *{
     margin: 0;
     padding: 0;
+    /*background-image: url("../img/fondo.png");*/
 }
 
 *::selection{
