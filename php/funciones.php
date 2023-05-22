@@ -20,7 +20,7 @@
             <link rel="stylesheet" href="../css/incidencia.css">
             <link rel="stylesheet" href="../css/listadoIncidencias.css">
             <link rel="stylesheet" href="../css/gestionUsuarios.css">
-            
+            <link rel="stylesheet" href="../css/log.css">
             <title>Proyecto</title>
         </head>
         <body>
@@ -81,7 +81,7 @@
                     <li><a href="">Nueva incidencia</a></li>
                     <li><a href="">Mis incidencias</a></li>
                     <li><a href="../php/gestionUsuarios.php">Gestión de usuarios</a></li>
-                    <li><a href="">Ver log</a></li>
+                    <li><a href="../php/log.php">Ver log</a></li>
                     <li><a href="">Gestión de BBDD</a></li>
                 HTML;
                 break;
@@ -331,5 +331,61 @@
 
     function MostrarAccesoDenegado(){
         echo "<h2>No tienes permiso para estar aqui</h2>";
+    }
+
+
+    function MostrarLog(){
+        echo <<<HTML
+            <section class="log">
+                <h2>Eventos del sistema</h2>
+
+                <div class="eventos">
+                    <div class="evento">
+                        <label>2023-05-23 17:46:69</label>
+                        <label>INFO: El usuario ha iniciado sesion</label>
+                    </div>
+            
+                    <div class="evento">
+                        <label>2023-05-23 17:46:69</label>
+                        <label>INFO: El usuario ha iniciado sesion</label>
+                    </div>
+            
+                    <div class="evento">
+                        <label>2023-05-23 17:46:69</label>
+                        <label>INFO: El usuario ha iniciado sesion</label>
+                    </div>
+            
+                    <div class="evento">
+                        <label>2023-05-23 17:46:69</label>
+                        <label>INFO: El usuario ha iniciado sesion</label>
+                    </div>
+
+                    <div class="evento">
+                        <label>2023-05-23 17:46:69</label>
+                        <label>INFO: El usuario ha iniciado sesion</label>
+                    </div>
+
+                    <div class="evento">
+                        <label>2023-05-23 17:46:69</label>
+                        <label>INFO: El usuario ha iniciado sesion</label>
+                    </div>
+
+                    <div class="evento">
+                        <label>2023-05-23 17:46:69</label>
+                        <label>INFO: El usuario ha iniciado sesion</label>
+                    </div>
+
+                    <div class="evento">
+                        <label>2023-05-23 17:46:69</label>
+                        <label>INFO: El usuario ha iniciado sesion</label>
+                    </div>
+
+                    <div class="evento">
+                        <label>2023-05-23 17:46:69</label>
+                        <label>INFO: El usuario ha iniciado sesion</label>
+                    </div>
+                </div>
+            </section>
+        HTML;
     }
 ?>

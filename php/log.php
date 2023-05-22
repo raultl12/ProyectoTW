@@ -2,11 +2,15 @@
     require_once 'funciones.php';
 
     session_start();
-    setSession("tipoCliente", "administrador");
 
     HTMLInicio();
     MostrarHeader(getSession("tipoCliente"));
-    MostrarContenidoIncidencias();
+    if(getSession("tipoCliente") != "administrador"){
+        MostrarAccesoDenegado();
+    }
+    else{
+        MostrarLog();
+    }
     MostrarFooter();
     HTMLFin();
 ?>
