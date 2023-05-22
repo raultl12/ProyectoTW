@@ -20,6 +20,7 @@
             <link rel="stylesheet" href="../css/incidencia.css">
             <link rel="stylesheet" href="../css/listadoIncidencias.css">
             <link rel="stylesheet" href="../css/gestionUsuarios.css">
+            <link rel="stylesheet" href="../css/log.css">
             
             <title>Proyecto</title>
         </head>
