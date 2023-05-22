@@ -2,8 +2,6 @@
     require_once 'funciones.php';
 
     session_start();
-    ini_set('display_errors', 1);
-    print_r($_POST);
 
     HTMLInicio();
     MostrarHeader(getSession("tipoCliente"));

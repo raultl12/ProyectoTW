@@ -21,6 +21,7 @@
             <link rel="stylesheet" href="../css/listadoIncidencias.css">
             <link rel="stylesheet" href="../css/gestionUsuarios.css">
             <link rel="stylesheet" href="../css/log.css">
+            <link rel="stylesheet" href="../css/edicionUsuario.css">
             
             <title>Proyecto</title>
         </head>
@@ -174,7 +175,7 @@
                         <img src="../img/plus.png" alt="Foto usuario">
                         
                         <div class="envios">
-                            <form action="/php/edicionUsuario.php" method="POST"><input type="submit" value="Editar"></form>
+                            <form action="./edicionUsuario.php" method="POST"><input type="submit" value="Editar"></form>
                             <form action="" method="POST"><input type="submit" value="Logout"></form>
                         </div>
                     </div>
