@@ -16,6 +16,18 @@ Paleta usada: 3
 }
 
 input:hover{
+    cursor: text;
+}
+
+input[type="submit"]:hover{
+    cursor: pointer;
+}
+
+input[type="checkbox"]:hover{
+    cursor: pointer;
+}
+
+input[type="radio"]:hover{
     cursor: pointer;
 }
 

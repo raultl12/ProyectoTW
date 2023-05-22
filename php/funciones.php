@@ -20,6 +20,8 @@
             <link rel="stylesheet" href="../css/incidencia.css">
             <link rel="stylesheet" href="../css/listadoIncidencias.css">
             <link rel="stylesheet" href="../css/gestionUsuarios.css">
+            <link rel="stylesheet" href="../css/edicionUsuario.css">
+            
             
             <title>Proyecto</title>
         </head>
@@ -331,5 +333,90 @@
 
     function MostrarAccesoDenegado(){
         echo "<h2>No tienes permiso para estar aqui</h2>";
+    }
+
+    function MostrarContenidoEdicionUsuario($tipoUsuario, $desactivado){
+        echo <<<HTML
+            <h2>Edición de usuario</h2>
+
+            <form action="" method="POST">
+                <div class="foto">
+                    <label>Foto: </label>
+                    <img src="../img/basura.png" alt="Imagen de ejemplo">
+
+                    <div class="nuevo">
+                        <input type="submit" name="photo-selected" value="Seleccionar archivo" $desactivado>
+                        <label>Archivo.img</label>
+                    </div>
+                </div>
+
+                <div class="inputs">
+                    <div>
+                        <label>Nombre:</label>
+                        <input type="text" placeholder="Introduzca su nombre" name="nombre" $desactivado>
+                    </div>
+
+                    <div>
+                        <label>Apellidos:</label>
+                        <input type="text" placeholder="Introduzca su/s apellido/s" name="apellidos" $desactivado>
+                    </div>
+
+                    <div>
+                        <label>Email:</label>
+                        <input type="email" placeholder="ex@am.ple" name="email" $desactivado>
+                    </div>
+
+                    <div>
+                        <label>Clave:</label>
+                        <input type="password" placeholder="Nueva contraseña" name="passw1" $desactivado>  
+                        <input type="password" placeholder="Repita nueva contraseña" name="passw2" $desactivado> 
+                    </div>
+
+                    <div>
+                        <label>Dirección:</label>
+                        <input type="text" placeholder="Calle falsa, nº1" name="dir" $desactivado>
+                    </div>
+
+                    <div>
+                        <label>Telefono:</label>
+                        <input type="tel" placeholder="123456789" name="telf" $desactivado>
+                    </div>
+        HTML;
+
+        if ($tipoUsuario == "administrador"){
+            echo <<<HTML
+                    <div class="selectores">
+                        <label>Rol:</label>
+                        <select name="rol" $desactivado>
+                            <option value="admin">Administrador</option>
+                            <option value="colab">Colaborador</option>
+                        </select>
+                    
+                        <label>Estado:</label>
+                        <select name="estado" $desactivado>
+                            <option value="activo">Activo</option>
+                            <option value="inactivo">Inactivo</option>
+                        </select>
+                    </div>
+            HTML;
+        }
+
+        echo <<<HTML
+                </div>
+
+                <div class="enviar">
+                    <input type="submit" name="change-saved" value="Confirmar modificación">
+                </div>
+            </form>
+        HTML;
+    }
+
+    function MostrarCambiosExito(){
+        echo <<<HTML
+            <p style="text-align: center; font-weight: bold; font-size: 25px;">Se han modificado los datos del usuario</p>
+        HTML;
+
+        //sleep(5);
+        //header("Location: ./index.php");
     }
 ?>
