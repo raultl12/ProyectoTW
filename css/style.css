@@ -170,12 +170,12 @@ aside h3{
     padding: 0.8rem;
     border-radius: 5px;
     background-color: #2875703f;
+    text-align: left;
 }
 
-ol li{
+aside ol li{ 
     display: block;
-    color: #F7FFF7;
-    list-style: decimal;
+    text-align: left;
 }
 
 .quejas, .opiniones{
