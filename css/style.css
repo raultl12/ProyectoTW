@@ -9,13 +9,38 @@ Paleta usada: 3
 *{
     margin: 0;
     padding: 0;
+    /*background-image: url("../img/fondo.png");*/
 }
 
 *::selection{
     background-color: #4ecdc570;
 }
 
+input{
+    accent-color: #4ECDC4;
+    border: 1px solid rgb(75, 75, 75);
+    background-color: #4ecdc570;
+    color: #F7FFF7;
+    border-radius: 0.2rem;
+}
+
+input::placeholder{
+    color: white;
+}
+
 input:hover{
+    cursor: text;
+}
+
+input[type="submit"]:hover{
+    cursor: pointer;
+}
+
+input[type="checkbox"]:hover{
+    cursor: pointer;
+}
+
+input[type="radio"]:hover{
     cursor: pointer;
 }
 
@@ -118,23 +143,15 @@ footer{
     padding: 1rem;
 }
 
+/************ ASIDE *************/
+
 aside{
     box-sizing: border-box;
     padding: 1rem;
     border-left: 1px solid #4ECDC4;
 }
 
-input{
-    accent-color: #4ECDC4;
-    border: 1px solid rgb(75, 75, 75);
-    background-color: #4ecdc570;
-    color: #F7FFF7;
-    border-radius: 0.2rem;
-}
-
-input::placeholder{
-    color: white;
-}
+/************ ASIDE *************/
 
 .pageLogo{
     display: inline;

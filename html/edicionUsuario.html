@@ -11,7 +11,7 @@
 <body>
     <h2>Edición de usuario</h2>
 
-    <f action="" method="">
+    <form action="" method="">
         <div class="foto">
             <label>Foto: </label>
             <img src="../img/basura.png" alt="">
@@ -22,53 +22,56 @@
             </div>
         </div>
 
-        <div>
-            <label>Nombre:</label>
-            <input type="text" id="nombre" placeholder="Introduzca su nombre">
+        <div class="inputs">
+            <div>
+                <label>Nombre:</label>
+                <input type="text" id="nombre" placeholder="Introduzca su nombre">
+            </div>
+
+            <div>
+                <label>Apellidos:</label>
+                <input type="text" placeholder="Introduzca su/s apellido/s">
+            </div>
+
+            <div>
+                <label>Email:</label>
+                <input type="email" placeholder="ex@am.ple">
+            </div>
+
+            <div>
+                <label>Clave:</label>
+                <input type="password" placeholder="Nueva contraseña">
+                <input type="password" placeholder="Repita nueva contraseña"> 
+            </div>
+
+            <div>
+                <label>Dirección:</label>
+                <input type="text" placeholder="Calle falsa, nº1">
+            </div>
+
+            <div>
+                <label>Telefono:</label>
+                <input type="tel" placeholder="123456789">
+            </div>
+
+            <div class="selectores">
+                <label>Rol:</label>
+                <select name="" id="">
+                    <option value="admin">Administrador</option>
+                    <option value="colab">Colaborador</option>
+                </select>
+            
+                <label>Estado:</label>
+                <select name="" id="">
+                    <option value="activo">Activo</option>
+                    <option value="inactivo">Inactivo</option>
+                </select>
+            </div>
         </div>
 
-        <div>
-            <label>Apellidos:</label>
-            <input type="text" placeholder="Introduzca su/s apellido/s">
+        <div class="enviar">
+            <input type="submit" name="change-saved" value="Confirmar modificación">
         </div>
-
-        <div>
-            <label>Email:</label>
-            <input type="email" placeholder="ex@am.ple">
-        </div>
-
-        <div>
-            <label>Clave:</label>
-            <input type="password"><input type="password"> 
-        </div>
-
-        <div>
-            <label>Dirección:</label>
-            <input type="text">
-        </div>
-
-        <div>
-            <label>Telefono:</label>
-            <input type="tel">
-        </div>
-
-        <div>
-            <label>Rol:</label>
-            <select name="" id="">
-                <option value="admin">Administrador</option>
-                <option value="colab">Colaborador</option>
-            </select>
-        </div>
-
-        <div>
-            <label>Estado:</label>
-            <select name="" id="">
-                <option value="activo">Activo</option>
-                <option value="inactivo">Inactivo</option>
-            </select>
-        </div>
-
-        <input type="submit" name="change-saved" value="Confirmar modificación">
     </form>
 </body>
 </html>
