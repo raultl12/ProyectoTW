@@ -1,5 +1,10 @@
 
 <?php
+
+    require_once 'funcionesBD.php';
+
+    /************************************************************************************************************** */
+    // Codigo de guardado y obtencion de sesion
     function setSession($nombreVariable, $valor){
         $_SESSION[$nombreVariable] = $valor;
     }
@@ -8,6 +13,8 @@
         return $_SESSION[$nombreVariable];
     }
 
+    /************************************************************************************************************** */
+    // Codigo de generación de HTML
     function HTMLInicio(){
         echo <<<HTML
         <!DOCTYPE html>
@@ -470,7 +477,7 @@
         echo <<<HTML
             <p style="text-align: center; font-weight: bold; font-size: 25px;">Se han modificado los datos del usuario</p>
         HTML;
-        
+
         header('Refresh: 5; URL=./index.php');
     }
 
@@ -529,4 +536,5 @@
             </section>
         HTML;
     }
+
 ?>
