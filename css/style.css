@@ -146,6 +146,24 @@ footer{
     padding: 1rem;
 }
 
+h3{
+    color: #f7f7f7;
+    background-color: #2875703f;
+    padding: 10px;
+}
+
+textarea{
+    background-color: #4ecdc570;
+    border: #2875703f;
+    border-radius: 0.2rem;
+    accent-color: #4ECDC4;
+}
+
+textarea:focus{
+    background-color: #292F36;
+    transition: background-color 0.3s ease-in-out;
+}
+
 /************ ASIDE *************/
 
 aside{

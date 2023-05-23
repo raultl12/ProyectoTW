@@ -1,13 +1,25 @@
-h3{
-    color: #f7f7f7;
-    background-color: #2875703f;
-    padding: 10px;
+.nueva-incidencia{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    
 }
 
-form{
+.nueva-incidencia form{
     padding: 10px;
 }
-
-div{
+.nueva-incidencia div{
     margin-bottom: 1rem;
+}
+
+#comentario{
+    width: 100%;
+}
+
+.desc textarea{
+    width: 80%;
+}
+
+.desc label{
+    vertical-align: top;
 }
