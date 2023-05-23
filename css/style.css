@@ -57,6 +57,11 @@ input[type="submit"]:hover{
     background-color: #4ecdc570;
 }
 
+input:focus{
+    background-color: #292F36;
+    transition: background-color 0.3s ease-in-out;
+}
+
 select{
     background-color: #292F36;
     color: #F7FFF7;
@@ -176,6 +181,29 @@ aside h3{
 aside ol li{ 
     display: block;
     text-align: left;
+}
+
+.login-aside{
+    text-align: left;
+    display: block;
+}
+
+.login-aside input{
+    padding: 0.3rem;
+    border-radius: 0.7rem;
+    margin-bottom: 10px;
+}
+
+.login-aside input:last-of-type{
+    padding: 0.5rem;
+    border-radius: 0.7rem;
+    text-align: center;
+    display: block;
+    margin-bottom: -10px;
+}
+
+.login-aside p{
+    margin-bottom: 5px;
 }
 
 .quejas, .opiniones{

@@ -166,19 +166,41 @@
     }
 
     function MostrarAside(){
-        echo <<<HTML
-                <aside>
-                    <div class="usuario-aside">
-                        <p>Nombre</p>
-                        <p>Rol</p>
-                        
-                        <img src="../img/plus.png" alt="Foto usuario">
-                        
-                        <div class="envios">
-                            <form action="./edicionUsuario.php" method="POST"><input type="submit" value="Editar"></form>
-                            <form action="" method="POST"><input type="submit" value="Logout"></form>
+        global $logged;  // solo es pa que no de error
+
+        if ($logged){
+            echo <<<HTML
+                    <aside>
+                        <div class="usuario-aside">
+                            <p>Nombre</p>
+                            <p>Rol</p>
+                            
+                            <img src="../img/plus.png" alt="Foto usuario">
+                            
+                            <div class="envios">
+                                <form action="./edicionUsuario.php" method="POST"><input type="submit" value="Editar"></form>
+                                <form action="" method="POST"><input type="submit" value="Logout"></form>
+                            </div>
                         </div>
-                    </div>
+            HTML;
+        }
+
+        else{
+            echo <<<HTML
+                    <aside>
+                        <div class="login-aside">
+                            <p>Email:</p>
+                            <input type="email">
+
+                            <p>Clave:</p>
+                            <input type="password">
+
+                            <input type="submit" value="LogIn">
+                        </div>
+            HTML;
+        }
+
+        echo <<<HTML
 
                     <div class="rankings">
                         <div class="quejas">
