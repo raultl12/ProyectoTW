@@ -31,7 +31,7 @@ form{
     margin: 0.5rem;
 }
 
-input{
+.inputs input{
     border: 1px solid rgb(75, 75, 75);
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
@@ -41,7 +41,7 @@ input{
     transition: background-color 0.3s ease-in-out;
 }
 
-input:focus{
+.inputs input:focus{
     background-color: #292F36;
 }
 
@@ -53,15 +53,15 @@ input:focus{
     border-style: dashed;
 }
 
-input[type="submit"]{
+.inputs input[type="submit"]{
     width: 12rem;
 }
 
-input[type="tel"]{
+.inputs input[type="tel"]{
     width: 12rem;
 }
 
-input[type="password"]{
+.inputs input[type="password"]{
     margin-right: 5px;
     width: 20rem;
 }

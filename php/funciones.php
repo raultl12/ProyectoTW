@@ -23,6 +23,7 @@
             <link rel="stylesheet" href="../css/log.css">
             <link rel="stylesheet" href="../css/edicionUsuario.css">
             
+            
             <title>Proyecto</title>
         </head>
         <body>
@@ -469,9 +470,8 @@
         echo <<<HTML
             <p style="text-align: center; font-weight: bold; font-size: 25px;">Se han modificado los datos del usuario</p>
         HTML;
-
-        //sleep(5);
-        //header("Location: ./index.php");
+        
+        header('Refresh: 5; URL=./index.php');
     }
 
 
