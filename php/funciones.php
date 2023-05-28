@@ -29,6 +29,7 @@
             <link rel="stylesheet" href="../css/gestionUsuarios.css">
             <link rel="stylesheet" href="../css/log.css">
             <link rel="stylesheet" href="../css/edicionUsuario.css">
+            <link rel="stylesheet" href="../css/gestionIncidencia.css">
             
             
             <title>Proyecto</title>

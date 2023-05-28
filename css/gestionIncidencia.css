@@ -1,0 +1,81 @@
+.nueva-incidencia{
+    text-align: center;
+    display: block;
+}
+
+.nueva-incidencia div{
+    display: grid;
+    grid-template-columns: 20% 80%;
+}
+
+.nueva-incidencia label{
+    text-align: right;
+    margin-right: 1rem;
+}
+
+.nueva-incidencia form{
+    padding: 10px;
+}
+.nueva-incidencia div{
+    margin-bottom: 1rem;
+}
+
+#comentario{
+    width: 100%;
+}
+
+.desc textarea{
+    width: 100%;
+}
+
+.desc label{
+    vertical-align: top;
+}
+
+.nueva-incidencia input, textarea{
+    max-width: 80%;
+}
+
+.estado{
+    text-align: center;
+}
+
+.estado h3{
+    text-align: left;
+}
+
+.estado input{
+    margin-right: 0.5rem;
+    margin-top: 10px;
+}
+
+.estado input:first-of-type{
+    margin-left: 0.5rem;
+}
+
+.estado .envio{
+    display: block;
+}
+
+.estado label{
+    margin-right: 2.5rem;
+}
+
+.imagenes img{
+    max-width: 15%;
+}
+
+.imagenes input[type="file"]{
+    display: none;
+}
+
+.imagenes form label{
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+}
+
+.imagenes label > img{
+    max-width: 100%;
+}
