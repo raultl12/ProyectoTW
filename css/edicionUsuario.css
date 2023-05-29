@@ -11,6 +11,23 @@
     max-width: 25%;
 }
 
+.nuevo input{
+    display: none;
+}
+
+.nuevo label:first-of-type{
+    padding: 0.5rem;
+    background-color: #292F36;
+    border: 1px solid rgb(75,75,75);
+    border-radius: 1rem;
+    cursor: pointer;
+}
+
+.nuevo label:first-of-type:hover{
+    background-color: #4ecdc570;
+    transition: background-color 0.3s ease-in-out;
+}
+
 .nuevo{
     display: flex;
     flex-direction: column;

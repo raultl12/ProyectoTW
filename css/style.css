@@ -65,6 +65,12 @@ select{
     border: none;
 }
 
+select{
+    border: 1px solid #4ECDC4;
+    padding: 5px;
+    border-radius: 0.2rem;
+}
+
 select:focus{
     border: 1px solid #4ECDC4;
 }
@@ -99,6 +105,8 @@ p, label{
 
 body{
     background-color: #292F36;
+    /*background: rgb(41,47,54);
+    background: radial-gradient(circle, rgba(41,47,54,1) 0%, rgba(63,89,120,1) 37%, rgba(41,47,54,1) 71%);*/
 }
 
 header{
@@ -248,10 +256,4 @@ aside ol li{
     display: grid;
     grid-template-columns: 80% 20%;
     grid-template-rows: 100%;
-}
-
-select{
-    border: 1px solid #4ECDC4;
-    padding: 5px;
-    border-radius: 0.2rem;
 }

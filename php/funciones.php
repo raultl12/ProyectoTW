@@ -176,6 +176,7 @@
 
     function MostrarAside(){
         global $logged;  // solo es pa que no de error
+        $logged = true;
 
         if ($logged){
             echo <<<HTML
@@ -408,7 +409,8 @@
                     <img src="../img/basura.png" alt="Imagen de ejemplo">
 
                     <div class="nuevo">
-                        <input type="submit" name="photo-selected" value="Seleccionar archivo" $desactivado>
+                        <label for="seleccionar">Añadir Imágen</label>
+                        <input type="file" name="photo-selected" id="seleccionar" $desactivado>
                         <label>Archivo.img</label>
                     </div>
                 </div>
@@ -477,6 +479,7 @@
     function MostrarCambiosExito(){
         echo <<<HTML
             <p style="text-align: center; font-weight: bold; font-size: 25px;">Se han modificado los datos del usuario</p>
+            <p style="text-align: center; font-size: 15px;">Redirigiendo a página principal...</p>
         HTML;
 
         header('Refresh: 5; URL=./index.php');
@@ -535,6 +538,83 @@
                     </div>
                 </div>
             </section>
+        HTML;
+    }
+
+    function aniadirIncidencia($editar){
+        echo <<<HTML
+            <h2>Nueva incidencia</h2>
+            <h3>Datos principales:</h3>
+                
+            <div class="nueva-incidencia">
+                <form action="" method="POST">
+                    <div>
+                        <label>Titulo:</label>
+                        <input type="text">
+                    </div>
+
+                    <div class="desc">
+                        <label>Descripción:</label>
+                        <textarea name="" id="" cols="30" rows="10"></textarea>
+                    </div>
+
+                    <div>
+                        <label>Lugar:</label>
+                        <input type="text">
+                    </div>
+
+                    <div>
+                        <label>Palabras clave:</label>
+                        <input type="text">
+                    </div>
+
+                    <input type="submit" value="Enviar"> 
+                </form>
+            </div>
+        HTML;
+
+        // En el submit habia que editar según el parametro pero ahora no me acuerdo xd
+    }
+
+    function editarInciencia(){
+        echo <<<HTML
+            <h2>Editar incidencia</h2>
+
+            <div class="estado">
+                <h3>Estado de la incidencia:</h3>
+
+                <form action="" method="POST">
+                    <input type="radio" name="estado" value="pendiente"><label>Pendiente</label>
+                    <input type="radio" name="estado" value="comprobada"><label>Comprobada</label>
+                    <input type="radio" name="estado" value="Tramitada"><label>Tramitada</label>
+                    <input type="radio" name="estado" value="irresoluble"><label>Irresoluble</label>
+                    <input type="radio" name="estado" value="Resuelta"><label>Resuelta</label>
+
+                    <div class="envio"><input type="submit" value="Modificar estado"></div>
+                </form> 
+            </div>
+
+        HTML;
+
+        aniadirIncidencia(true);
+
+        echo <<<HTML
+            <div class="imagenes">
+                <h3>Fotografías adjuntas:</h3>
+                <form action="" method="POST">
+                    <img src="../img/comment.png">
+                    <img src="../img/comment.png">
+                    <img src="../img/comment.png">
+
+                    <div class="botones">
+                        <label for="examinar">+</label>
+                        <input type="file" id="examinar" value="Seleccionar archivo">
+
+                        <input type="submit" value="Borrar todo">
+                        <input type="submit" value="Añadir fotografías">
+                    </div>
+                </form>
+            </div>
         HTML;
     }
 
