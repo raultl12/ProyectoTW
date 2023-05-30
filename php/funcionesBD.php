@@ -3,6 +3,7 @@
     // Funciones de acceso a Base de Datos
 
     phpinfo();
+    ini_set('display_errors', 1);
 
     function ObtenerDatosUsuario(){
         $db = mysqli_connect("https://void.ugr.es/mywebsql/","raultlopez2223","AdiGd24D","raultlopez2223");
