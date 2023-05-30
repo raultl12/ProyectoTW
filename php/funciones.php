@@ -80,8 +80,8 @@
         switch($tipoUsuario){
             case "miembro":
                 echo <<<HTML
-                    <li><a href="../php/index.php">Ver incidencias</a></li>
-                    <li><a href="">Nueva incidencia</a></li>
+                    <li><a href="./index.php">Ver incidencias</a></li>
+                    <li><a href="./nuevaIncidencia">Nueva incidencia</a></li>
                     <li><a href="">Mis incidencias</a></li>
                 HTML;
                 break;
@@ -89,7 +89,7 @@
             case "administrador":
                 echo <<<HTML
                     <li><a href="../php/index.php">Ver incidencias</a></li>
-                    <li><a href="">Nueva incidencia</a></li>
+                    <li><a href="./nuevaIncidencia">Nueva incidencia</a></li>
                     <li><a href="">Mis incidencias</a></li>
                     <li><a href="../php/gestionUsuarios.php">Gestión de usuarios</a></li>
                     <li><a href="../php/log.php">Ver log</a></li>
@@ -541,7 +541,7 @@
         HTML;
     }
 
-    function aniadirIncidencia($editar){
+    function MostrarAniadirIncidencia(){
         echo <<<HTML
             <h2>Nueva incidencia</h2>
             <h3>Datos principales:</h3>
@@ -572,11 +572,9 @@
                 </form>
             </div>
         HTML;
-
-        // En el submit habia que editar según el parametro pero ahora no me acuerdo xd
     }
 
-    function editarInciencia(){
+    function MostrarEditarIncidencia(){
         echo <<<HTML
             <h2>Editar incidencia</h2>
 
@@ -596,7 +594,7 @@
 
         HTML;
 
-        aniadirIncidencia(true);
+        MostrarAniadirIncidencia();
 
         echo <<<HTML
             <div class="imagenes">
