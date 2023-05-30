@@ -4,7 +4,7 @@
     session_start();
 
     HTMLInicio();
-    /*MostrarHeader(getSession("tipoCliente"));*/
+    MostrarHeader(getSession("tipoCliente"));
     
     MostrarEditarIncidencia();
 

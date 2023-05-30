@@ -81,7 +81,7 @@
             case "miembro":
                 echo <<<HTML
                     <li><a href="./index.php">Ver incidencias</a></li>
-                    <li><a href="./nuevaIncidencia">Nueva incidencia</a></li>
+                    <li><a href="./nuevaIncidencia.php">Nueva incidencia</a></li>
                     <li><a href="">Mis incidencias</a></li>
                 HTML;
                 break;
@@ -89,7 +89,7 @@
             case "administrador":
                 echo <<<HTML
                     <li><a href="../php/index.php">Ver incidencias</a></li>
-                    <li><a href="./nuevaIncidencia">Nueva incidencia</a></li>
+                    <li><a href="./nuevaIncidencia.php">Nueva incidencia</a></li>
                     <li><a href="">Mis incidencias</a></li>
                     <li><a href="../php/gestionUsuarios.php">Gestión de usuarios</a></li>
                     <li><a href="../php/log.php">Ver log</a></li>
@@ -167,7 +167,7 @@
                     <a href=""><img src="../img/plus.png" alt=""></a>
                     <a href=""><img src="../img/minus.png" alt=""></a>
                     <a href=""><img src="../img/comment.png" alt=""></a>
-                    <a href=""><img src="../img/editar.png" alt=""></a>
+                    <a href="./editarIncidencia.php"><img src="../img/editar.png" alt=""></a>
                     <a href=""><img src="../img/basura.png" alt=""></a>
                 </div>
             </div>
@@ -541,9 +541,12 @@
         HTML;
     }
 
-    function MostrarAniadirIncidencia(){
+    function MostrarAniadirIncidencia($editar){
+        
+        if ($editar == false)
+            echo "<h2>Nueva incidencia</h2>";
+
         echo <<<HTML
-            <h2>Nueva incidencia</h2>
             <h3>Datos principales:</h3>
                 
             <div class="nueva-incidencia">
@@ -568,7 +571,14 @@
                         <input type="text">
                     </div>
 
-                    <input type="submit" value="Enviar"> 
+        HTML;
+
+        if ($editar == true)
+            echo "<input type=\"submit\" value=\"Modificar datos\">";
+        else
+            echo "<input type=\"submit\" value=\"Enviar\">";
+
+        echo <<<HTML
                 </form>
             </div>
         HTML;
@@ -594,7 +604,7 @@
 
         HTML;
 
-        MostrarAniadirIncidencia();
+        MostrarAniadirIncidencia(true);
 
         echo <<<HTML
             <div class="imagenes">

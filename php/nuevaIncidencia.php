@@ -6,7 +6,7 @@
     HTMLInicio();
     MostrarHeader(getSession("tipoCliente"));
     
-    MostrarAniadirIncidencia();
+    MostrarAniadirIncidencia(false);
 
     MostrarFooter();
     HTMLFin();
