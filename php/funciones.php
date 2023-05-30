@@ -31,7 +31,6 @@
             <link rel="stylesheet" href="../css/edicionUsuario.css">
             <link rel="stylesheet" href="../css/gestionIncidencia.css">
             
-            
             <title>Proyecto</title>
         </head>
         <body>
@@ -176,20 +175,27 @@
 
     function MostrarAside(){
         global $logged;  // solo es pa que no de error
-        $logged = true;
+
+        if (isset($_POST['logout']))
+            $logged = false;
+        else{
+            $logged = true;
+            $nombre = "NOMBRE";
+            $rol = "ROL";
+        }
 
         if ($logged){
             echo <<<HTML
                     <aside>
                         <div class="usuario-aside">
-                            <p>Nombre</p>
-                            <p>Rol</p>
+                            <p>$nombre</p>
+                            <p>$rol</p>
                             
                             <img src="../img/plus.png" alt="Foto usuario">
                             
                             <div class="envios">
-                                <form action="./edicionUsuario.php" method="POST"><input type="submit" value="Editar"></form>
-                                <form action="" method="POST"><input type="submit" value="Logout"></form>
+                                <form action="./edicionUsuario.php" method="POST"><input type="submit" value="Editar"></form> 
+                                <form method="POST"><input type="submit" name="logout" value="Logout"></form>
                             </div>
                         </div>
             HTML;
@@ -210,6 +216,17 @@
             HTML;
         }
 
+        // Pedir a la base de datos
+        // Sintaxis: (numero) nombre
+
+        $top1_quejas = null;
+        $top2_quejas = null;
+        $top3_quejas = null;
+
+        $top1_opinion = null;
+        $top2_opinion = null;
+        $top3_opinion = null;
+
         echo <<<HTML
 
                     <div class="rankings">
@@ -217,9 +234,9 @@
                             <h3>Top quejicas</h3>
 
                             <ol>
-                                <li>(quejas) Tim Berners Lee</li>
-                                <li>(quejas) Lucía Ansino Ariza</li>
-                                <li>(quejas) Mario Guisado García</li>
+                                <li>$top1_quejas</li>
+                                <li>$top2_quejas</li>
+                                <li>$top3_quejas</li>
                             </ol>
                         </div>
 
@@ -227,9 +244,9 @@
                             <h3>Top opinionistas</h3>
 
                             <ol>
-                                <li>(opiniones) Tim Berners Lee</li>
-                                <li>(opiniones) Lucía Ansino Ariza</li>
-                                <li>(opiniones) Mario Guisado García</li>
+                                <li>$top1_opinion</li>
+                                <li>$top2_opinion</li>
+                                <li>$top3_opinion</li>
                             </ol>
                         </div>
                     </div>
@@ -266,57 +283,64 @@
         echo <<<HTML
             <section class="formBusqueda">
                 <h2>Listado de Incidencias</h2>
-                <form action="" method="">
+
+                <form action="./" method="POST">
                     <h2>Criterios de búsqueda</h2>
 
                     <div class="ordenar">
                         <h2>Ordenar por:</h2>
 
                         <div class="opcionesOrdenar">
-                            <label><input type="radio" name="ordenar"> Antigüedad (primero las más recientes)</label>
-                            <label><input type="radio" name="ordenar"> Número de positivos (de más a menos)</label>
-                            <label><input type="radio" name="ordenar"> Número de positivos netos (de más a menos)</label>
+                            <label><input type="radio" name="ordenar" value="antiguedad"> Antigüedad (primero las más recientes)</label>
+                            <label><input type="radio" name="ordenar" value="positivos"> Número de positivos (de más a menos)</label>
+                            <label><input type="radio" name="ordenar" value="netos"> Número de positivos netos (de más a menos)</label>
                         </div>
                     </div>
 
                     <div class="busqueda">
                         <h2>Incidencias que contengan:</h2>
 
-                        <label>Texto de búsqueda: <input type="text" name=""></label>
-                        
-
-                        <label>Lugar:<input type="text" name=""></label>
-                        
+                        <label>Texto de búsqueda: <input type="text" name="buscarTexto"></label>
+                        <label>Lugar:<input type="text" name="buscarLugar"></label>
                     </div>
 
                     <div class="estado">
                         <h2>Estado</h2>
 
                         <div class="inputsEstado">
-                            <label><input type="checkbox"> Pendiente </label>
-                            <label><input type="checkbox"> Comprobada </label>
-                            <label><input type="checkbox"> Tramitada </label>
-                            <label><input type="checkbox"> Irresoluble </label>
-                            <label><input type="checkbox"> Resuelta </label>
+                            <label><input type="checkbox" name="estadoBusqueda" value="pendiente"> Pendiente </label>
+                            <label><input type="checkbox" name="estadoBusqueda" value="comprobada"> Comprobada </label>
+                            <label><input type="checkbox" name="estadoBusqueda" value="tramitada"> Tramitada </label>
+                            <label><input type="checkbox" name="estadoBusqueda" value="irresoluble"> Irresoluble </label>
+                            <label><input type="checkbox" name="estadoBusqueda" value="resuelta"> Resuelta </label>
                         </div>
                     </div>
 
                     <div class="opciones">
                         <div class="incidenciasPagina">
                             <label>Incidencias por página</label>
-                            <select name="">
+
+                            <select name="items">
                                 <option value="1">1 item</option>
                                 <option value="3">3 items</option>
                                 <option value="5">5 items</option>
                                 <option value="10">10 items</option>
                             </select>
                         </div>
-                        <input type="submit" value="Aplicar criterios de búsqueda">
 
+                        <input type="submit" value="Aplicar criterios de búsqueda" name="busqueda">
                     </div>
                 </form>
             </section>
         HTML;
+
+        if (isset($_POST['busqueda'])){
+            setSession('ordenar', $_POST['ordenar']);
+            setSession('textoBusqueda', $_POST['buscarTexto']);
+            setSession('lugarBusqueda', $_POST['buscarLugar']);
+            setSession('estadoBusqueda', $_POST['estadoBusqueda']);
+            setSession('itemsBusqueda', $_POST['items']);
+        }
     }
 
     function MostrarContenidoGestionUsuarios(){

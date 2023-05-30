@@ -99,6 +99,10 @@ h2{
     padding: 10px;
 }
 
+.formBusqueda > h2{
+    background-color: #4ecdc570;
+}
+
 p, label{
     color: #F7FFF7;
 }
