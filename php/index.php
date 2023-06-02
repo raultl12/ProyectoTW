@@ -2,7 +2,7 @@
     require_once 'funciones.php';
 
     session_start();
-    setSession("tipoCliente", "administrador");
+    setSession("tipoCliente", "anonimo");
 
     HTMLInicio();
     MostrarHeader(getSession("tipoCliente"));
