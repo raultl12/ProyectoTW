@@ -261,3 +261,8 @@ aside ol li{
     grid-template-columns: 80% 20%;
     grid-template-rows: 100%;
 }
+
+#modificarUsuario{
+    margin-bottom: -1rem;
+    margin-top: 1rem;
+}

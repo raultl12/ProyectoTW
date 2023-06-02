@@ -16,7 +16,7 @@
         MostrarCambiosExito();
     }
 
-    else if (isset($_POST['change-saved'])){
+    else if (isset($_POST['changes'])){
         MostrarContenidoEdicionUsuario("tipoCliente", "disabled");
         setcookie('correcto', true);
     }

@@ -66,6 +66,7 @@
                 Creado por <a href="https://www.linkedin.com/in/ra%C3%BAl-torrente-l%C3%B3pez-6b9760250/">Raúl Torrente López</a>
                 y <a href="https://www.linkedin.com/in/mario-pi%C3%B1a-munera-465116225/">Mario Piña Munera</a>
             </p>
+            <p>Poner documentación cuando esté</p>
         </footer>
         HTML;
     }
@@ -99,8 +100,6 @@
             default:
                 echo "<li><a href=\"../php/index.php\">Ver incidencias</a></li>";
                 break;
-
-            
         }
 
         echo <<<HTML
@@ -178,10 +177,17 @@
 
         if (isset($_POST['logout']))
             $logged = false;
-        else{
+        else if (isset($_POST['login'])){
+            $email = htmlentities($_POST['email']);
+            $email = filter_var($email, FILTER_VALIDATE_EMAIL);
+
+            $contraseña = htmlentities($_POST['contraseña']);
+            // comprobar si la contraseña y el email pertenecen a un usuario
+            
             $logged = true;
-            $nombre = "NOMBRE";
-            $rol = "ROL";
+            $nombre = "NOMBRE";         // GET BD
+            $rol = "ROL";               // GET BD
+            $foto = "../img/plus.png";  // GET BD
         }
 
         if ($logged){
@@ -191,7 +197,7 @@
                             <p>$nombre</p>
                             <p>$rol</p>
                             
-                            <img src="../img/plus.png" alt="Foto usuario">
+                            <img src="$foto" alt="Foto usuario">
                             
                             <div class="envios">
                                 <form action="./edicionUsuario.php" method="POST"><input type="submit" value="Editar"></form> 
@@ -205,13 +211,15 @@
             echo <<<HTML
                     <aside>
                         <div class="login-aside">
-                            <p>Email:</p>
-                            <input type="email">
+                            <form action="./" method="POST">
+                                <p>Email:</p>
+                                <input type="email" name="email">
 
-                            <p>Clave:</p>
-                            <input type="password">
+                                <p>Clave:</p>
+                                <input type="password" name="contraseña">
 
-                            <input type="submit" value="LogIn">
+                                <input type="submit" name="login" value="LogIn">
+                            </form>
                         </div>
             HTML;
         }
@@ -424,35 +432,72 @@
     }
 
     function MostrarContenidoEdicionUsuario($tipoUsuario, $desactivado){
+        // GET BD
+        $foto = "../img/basura.png";
+        $nombre = "";                   
+        $apellidos = "";
+        $email = "";
+        $passw1 = "";
+        $passw2 = "";
+        $direccion = "";
+        $telefono = "";
+        $rol = "";
+        $estado = "";
+
+
+        // HACER STICKY
+        if (isset($_POST['changed']) and $desactivado="disabled"){
+            $nombre = htmlentities($_POST['nombre']);
+            $apellidos = htmlentities($_POST['apellidos']);
+
+            $email = htmlentities($_POST['email']);
+            $email = filter_var($email, FILTER_VALIDATE_EMAIL);
+
+            $passw1 = htmlentities($_POST['passw1']);
+            $passw2 = htmlentities($_POST['passw2']);
+            if ($passw1 != $passw2){
+                $hacer_algo = "";  // No se en verdad pero seguro que hay que hacer algo
+            }
+            
+            $direccion = htmlentities($_POST['dir']);
+            $patron_tlf = "/^\d{9}$/";
+            $telefono = htmlentities($_POST['telf']);
+            $telefono = preg_match($patron_tlf, $telefono);
+
+            if ($tipoUsuario == "administrador"){ // No se si ira así bien
+                $rol = $_POST['rol'];
+                $estado = $_POST['estado'];
+            }
+        }
+
         echo <<<HTML
             <h2>Edición de usuario</h2>
 
-            <form action="" method="POST">
+            <form action="./edicionUsuario.php" method="POST">
                 <div class="foto">
                     <label>Foto: </label>
-                    <img src="../img/basura.png" alt="Imagen de ejemplo">
+                    <img src="$foto" alt="Imagen de usuario">
 
                     <div class="nuevo">
                         <label for="seleccionar">Añadir Imágen</label>
                         <input type="file" name="photo-selected" id="seleccionar" $desactivado>
-                        <label>Archivo.img</label>
                     </div>
                 </div>
 
                 <div class="inputs">
                     <div>
                         <label>Nombre:</label>
-                        <input type="text" placeholder="Introduzca su nombre" name="nombre" $desactivado>
+                        <input type="text" placeholder="Introduzca su nombre" name="nombre" value="$nombre" $desactivado>
                     </div>
 
                     <div>
                         <label>Apellidos:</label>
-                        <input type="text" placeholder="Introduzca su/s apellido/s" name="apellidos" $desactivado>
+                        <input type="text" placeholder="Introduzca su/s apellido/s" name="apellidos" value="$apellidos" $desactivado>
                     </div>
 
                     <div>
                         <label>Email:</label>
-                        <input type="email" placeholder="ex@am.ple" name="email" $desactivado>
+                        <input type="email" placeholder="ex@am.ple" name="email" value="$email" $desactivado>
                     </div>
 
                     <div>
@@ -463,14 +508,16 @@
 
                     <div>
                         <label>Dirección:</label>
-                        <input type="text" placeholder="Calle falsa, nº1" name="dir" $desactivado>
+                        <input type="text" placeholder="Calle falsa, nº1" name="dir" value="$direccion" $desactivado>
                     </div>
 
                     <div>
                         <label>Telefono:</label>
-                        <input type="tel" placeholder="123456789" name="telf" $desactivado>
+                        <input type="tel" placeholder="123456789" name="telf" value="$telefono" $desactivado>
                     </div>
         HTML;
+
+        //$tipoUsuario = "administrador"; // JUST FOR TEST
 
         if ($tipoUsuario == "administrador"){
             echo <<<HTML
@@ -494,7 +541,7 @@
                 </div>
 
                 <div class="enviar">
-                    <input type="submit" name="change-saved" value="Confirmar modificación">
+                    <input type="submit" name="changes" id="modificarUsuario" value="Confirmar modificación">
                 </div>
             </form>
         HTML;

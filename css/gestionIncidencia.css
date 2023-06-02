@@ -75,13 +75,13 @@
     display: none;
 }
 
-.botones {
+.botonesIncidencia {
     display: block;
     text-align: center;
     justify-content: center;
 }
 
-.botones label{
+.botonesIncidencia label{
     font-size:x-large;
     padding: 0.2rem 0.7rem 0.6rem 0.7rem;
     cursor: pointer;
@@ -89,11 +89,11 @@
     border-radius: 1rem;
 }
 
-.botones label:hover{
+.botonesIncidencia label:hover{
     background-color: #4ecdc570;
     transition: background-color 0.3s ease-in-out;
 }
 
-.botones input, label{
+.botonesIncidencia input, label{
     margin-left: 0.5rem;
 }
