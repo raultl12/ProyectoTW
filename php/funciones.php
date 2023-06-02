@@ -108,23 +108,24 @@
         HTML;
     }
 
-    function MostrarIncidencia(){
+    function MostrarIncidencia($inci){
+        $datos = ObtenerDatosIncidencia($inci);
         echo <<<HTML
             <div class="incidencia">
-                <h2>Titulo Incidencia</h2>
+                <h2>{$datos["titulo"]}</h2>
 
                 <div class="detalles">
                     <div class="infoGeneral">
-                        <label>Lugar: <em>Granada</em></label>
-                        <label>Fecha: <em>25-05-04</em></label>
+                        <label>Lugar: <em>{$datos["lugar"]}</em></label>
+                        <label>Fecha: <em>{$datos["fecha"]}</em></label>
                         <label>Creador por: <em>Cristina</em></label>
-                        <label>Palabras clave: <em>Titulo, incidencia</em></label>
-                        <label>Estado: <em>Pendiente</em></label>
-                        <label>Valoraciones: <em>Pos: 15 Neg: 41</em></label>
+                        <label>Palabras clave: <em>{$datos["palClave"]}</em></label>
+                        <label>Estado: <em>{$datos["estado"]}</em></label>
+                        <label>Valoraciones: <em>Pos: {$datos["valPos"]} Neg: {$datos["valNeg"]}</em></label>
                     </div>
 
                     <p>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt sequi laudantium molestias quas ab, voluptatem aperiam? Corporis quidem, illo excepturi harum consequuntur fugiat cupiditate. Error vitae mollitia consequatur eum aut?
+                    {$datos["descripcion"]}
                     </p>
 
                     <div class="fotos">
@@ -263,6 +264,11 @@
     }
 
     function MostrarContenidoIncidencias(){
+        $incidencias = ObtenerTodasIncidencias();
+        foreach($incidencias as $i){
+            echo $i;
+            echo "<br>";
+        }
         echo <<<HTML
             <div class="contenido">
                 <main>
@@ -274,9 +280,9 @@
                     <section>
         HTML;
         
-        MostrarIncidencia();
-        MostrarIncidencia();
-        MostrarIncidencia();
+        foreach($incidencias as $inci){
+            MostrarIncidencia($inci);
+        }
         
 
         echo <<<HTML

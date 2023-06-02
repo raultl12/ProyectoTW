@@ -65,12 +65,13 @@
         }
     }
 
-    //Obtener todos los datos de una incidencia
-    function ObtenerDatosIncidencia($id){
+    //Obtener todos los ids de todas las incidencias
+    function ObtenerTodasIncidencias(){
+        $resultado = null;
+        $cont = 0;
         global $db;
-        $consulta = "SELECT * FROM Incidencia WHERE id=?";
+        $consulta = "SELECT id FROM Incidencia";
         $prep = mysqli_prepare($db, $consulta);
-        mysqli_stmt_bind_param($prep,'i', $id);
 
         if(mysqli_stmt_execute($prep)){
             $res = mysqli_stmt_get_result($prep);
@@ -78,8 +79,7 @@
             if($res){
                 while ($row = mysqli_fetch_assoc($res)) {
                     foreach ($row as $r){
-                        echo $r;
-                        echo "<br>";
+                        $resultado[] = $r;
                     }
                 }
             }
@@ -90,6 +90,39 @@
             }
         }
         mysqli_stmt_close($prep);
+        return $resultado ? $resultado : null;
+    }
+
+    //Obtener todos los datos de una incidencia
+    function ObtenerDatosIncidencia($id){
+        $resultado = null;
+        global $db;
+        $consulta = "SELECT * FROM Incidencia WHERE id=?";
+        $prep = mysqli_prepare($db, $consulta);
+        mysqli_stmt_bind_param($prep,'i', $id);
+
+        if(mysqli_stmt_execute($prep)){
+            $res = mysqli_stmt_get_result($prep);
+            
+            if($res){
+                $resultado = mysqli_fetch_assoc($res);
+                /*while ($row = mysqli_fetch_assoc($res)) {
+                    foreach ($row as $r){
+                        echo $r;
+                        echo "<br>";
+                    }
+                }*/
+            }
+            else{
+                echo "<p>Error en la consulta</p>";
+                echo "<p>Código: ".mysqli_errno($db)."</p>";
+                echo "<p>Mensaje: ".mysqli_error($db)."</p>";
+            }
+        }
+        mysqli_free_result($res);
+        mysqli_stmt_close($prep);
+
+        return $resultado ? $resultado : null;
     }
 
     //Insertar una incidencia
@@ -109,12 +142,10 @@
         }
     }
 
-    /*ConectarBD();
+    ConectarBD();
     ObtenerDatosUsuario("admin@correo.ugr.es");
     ObtenerDatosUsuario("raultlopez@correo.ugr.es");
-    ObtenerDatosIncidencia(1);
-    mysqli_close($db);*/
-    if(mail("mario25@correo.ugr.es", "bienbenido a la pagina", "verifica tu correo lorem lorem lorem")){
-        echo "enviado";
-    }
+    //InsertarIncidencia("mi calle", "farola rota", "farola", "irresoluble", "Se han roto las farolas bobis", 0, 0);
+    //ObtenerDatosIncidencia(1);
+    //ObtenerTodasIncidencias();
 ?>
