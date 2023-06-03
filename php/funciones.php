@@ -6,9 +6,13 @@
     /************************************************************************************************************** */
     // Variables globales
 
-    $actualUser = getSession('actualUser');     // identificador del usuario actual loggeado
+    $actualUser = null;
+    $tipoCliente = "anonimo";
+    $logged = false;
+
+    /*$actualUser = getSession('actualUser');     // identificador del usuario actual loggeado
     $tipoCliente = getSession('tipoCliente');   // tipo del usuario actual loggeado
-    $logged = getSession('logged');             // hay un usuario loggeado ?
+    $logged = getSession('logged');             // hay un usuario loggeado ?*/
 
     /************************************************************************************************************** */
     // Codigo de guardado y obtencion de sesion
@@ -177,25 +181,31 @@
     }
 
     function MostrarAside(){
-        global $logged;  // solo es pa que no de error
-
         if (isset($_POST['logout']))
             setSession('logged', false);
-        else if (isset($_POST['login'])){
-            $email = htmlentities($_POST['email']);
-            $email = filter_var($email, FILTER_VALIDATE_EMAIL);
 
-            $contraseña = htmlentities($_POST['contraseña']);
-            // comprobar si la contraseña y el email pertenecen a un usuario
-            
-            setSession('logged', true);
-            $nombre = "NOMBRE";         // GET BD
-            $rol = "ROL";               // GET BD
-            $foto = "../img/plus.png";  // GET BD
-            setSession('actualUser', $email);
+        else if (isset($_POST['login']) or getSession("logged")){
+            $email = getSession('actualUser');
+
+            if (isset($_POST['login'])){
+                $email = htmlentities($_POST['email']);
+                $email = filter_var($email, FILTER_VALIDATE_EMAIL);
+                
+                $contraseña = htmlentities($_POST['contraseña']);
+                // comprobar si la contraseña y el email pertenecen a un usuario
+
+                setSession('actualUser', $email);
+                setSession('logged', true);
+            }
+
+            $datos = ObtenerDatosUsuario($email);
+
+            $nombre = $datos['nombre'];
+            $rol = $datos['rol'];
+            $foto = $datos['foto'];
         }
 
-        if ($logged){
+        if (isset($_POST['login']) or getSession("logged")){
             echo <<<HTML
                     <aside>
                         <div class="usuario-aside">
@@ -231,6 +241,7 @@
 
         // Pedir a la base de datos
         // Sintaxis: (numero) nombre
+        // funcion de la base de datos pa sacar esta wea
 
         $top1_quejas = null;
         $top2_quejas = null;
@@ -451,18 +462,18 @@
     function MostrarContenidoEdicionUsuario($tipoUsuario, $desactivado, $nuevo){
         // GET BD
         if ($nuevo == false){
-            ObtenerDatosUsuario(getSession('actualUser'));
+            $datos = ObtenerDatosUsuario(getSession('actualUser'));
 
-            $foto = "../img/basura.png";
-            $nombre = "";                   
-            $apellidos = "";
-            $email = "";
-            $passw1 = "";
+            $foto = $datos['foto'];
+            $nombre = $datos['nombre'];                   
+            $apellidos = $datos['apellidos'];
+            $email = $datos['email'];
+            $passw1 = $datos['clave'];
             $passw2 = "";
-            $direccion = "";
-            $telefono = "";
-            $rol = "";
-            $estado = "";
+            $direccion = $datos['direccion'];
+            $telefono = $datos['tlf'];
+            $rol = $datos['rol'];
+            $estado = $datos['estado'];
         }
 
 
@@ -531,7 +542,7 @@
 
                     <div>
                         <label>Clave:</label>
-                        <input type="password" placeholder="Nueva contraseña" name="passw1" $desactivado>  
+                        <input type="password" placeholder="Nueva contraseña" name="passw1" value="$passw1" $desactivado>  
                         <input type="password" placeholder="Repita nueva contraseña" name="passw2" $desactivado> 
                     </div>
 
@@ -553,13 +564,13 @@
             echo <<<HTML
                     <div class="selectores">
                         <label>Rol:</label>
-                        <select name="rol" $desactivado>
+                        <select name="rol" value="$rol" $desactivado>
                             <option value="admin">Administrador</option>
                             <option value="colab">Colaborador</option>
                         </select>
                     
                         <label>Estado:</label>
-                        <select name="estado" $desactivado>
+                        <select name="estado" value="$estado" $desactivado>
                             <option value="activo">Activo</option>
                             <option value="inactivo">Inactivo</option>
                         </select>
