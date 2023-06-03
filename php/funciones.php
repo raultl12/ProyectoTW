@@ -110,6 +110,14 @@
 
     function MostrarIncidencia($inci){
         $datos = ObtenerDatosIncidencia($inci);
+        //Obtener el usuario que la ha publicado
+        $usuarioPublica = ObtenerUsuarioPublica($inci);
+        $nombreUsuario = $usuarioPublica["nombre"] . " " . $usuarioPublica["apellidos"];
+
+        //Obtener los comentarios
+        //Obtener el numero total de comentarios (los ids)
+        $comentarios = ObtenerTodosComentarios($inci);
+
         echo <<<HTML
             <div class="incidencia">
                 <h2>{$datos["titulo"]}</h2>
@@ -118,7 +126,7 @@
                     <div class="infoGeneral">
                         <label>Lugar: <em>{$datos["lugar"]}</em></label>
                         <label>Fecha: <em>{$datos["fecha"]}</em></label>
-                        <label>Creador por: <em>Cristina</em></label>
+                        <label>Creador por: <em>$nombreUsuario</em></label>
                         <label>Palabras clave: <em>{$datos["palClave"]}</em></label>
                         <label>Estado: <em>{$datos["estado"]}</em></label>
                         <label>Valoraciones: <em>Pos: {$datos["valPos"]} Neg: {$datos["valNeg"]}</em></label>
@@ -137,29 +145,17 @@
                 </div>
 
                 <div class="seccionComentarios">
-                    <div class="comentario">
-                        <div class="infoComentario">
-                            <label>Usuario</label>
-                            <label>2023-05-69 16:69:69</label>
-                        </div>
-        
-                        <p>
-                            Este es el texto del comentario
-                            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ipsum ducimus ea consequatur velit vitae et provident odit corporis ex. Sed ea ex vitae magni maxime, a magnam et adipisci eligendi.
-                        </p>
-                    </div>
+        HTML;
+                if($comentarios){
+                    foreach($comentarios as $c){
+                        MostrarComentario($c);
+                    }
+                }
+                else{
+                    echo "<h2>Todavia no hay comentarios</h2>";
+                }
 
-                    <div class="comentario">
-                        <div class="infoComentario">
-                            <label>Usuario</label>
-                            <label>2023-05-69 16:69:69</label>
-                        </div>
-        
-                        <p>
-                            Este es el texto del comentario
-                            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ipsum ducimus ea consequatur velit vitae et provident odit corporis ex. Sed ea ex vitae magni maxime, a magnam et adipisci eligendi.
-                        </p>
-                    </div>
+        echo <<<HTML
                 </div>
 
                 <div class="iconos">
@@ -707,6 +703,25 @@
                     </div>
                 </form>
             </div>
+        HTML;
+    }
+
+    function MostrarComentario($com){
+        //Obtener todo el contenido del comentario
+        $comentario = ObtenerComentario($com);
+        $nombreUsuario = ObtenerUsuarioComentario($com);
+        $nombreUsuario = $nombreUsuario["nombre"] . " " . $nombreUsuario["apellidos"];
+        echo <<<HTML
+                    <div class="comentario">
+                        <div class="infoComentario">
+                            <label>$nombreUsuario</label>
+                            <label>{$comentario["fecha"]}</label>
+                        </div>
+        
+                        <p>
+                            {$comentario["descripcion"]}
+                        </p>
+                    </div>
         HTML;
     }
 
