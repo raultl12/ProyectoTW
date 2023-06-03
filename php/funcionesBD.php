@@ -24,21 +24,17 @@
 
     //Obtener todos los datos del usuario
     function ObtenerDatosUsuario($email){
+        $resultado = null;
         global $db;
         $consulta = "SELECT * FROM Usuario WHERE email=?";
         $prep = mysqli_prepare($db, $consulta);
-        mysqli_stmt_bind_param($prep,'s', $email);
+        mysqli_stmt_bind_param($prep,'i', $email);
 
         if(mysqli_stmt_execute($prep)){
             $res = mysqli_stmt_get_result($prep);
-
+            
             if($res){
-                while ($row = mysqli_fetch_assoc($res)) {
-                    foreach ($row as $r){
-                        echo $r;
-                        echo "<br>";
-                    }
-                }
+                $resultado = mysqli_fetch_assoc($res);
             }
             else{
                 echo "<p>Error en la consulta</p>";
@@ -46,7 +42,10 @@
                 echo "<p>Mensaje: ".mysqli_error($db)."</p>";
             }
         }
+        mysqli_free_result($res);
         mysqli_stmt_close($prep);
+
+        return $resultado ? $resultado : null;
     }
 
     //Insertar un usuario
