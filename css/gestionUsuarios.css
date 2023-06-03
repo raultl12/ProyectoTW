@@ -17,10 +17,11 @@
     display: flex;
     align-items: flex-start;
     margin-left: 0.5rem;
+    margin-top: -1rem;
 }
 
 .opciones a{
-    margin: 0.2rem;
+    margin-left: 0.5rem;
 }
 
 .usuario{

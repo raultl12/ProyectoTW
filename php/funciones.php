@@ -4,6 +4,13 @@
     require_once 'funcionesBD.php';
 
     /************************************************************************************************************** */
+    // Variables globales
+
+    $actualUser = getSession('actualUser');     // identificador del usuario actual loggeado
+    $tipoCliente = getSession('tipoCliente');   // tipo del usuario actual loggeado
+    $logged = getSession('logged');             // hay un usuario loggeado ?
+
+    /************************************************************************************************************** */
     // Codigo de guardado y obtencion de sesion
     function setSession($nombreVariable, $valor){
         $_SESSION[$nombreVariable] = $valor;
@@ -82,23 +89,23 @@
                 echo <<<HTML
                     <li><a href="./index.php">Ver incidencias</a></li>
                     <li><a href="./nuevaIncidencia.php">Nueva incidencia</a></li>
-                    <li><a href="">Mis incidencias</a></li>
+                    <li><a href="./misIncidencias.php">Mis incidencias</a></li>
                 HTML;
                 break;
 
             case "administrador":
                 echo <<<HTML
-                    <li><a href="../php/index.php">Ver incidencias</a></li>
+                    <li><a href="./index.php">Ver incidencias</a></li>
                     <li><a href="./nuevaIncidencia.php">Nueva incidencia</a></li>
-                    <li><a href="">Mis incidencias</a></li>
-                    <li><a href="../php/gestionUsuarios.php">Gestión de usuarios</a></li>
-                    <li><a href="../php/log.php">Ver log</a></li>
+                    <li><a href="./misIncidencias.php">Mis incidencias</a></li>
+                    <li><a href="./gestionUsuarios.php">Gestión de usuarios</a></li>
+                    <li><a href="./log.php">Ver log</a></li>
                     <li><a href="">Gestión de BBDD</a></li>
                 HTML;
                 break;
 
             default:
-                echo "<li><a href=\"../php/index.php\">Ver incidencias</a></li>";
+                echo "<li><a href=\"./index.php\">Ver incidencias</a></li>";
                 break;
         }
 
@@ -173,7 +180,7 @@
         global $logged;  // solo es pa que no de error
 
         if (isset($_POST['logout']))
-            $logged = false;
+            setSession('logged', false);
         else if (isset($_POST['login'])){
             $email = htmlentities($_POST['email']);
             $email = filter_var($email, FILTER_VALIDATE_EMAIL);
@@ -181,10 +188,11 @@
             $contraseña = htmlentities($_POST['contraseña']);
             // comprobar si la contraseña y el email pertenecen a un usuario
             
-            $logged = true;
+            setSession('logged', true);
             $nombre = "NOMBRE";         // GET BD
             $rol = "ROL";               // GET BD
             $foto = "../img/plus.png";  // GET BD
+            setSession('actualUser', $email);
         }
 
         if ($logged){
@@ -215,7 +223,7 @@
                                 <p>Clave:</p>
                                 <input type="password" name="contraseña">
 
-                                <input type="submit" name="login" value="LogIn">
+                                <input type="submit" name="login" value="Log In">
                             </form>
                         </div>
             HTML;
@@ -356,16 +364,16 @@
     function MostrarContenidoGestionUsuarios(){
         echo <<<HTML
             <div class="menu">
-                <h2>Gestion de Usuario</h2>
+                <h2 id="gestionUsuario" >Gestion de Usuario</h2>
                 <label>Indique la accion a realizar</label>
 
-                <div class="opciones">
-                    <form method="POST">
+                <form method="POST">    
+                    <div class="opciones" id="mostrarListado">
                         <label for="listado">Listado</label>
-                        <input type="submit" name="listado" id="mostrarLista">
-                    </form>
-                    <a href="./aniadirUsuario.php">Añadir nuevo</a>
-                </div>
+                        <input type="submit" name="listado" id="listado">
+                        <a href="./aniadirUsuario.php">Añadir nuevo</a>
+                    </div>
+                </form>
             </div>
         HTML;
 
@@ -440,22 +448,27 @@
         echo "<h2>No tienes permiso para estar aqui</h2>";
     }
 
-    function MostrarContenidoEdicionUsuario($tipoUsuario, $desactivado){
+    function MostrarContenidoEdicionUsuario($tipoUsuario, $desactivado, $nuevo){
         // GET BD
-        $foto = "../img/basura.png";
-        $nombre = "";                   
-        $apellidos = "";
-        $email = "";
-        $passw1 = "";
-        $passw2 = "";
-        $direccion = "";
-        $telefono = "";
-        $rol = "";
-        $estado = "";
+        if ($nuevo == false){
+            ObtenerDatosUsuario(getSession('actualUser'));
+
+            $foto = "../img/basura.png";
+            $nombre = "";                   
+            $apellidos = "";
+            $email = "";
+            $passw1 = "";
+            $passw2 = "";
+            $direccion = "";
+            $telefono = "";
+            $rol = "";
+            $estado = "";
+        }
 
 
         // HACER STICKY
-        if (isset($_POST['changed']) and $desactivado="disabled"){
+        if ($desactivado == "disabled"){
+            $foto = $_POST['photo-selected'];
             $nombre = htmlentities($_POST['nombre']);
             $apellidos = htmlentities($_POST['apellidos']);
 
@@ -479,16 +492,23 @@
             }
         }
 
-        echo <<<HTML
-            <h2>Edición de usuario</h2>
+        $titulo = "Edición de";
+        $ruta = "./edicionUsuario.php";
 
-            <form action="./edicionUsuario.php" method="POST">
+        if ($nuevo == true){
+            $titulo = "Nuevo";
+            $ruta = "./aniadirUsuario.php";
+        }
+
+        echo <<<HTML
+            <h2>$titulo usuario</h2>
+            <form action="$ruta" method="POST">
                 <div class="foto">
                     <label>Foto: </label>
                     <img src="$foto" alt="Imagen de usuario">
 
                     <div class="nuevo">
-                        <label for="seleccionar">Añadir Imágen</label>
+                        <label for="seleccionar">Añadir imágen</label>
                         <input type="file" name="photo-selected" id="seleccionar" $desactivado>
                     </div>
                 </div>
@@ -528,7 +548,8 @@
 
         //$tipoUsuario = "administrador"; // JUST FOR TEST
 
-        if ($tipoUsuario == "administrador"){
+        // si es un usuario nuevo o si se estamodificando
+        if ($nuevo == true or ($nuevo == false and $tipoUsuario == "administrador")){
             echo <<<HTML
                     <div class="selectores">
                         <label>Rol:</label>
@@ -546,17 +567,23 @@
             HTML;
         }
 
+        $valor = "modificación";
+        if ($nuevo == true) $valor = "creación";
+
         echo <<<HTML
                 </div>
 
                 <div class="enviar">
-                    <input type="submit" name="changes" id="modificarUsuario" value="Confirmar modificación">
+                    <input type="submit" name="changes" id="modificarUsuario" value="Confirmar $valor">
                 </div>
             </form>
         HTML;
     }
 
-    function MostrarCambiosExito(){
+    function MostrarCambiosExito($nuevo){
+        // En teoría no hay que sanearlos ya que vienen del sticky y ahi ya estan saneados
+        if ($nuevo) InsertarUsuario($_POST['email'], $_POST['nombre'], $_POST['apellidos'], $_POST['passwd1'], $_POST['dir'], $_POST['telf'], $_POST['rol'], $_POST['estado'], $_POST['photo-selected']);
+
         echo <<<HTML
             <p style="text-align: center; font-weight: bold; font-size: 25px;">Se han modificado los datos del usuario</p>
             <p style="text-align: center; font-size: 15px;">Redirigiendo a página principal...</p>
@@ -718,11 +745,17 @@
                             <label>{$comentario["fecha"]}</label>
                         </div>
         
-                        <p>
-                            {$comentario["descripcion"]}
-                        </p>
+                        <p>{$comentario["descripcion"]}</p>
                     </div>
         HTML;
+    }
+
+    function MostrarContenidoMisIncidencias(){
+        $incidencias = ObtenerTodasIncidencias();
+        foreach($incidencias as $inci){
+            if (getSession('actualUser') == ObtenerUsuarioPublica($inci))
+                MostrarIncidencia($inci);
+        }
     }
 
 ?>

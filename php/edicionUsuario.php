@@ -13,16 +13,16 @@
 
     if (isset($_COOKIE['correcto']) and $_COOKIE == true){
         setcookie('correcto', false);
-        MostrarCambiosExito();
+        MostrarCambiosExito(false);
     }
 
     else if (isset($_POST['changes'])){
-        MostrarContenidoEdicionUsuario("tipoCliente", "disabled");
+        MostrarContenidoEdicionUsuario("tipoCliente", "disabled", false);
         setcookie('correcto', true);
     }
 
     else{
-        MostrarContenidoEdicionUsuario("tipoCliente", "");
+        MostrarContenidoEdicionUsuario("tipoCliente", "", false);
     }
 
     MostrarFooter();
