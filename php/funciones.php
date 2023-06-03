@@ -364,73 +364,80 @@
                 <label>Indique la accion a realizar</label>
 
                 <div class="opciones">
-                    <a href="">Listado</a>
-                    <a href="">Añadir nuevo</a>
-                </div>
-            </div>
-
-            <div class="listado">
-                <div class="usuario">
-                    <img src="../img/basura.png" alt="fotoPerfil">
-
-                    <div class="infoUsuario">
-                        <label>Usuario: <em>Mario Piña Munera</em> Email: <em>mariomario</em></label>
-                        <label>Direccion: <em>su casa</em></label>
-                        <label>Rol: <em>administrador</em> Estado: <em>Activo</em></label>
-                    </div>
-
-                    <div class="botones">
-                        <img src="../img/editar.png" alt="editar">
-                        <img src="../img/basura.png" alt="borrar">
-                    </div>
-                </div>
-
-                <div class="usuario">
-                    <img src="../img/basura.png" alt="fotoPerfil">
-
-                    <div class="infoUsuario">
-                        <label>Usuario: <em>Mario Piña Munera</em> Email: <em>mariomario</em></label>
-                        <label>Direccion: <em>su casa</em></label>
-                        <label>Rol: <em>administrador</em> Estado: <em>Activo</em></label>
-                    </div>
-
-                    <div class="botones">
-                        <img src="../img/editar.png" alt="editar">
-                        <img src="../img/basura.png" alt="borrar">
-                    </div>
-                </div>
-
-                <div class="usuario">
-                    <img src="../img/basura.png" alt="fotoPerfil">
-
-                    <div class="infoUsuario">
-                        <label>Usuario: <em>Mario Piña Munera</em> Email: <em>mariomario</em></label>
-                        <label>Direccion: <em>su casa</em></label>
-                        <label>Rol: <em>administrador</em> Estado: <em>Activo</em></label>
-                    </div>
-
-                    <div class="botones">
-                        <img src="../img/editar.png" alt="editar">
-                        <img src="../img/basura.png" alt="borrar">
-                    </div>
-                </div>
-
-                <div class="usuario">
-                    <img src="../img/basura.png" alt="fotoPerfil">
-
-                    <div class="infoUsuario">
-                        <label>Usuario: <em>Mario Piña Munera</em> Email: <em>mariomario</em></label>
-                        <label>Direccion: <em>su casa</em></label>
-                        <label>Rol: <em>administrador</em> Estado: <em>Activo</em></label>
-                    </div>
-
-                    <div class="botones">
-                        <img src="../img/editar.png" alt="editar">
-                        <img src="../img/basura.png" alt="borrar">
-                    </div>
+                    <form method="POST">
+                        <label for="listado">Listado</label>
+                        <input type="submit" name="listado" id="mostrarLista">
+                    </form>
+                    <a href="./aniadirUsuario.php">Añadir nuevo</a>
                 </div>
             </div>
         HTML;
+
+        if ($_POST['listado']){
+            echo <<<HTML
+                <div class="listado">
+                    <div class="usuario">
+                        <img src="../img/basura.png" alt="fotoPerfil">
+
+                        <div class="infoUsuario">
+                            <label>Usuario: <em>Mario Piña Munera</em> Email: <em>mariomario</em></label>
+                            <label>Direccion: <em>su casa</em></label>
+                            <label>Rol: <em>administrador</em> Estado: <em>Activo</em></label>
+                        </div>
+
+                        <div class="botones">
+                            <img src="../img/editar.png" alt="editar">
+                            <img src="../img/basura.png" alt="borrar">
+                        </div>
+                    </div>
+
+                    <div class="usuario">
+                        <img src="../img/basura.png" alt="fotoPerfil">
+
+                        <div class="infoUsuario">
+                            <label>Usuario: <em>Mario Piña Munera</em> Email: <em>mariomario</em></label>
+                            <label>Direccion: <em>su casa</em></label>
+                            <label>Rol: <em>administrador</em> Estado: <em>Activo</em></label>
+                        </div>
+
+                        <div class="botones">
+                            <img src="../img/editar.png" alt="editar">
+                            <img src="../img/basura.png" alt="borrar">
+                        </div>
+                    </div>
+
+                    <div class="usuario">
+                        <img src="../img/basura.png" alt="fotoPerfil">
+
+                        <div class="infoUsuario">
+                            <label>Usuario: <em>Mario Piña Munera</em> Email: <em>mariomario</em></label>
+                            <label>Direccion: <em>su casa</em></label>
+                            <label>Rol: <em>administrador</em> Estado: <em>Activo</em></label>
+                        </div>
+
+                        <div class="botones">
+                            <img src="../img/editar.png" alt="editar">
+                            <img src="../img/basura.png" alt="borrar">
+                        </div>
+                    </div>
+
+                    <div class="usuario">
+                        <img src="../img/basura.png" alt="fotoPerfil">
+
+                        <div class="infoUsuario">
+                            <label>Usuario: <em>Mario Piña Munera</em> Email: <em>mariomario</em></label>
+                            <label>Direccion: <em>su casa</em></label>
+                            <label>Rol: <em>administrador</em> Estado: <em>Activo</em></label>
+                        </div>
+
+                        <div class="botones">
+                            <img src="../img/editar.png" alt="editar">
+                            <img src="../img/basura.png" alt="borrar">
+                        </div>
+                    </div>
+                </div>
+            HTML;
+        }
     }
 
     function MostrarAccesoDenegado(){
