@@ -157,25 +157,56 @@
 
                 <div class="seccionComentarios">
         HTML;
-                if($comentarios){
-                    foreach($comentarios as $c){
-                        MostrarComentario($c);
-                    }
-                }
-                else{
-                    echo "<h2>Todavia no hay comentarios</h2>";
-                }
+
+        if($comentarios){
+            foreach($comentarios as $c){
+                MostrarComentario($c);
+            }
+        }
+        else{
+            echo "<h2>Todavia no hay comentarios</h2>";
+        }
+
+        if (isset($_POST['comment']))
+            comentarIncidencia();
 
         echo <<<HTML
+
                 </div>
 
                 <div class="iconos">
-                    <a href=""><img src="../img/plus.png" alt=""></a>
-                    <a href=""><img src="../img/minus.png" alt=""></a>
-                    <a href=""><img src="../img/comment.png" alt=""></a>
-                    <a href="./editarIncidencia.php"><img src="../img/editar.png" alt=""></a>
-                    <a href=""><img src="../img/basura.png" alt=""></a>
+                    <form method="post" action="./">
+                        <label for="plus"><img src="../img/plus.png" alt="+"></label>
+                        <input type="submit" name="plus" id="plus">
+                        
+                        <label for="minus"><img src="../img/minus.png" alt="-"></label>
+                        <input type="submit" name="minus" id="minus">
+
+                        <label for="comment"><img src="../img/comment.png" alt="comentar"></label>
+                        <input type="submit" name="comment" id="comment">
+
+                        <a href="./editarIncidencia.php"><img src="../img/editar.png" alt=""></a>
+
+                        <label for="eliminar"><img src="../img/basura.png" alt="eliminar"></label>
+                        <input type="submit" name="eliminar" id="eliminar">
+                    </form>
                 </div>
+            </div>
+        HTML;
+
+        if (isset($_POST['plus'])) votoPositivo();
+        if (isset($_POST['minus'])) votoNegativo();
+        if (isset($_POST['eliminar'])) eliminarIncidencia();
+        if (isset($_POST['nuevoComentario'])) nuevoComentario();
+    }
+
+    function comentarIncidencia(){
+        echo <<<HTML
+            <div class="nuevoComentario">
+                <form action="./incidenciaUnica.html" method="post">
+                    <textarea name="textoComentario"></textarea>
+                    <input type="submit" name="nuevoComentario" value="Enviar comentario">
+                </form>
             </div>
         HTML;
     }
@@ -203,6 +234,10 @@
             $nombre = $datos['nombre'];
             $rol = $datos['rol'];
             $foto = $datos['foto'];
+        }
+
+        else{
+            setSession('logged', false);
         }
 
         if (isset($_POST['login']) or getSession("logged")){
@@ -557,9 +592,7 @@
                     </div>
         HTML;
 
-        //$tipoUsuario = "administrador"; // JUST FOR TEST
-
-        // si es un usuario nuevo o si se estamodificando
+        // si es un usuario nuevo o si se esta modificando
         if ($nuevo == true or ($nuevo == false and $tipoUsuario == "administrador")){
             echo <<<HTML
                     <div class="selectores">
@@ -605,7 +638,38 @@
 
 
     function MostrarLog(){
-        echo <<<HTML
+        $datos = ObtenerDatosLog();
+
+        if ($datos != null){
+            echo <<<HTML
+                <section class="log">
+                    <h2>Eventos del sistema</h2>
+
+                    <div class="eventos">
+            HTML;
+
+            foreach ($datos as $registro){
+                echo <<<HTML
+                    <div class="evento">
+                        <label>{$registro["fecha"]}</label>
+                        <label>{$registro["evento"]}</label>
+                    </div>
+                HTML;
+            }
+
+            echo <<<HTML
+                    </div>
+                </section>
+            HTML;
+        }
+        
+        else{
+            echo <<<HTML
+                <h2 id="sinDatos">No hay registros</h2>
+            HTML;
+        }
+
+/*        echo <<<HTML
             <section class="log">
                 <h2>Eventos del sistema</h2>
 
@@ -656,11 +720,10 @@
                     </div>
                 </div>
             </section>
-        HTML;
+        HTML;*/
     }
 
     function MostrarAniadirIncidencia($editar){
-        
         if ($editar == false)
             echo "<h2>Nueva incidencia</h2>";
 
@@ -668,38 +731,47 @@
             <h3>Datos principales:</h3>
                 
             <div class="nueva-incidencia">
-                <form action="" method="POST">
+                <form action="./" method="POST">
                     <div>
                         <label>Titulo:</label>
-                        <input type="text">
+                        <input type="text" name="titulo" required>
                     </div>
 
                     <div class="desc">
                         <label>Descripción:</label>
-                        <textarea name="" id="" cols="30" rows="10"></textarea>
+                        <textarea name="descripcion" required></textarea>
                     </div>
 
                     <div>
                         <label>Lugar:</label>
-                        <input type="text">
+                        <input type="text" name="lugar" required>
                     </div>
 
                     <div>
                         <label>Palabras clave:</label>
-                        <input type="text">
+                        <input type="text" value="palClave" required>
                     </div>
 
         HTML;
 
         if ($editar == true)
-            echo "<input type=\"submit\" value=\"Modificar datos\">";
+            echo "<input type=\"submit\" name=\"editarNueva\" value=\"Modificar datos\">";
         else
-            echo "<input type=\"submit\" value=\"Enviar\">";
+            echo "<input type=\"submit\" name=\"enviarNueva\" value=\"Enviar\">";
 
         echo <<<HTML
                 </form>
             </div>
         HTML;
+
+        if (isset($_POST['enviarNueva'])){
+            $titulo = htmlentities($_POST['titulo']);
+            $desc = htmlentities($_POST['descripcion']);
+            $lugar = htmlentities($_POST['lugar']);
+            $palClave = htmlentities($_POST['palClave']);
+
+            InsertarIncidencia($lugar, $titulo, $palClave, null, $desc, 0, 0);
+        }
     }
 
     function MostrarEditarIncidencia(){
@@ -727,7 +799,7 @@
         echo <<<HTML
             <div class="imagenes">
                 <h3>Fotografías adjuntas:</h3>
-                <form action="" method="POST">
+                <form action="" method="POST" enctype="multipart/form-data">
                     <img src="../img/comment.png">
                     <img src="../img/comment.png">
                     <img src="../img/comment.png">
@@ -736,12 +808,24 @@
                         <label for="examinar">+</label>
                         <input type="file" id="examinar" value="Seleccionar archivo">
 
-                        <input type="submit" value="Borrar todo">
-                        <input type="submit" value="Añadir fotografías">
+                        <input type="submit" name="borrar" value="Borrar todo">
+                        <input type="file" name="fotos[]" value="Añadir fotografías" multiple>
                     </div>
                 </form>
             </div>
         HTML;
+
+        if (isset($_POST['editarNueva'])){
+            $titulo = htmlentities($_POST['titulo']);
+            $desc = htmlentities($_POST['descripcion']);
+            $lugar = htmlentities($_POST['lugar']);
+            $palClave = htmlentities($_POST['palClave']);
+            $estado = $_POST['estado'];
+            $fotos = $_FILES['fotos'];
+
+            InsertarIncidencia($lugar, $titulo, $palClave, null, $desc, 0, 0);
+            InsertarImagenesIncidencia($id, $fotos);
+        }
     }
 
     function MostrarComentario($com){
@@ -763,9 +847,17 @@
 
     function MostrarContenidoMisIncidencias(){
         $incidencias = ObtenerTodasIncidencias();
-        foreach($incidencias as $inci){
-            if (getSession('actualUser') == ObtenerUsuarioPublica($inci))
-                MostrarIncidencia($inci);
+
+        if ($incidencias != null){
+            foreach($incidencias as $inci){
+                if (getSession('actualUser') == ObtenerUsuarioPublica($inci))
+                    MostrarIncidencia($inci);
+            }
+        }
+        else{
+            echo <<<HTML
+                <h2 id="sinDatos">No hay incidencias</h2>
+            HTML;
         }
     }
 

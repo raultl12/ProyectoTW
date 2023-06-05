@@ -101,10 +101,42 @@ em{
     }
 }
 
+.iconos input[type="submit"]{
+    display: none;
+}
+
+.iconos *{
+    margin-left: 5px;
+}
+
+.iconos label:last-of-type{
+    margin-left: -5px;
+}
+
+.iconos label:hover{
+    transition: border 0.3s ease-in-out;
+    border-bottom: 2px solid rgba(78, 205, 196, 1);
+}
+
+.iconos img{
+    max-width: 3%;
+}
+
 .incidencia {
     margin-bottom: 0.5rem;
 }
 
 .incidencia h2{
     border-top: 0;
+}
+
+.nuevoComentario{
+    display: flex; 
+    margin-top: 15px;
+}
+
+.nuevoComentario textarea{
+    max-width: 50rem;
+    width: 50rem;
+    height: 5rem;
 }

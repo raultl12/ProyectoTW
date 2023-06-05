@@ -126,10 +126,10 @@
     }
 
     //Insertar una incidencia
-    function InsertarIncidencia($luagr, $titulo, $palClave, $estado, $descripcion, $valPos, $valNeg){
+    function InsertarIncidencia($lugar, $titulo, $palClave, $estado, $descripcion, $valPos, $valNeg){
         global $db;
         $consulta = "INSERT INTO Incidencia(lugar, titulo, palClave, estado, descripcion, valPos, valNeg) VALUES 
-            ('$luagr', '$titulo', '$palClave', '$estado', '$descripcion', '$valPos', '$valNeg')";
+            ('$lugar', '$titulo', '$palClave', '$estado', '$descripcion', '$valPos', '$valNeg')";
 
         if(mysqli_query($db, $consulta)){
 
@@ -142,10 +142,36 @@
         }
     }
 
+    function votoPositivo($id){
+        // aumentar un voto positivo en una incidencia
+    }
+
+    function votoNegativo($id){
+        // aumentar un voto negativo en una incidencia
+    }
+
+    function eliminarIncidencia($id){
+        // eliminar incidencia entera
+    }
+
+    function nuevoComentario($id){
+        // añadir un comentario a una incidencia
+    }
+
+    function InsertarImagenesIncidencia($id){
+        // añadir un array de imagenes a una INIcidencia
+    }
+
+    function ObtenerDatosLog(){
+        return null;
+    }
+
     ConectarBD();
     ObtenerDatosUsuario("admin@correo.ugr.es");
     ObtenerDatosUsuario("raultlopez@correo.ugr.es");
     //InsertarIncidencia("mi calle", "farola rota", "farola", "irresoluble", "Se han roto las farolas bobis", 0, 0);
     //ObtenerDatosIncidencia(1);
     //ObtenerTodasIncidencias();
+
+    
 ?>
