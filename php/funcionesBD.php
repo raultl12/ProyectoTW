@@ -5,11 +5,18 @@
     ini_set('display_errors', 1);
     $db = null;
 
+    $dev = "r";
+
     //Conexion a la BD
     function ConectarBD(){
         global $db;
-        $db = mysqli_connect("localhost","tw","TW12345tw_","tw");
-        //$db = mysqli_connect("localhost","tw","tw123","proyectoTW");
+        global $dev;
+        if($dev == "r"){
+            $db = mysqli_connect("localhost","tw","tw123","proyectoTW");
+        }
+        else{
+            $db = mysqli_connect("localhost","tw","TW12345tw_","tw");
+        }
         if ($db) {
             echo "<p>Conexión con éxito</p>";
         } else {
