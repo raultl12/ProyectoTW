@@ -5,7 +5,7 @@
     ini_set('display_errors', 1);
     $db = null;
 
-    $dev = "r";
+    $dev = "m";
 
     //Conexion a la BD
     function ConectarBD(){
@@ -35,7 +35,7 @@
         global $db;
         $consulta = "SELECT * FROM Usuario WHERE email=?";
         $prep = mysqli_prepare($db, $consulta);
-        mysqli_stmt_bind_param($prep,'i', $email);
+        mysqli_stmt_bind_param($prep,'s', $email);
 
         if(mysqli_stmt_execute($prep)){
             $res = mysqli_stmt_get_result($prep);
@@ -325,8 +325,25 @@
         return $resultado ? $resultado : null;
     }
 
+    function ComprobarUsuario($email, $contra){
+        //$hash = password_hash($contra, PASSWORD_DEFAULT);
+        //echo " ".  $email . " ";
+        $datos = ObtenerDatosUsuario($email);
+        //echo " " . $datos["email"] . " ";
+        //echo "La contraseña de la bD es: " . $datos["clave"] . " ";
+        //echo $contra;
+        if($datos["clave"] == $contra){
+            echo "Contraseña correcta";
+            return true;
+        }
+        else{
+            echo "fallaste";
+            return false;
+        }
+
+    }
+
     ConectarBD();
-    ObtenerDatosUsuario("admin@correo.ugr.es");
     ObtenerDatosUsuario("raultlopez@correo.ugr.es");
     //InsertarIncidencia("mi calle", "farola rota", "farola", "irresoluble", "Se han roto las farolas bobis", 0, 0);
     //ObtenerDatosIncidencia(1);

@@ -221,28 +221,39 @@
     }
 
     function MostrarAside(){
+        $correcto = false;
+
         if (isset($_POST['logout']))
             setSession('logged', false);
 
         else if (isset($_POST['login']) or getSession("logged")){
-            $email = getSession('actualUser');
+            //$email = getSession('actualUser');
 
             if (isset($_POST['login'])){
                 $email = htmlentities($_POST['email']);
                 $email = filter_var($email, FILTER_VALIDATE_EMAIL);
                 
-                $contraseña = htmlentities($_POST['contraseña']);
-                // comprobar si la contraseña y el email pertenecen a un usuario
+                $contrasena = htmlentities($_POST['clave']);
+                $correcto = ComprobarUsuario($email, $contrasena);
 
-                setSession('actualUser', $email);
-                setSession('logged', true);
+                
+                //echo " ". $email . " " . $contrasena . " ";
+
+                if($correcto){
+                    setSession('actualUser', $email);
+                    setSession('logged', true);
+                    $datos = ObtenerDatosUsuario($email);
+        
+                    $nombre = $datos['nombre'];
+                    $rol = $datos['rol'];
+                    $foto = $datos['foto'];
+                }
+                else{
+                    echo "No te has logueado bien";
+                }
+
             }
 
-            $datos = ObtenerDatosUsuario($email);
-
-            $nombre = $datos['nombre'];
-            $rol = $datos['rol'];
-            $foto = $datos['foto'];
         }
 
         else{
@@ -250,7 +261,7 @@
             setSession('logged', false);
         }
 
-        if (isset($_POST['login']) or getSession("logged")){
+        if ($correcto or getSession("logged")){
             echo <<<HTML
                     <aside>
                         <div class="usuario-aside">
@@ -276,7 +287,7 @@
                                 <input type="email" name="email">
 
                                 <p>Clave:</p>
-                                <input type="password" name="contraseña">
+                                <input type="password" name="clave">
 
                                 <input type="submit" name="login" value="Log In">
                             </form>
