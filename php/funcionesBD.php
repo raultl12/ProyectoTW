@@ -8,8 +8,8 @@
     //Conexion a la BD
     function ConectarBD(){
         global $db;
-        //$db = mysqli_connect("localhost","tw","TW12345tw_","tw");
-        $db = mysqli_connect("localhost","tw","tw123","proyectoTW");
+        $db = mysqli_connect("localhost","tw","TW12345tw_","tw");
+        //$db = mysqli_connect("localhost","tw","tw123","proyectoTW");
         if ($db) {
             echo "<p>Conexión con éxito</p>";
         } else {

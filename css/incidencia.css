@@ -118,8 +118,13 @@ em{
     border-bottom: 2px solid rgba(78, 205, 196, 1);
 }
 
-.iconos img{
+.iconos label>img{
     max-width: 3%;
+}
+
+.iconos a>img{
+    width: 2rem;
+    height: 2.3rem;
 }
 
 .incidencia {

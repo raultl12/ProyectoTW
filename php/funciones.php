@@ -175,7 +175,7 @@
                 </div>
 
                 <div class="iconos">
-                    <form method="post" action="./">
+                    <form method="post" action="./index.php">
                         <label for="plus"><img src="../img/plus.png" alt="+"></label>
                         <input type="submit" name="plus" id="plus">
                         
@@ -194,16 +194,16 @@
             </div>
         HTML;
 
-        if (isset($_POST['plus'])) votoPositivo();
-        if (isset($_POST['minus'])) votoNegativo();
-        if (isset($_POST['eliminar'])) eliminarIncidencia();
-        if (isset($_POST['nuevoComentario'])) nuevoComentario();
+        if (isset($_POST['plus'])) votoPositivo(null);
+        if (isset($_POST['minus'])) votoNegativo(null);
+        if (isset($_POST['eliminar'])) eliminarIncidencia(null);
+        if (isset($_POST['nuevoComentario'])) nuevoComentario(null);
     }
 
     function comentarIncidencia(){
         echo <<<HTML
             <div class="nuevoComentario">
-                <form action="./incidenciaUnica.html" method="post">
+                <form action="./index.php" method="post">
                     <textarea name="textoComentario"></textarea>
                     <input type="submit" name="nuevoComentario" value="Enviar comentario">
                 </form>
@@ -237,6 +237,7 @@
         }
 
         else{
+            $logged = false;
             setSession('logged', false);
         }
 
