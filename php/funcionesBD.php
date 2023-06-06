@@ -5,11 +5,18 @@
     ini_set('display_errors', 1);
     $db = null;
 
+    $dev = "r";
+
     //Conexion a la BD
     function ConectarBD(){
         global $db;
-        //$db = mysqli_connect("localhost","tw","TW12345tw_","tw");
-        $db = mysqli_connect("localhost","tw","tw123","proyectoTW");
+        global $dev;
+        if($dev == "r"){
+            $db = mysqli_connect("localhost","tw","tw123","proyectoTW");
+        }
+        else{
+            $db = mysqli_connect("localhost","tw","TW12345tw_","tw");
+        }
         if ($db) {
             echo "<p>Conexión con éxito</p>";
         } else {
@@ -295,7 +302,27 @@
     }
 
     function ObtenerDatosLog(){
-        return null;
+        $resultado = null;
+        global $db;
+        $consulta = "SELECT * FROM Log";
+        $prep = mysqli_prepare($db, $consulta);
+
+        if(mysqli_stmt_execute($prep)){
+            $res = mysqli_stmt_get_result($prep);
+
+            if($res){
+                $resultado = mysqli_fetch_all($res);
+            }
+            else{
+                echo "<p>Error en la consulta</p>";
+                echo "<p>Código: ".mysqli_errno($db)."</p>";
+                echo "<p>Mensaje: ".mysqli_error($db)."</p>";
+            }
+        }
+        mysqli_free_result($res);
+        mysqli_stmt_close($prep);
+
+        return $resultado ? $resultado : null;
     }
 
     ConectarBD();

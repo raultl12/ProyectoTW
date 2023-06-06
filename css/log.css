@@ -9,6 +9,10 @@
     grid-template-columns: 20% 80%;
 }
 
+.evento label:last-of-type{
+    font-weight: normal;
+}
+
 .eventos .evento:nth-child(even){
     background-color: #2875703f;
 }
