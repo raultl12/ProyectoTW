@@ -823,7 +823,7 @@
             $estado = $_POST['estado'];
             $fotos = $_FILES['fotos'];
 
-            InsertarIncidencia($lugar, $titulo, $palClave, null, $desc, 0, 0);
+            $id = InsertarIncidencia($lugar, $titulo, $palClave, "pediente", $desc, 0, 0);
             InsertarImagenesIncidencia($id, $fotos);
         }
     }
