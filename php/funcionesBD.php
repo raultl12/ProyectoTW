@@ -247,6 +247,33 @@
 
         return $resultado ? $resultado : null;
     }
+
+    function ObtenerFotosIncidencia($inci){
+        $resultado = null;
+        global $db;
+        //$consulta = "SELECT email FROM Publica WHERE idIncidencia=?";
+        $consulta = "SELECT foto FROM Foto WHERE id=(SELECT idFoto FROM Tiene WHERE idIncidencia=?)";
+        $prep = mysqli_prepare($db, $consulta);
+        mysqli_stmt_bind_param($prep,'i', $inci);
+
+        if(mysqli_stmt_execute($prep)){
+            $res = mysqli_stmt_get_result($prep);
+
+            if($res){
+                $resultado = mysqli_fetch_assoc($res);
+            }
+            else{
+                echo "<p>Error en la consulta</p>";
+                echo "<p>Código: ".mysqli_errno($db)."</p>";
+                echo "<p>Mensaje: ".mysqli_error($db)."</p>";
+            }
+        }
+        mysqli_free_result($res);
+        mysqli_stmt_close($prep);
+
+        return $resultado ? $resultado : null;
+    }
+
     function votoPositivo($id){
         // aumentar un voto positivo en una incidencia
     }

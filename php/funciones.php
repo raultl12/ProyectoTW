@@ -128,6 +128,7 @@
         //Obtener los comentarios
         //Obtener el numero total de comentarios (los ids)
         $comentarios = ObtenerTodosComentarios($inci);
+        $fotos = ObtenerFotosIncidencia($inci);
 
         echo <<<HTML
             <div class="incidencia">
@@ -148,9 +149,17 @@
                     </p>
 
                     <div class="fotos">
-                        <img src="../img/basura.png" alt="">
-                        <img src="../img/editar.png" alt="">
-                        <img src="../img/megafono.png" alt="">
+        HTML;
+                        if($fotos){
+                            foreach($fotos as $foto){
+                                $imagen = base64_encode($foto);
+                                echo "<img src='data:image/jpg;base64,".$imagen."'>";
+                            }
+                        }
+                        else{
+                            echo "<h2>Todavia no hay fotos</h2>";
+                        }
+        echo <<<HTML
                     </div>
 
                 </div>
