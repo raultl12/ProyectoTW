@@ -661,8 +661,8 @@
             foreach ($datos as $registro){
                 echo <<<HTML
                     <div class="evento">
-                        <label>{$registro["fecha"]}</label>
-                        <label>{$registro["evento"]}</label>
+                        <label>{$registro[1]}</label>
+                        <label>{$registro[2]}</label>
                     </div>
                 HTML;
             }
@@ -678,59 +678,6 @@
                 <h2 id="sinDatos">No hay registros</h2>
             HTML;
         }
-
-/*        echo <<<HTML
-            <section class="log">
-                <h2>Eventos del sistema</h2>
-
-                <div class="eventos">
-                    <div class="evento">
-                        <label>2023-05-23 17:46:69</label>
-                        <label>INFO: El usuario ha iniciado sesion</label>
-                    </div>
-            
-                    <div class="evento">
-                        <label>2023-05-23 17:46:69</label>
-                        <label>INFO: El usuario ha iniciado sesion</label>
-                    </div>
-            
-                    <div class="evento">
-                        <label>2023-05-23 17:46:69</label>
-                        <label>INFO: El usuario ha iniciado sesion</label>
-                    </div>
-            
-                    <div class="evento">
-                        <label>2023-05-23 17:46:69</label>
-                        <label>INFO: El usuario ha iniciado sesion</label>
-                    </div>
-
-                    <div class="evento">
-                        <label>2023-05-23 17:46:69</label>
-                        <label>INFO: El usuario ha iniciado sesion</label>
-                    </div>
-
-                    <div class="evento">
-                        <label>2023-05-23 17:46:69</label>
-                        <label>INFO: El usuario ha iniciado sesion</label>
-                    </div>
-
-                    <div class="evento">
-                        <label>2023-05-23 17:46:69</label>
-                        <label>INFO: El usuario ha iniciado sesion</label>
-                    </div>
-
-                    <div class="evento">
-                        <label>2023-05-23 17:46:69</label>
-                        <label>INFO: El usuario ha iniciado sesion</label>
-                    </div>
-
-                    <div class="evento">
-                        <label>2023-05-23 17:46:69</label>
-                        <label>INFO: El usuario ha iniciado sesion</label>
-                    </div>
-                </div>
-            </section>
-        HTML;*/
     }
 
     function MostrarAniadirIncidencia($editar){
