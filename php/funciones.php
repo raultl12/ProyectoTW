@@ -21,7 +21,7 @@
     }
 
     function getSession($nombreVariable){
-        return $_SESSION[$nombreVariable];
+        if(isset($_SESSION[$nombreVariable])) return $_SESSION[$nombreVariable];
     }
 
     /************************************************************************************************************** */
@@ -152,8 +152,10 @@
         HTML;
                         if($fotos){
                             foreach($fotos as $foto){
-                                $imagen = base64_encode($foto);
-                                echo "<img src='data:image/jpg;base64,".$imagen."'>";
+                                foreach($foto as $f){
+                                    $imagen = base64_encode($f);
+                                    echo "<img src='data:image/jpg;base64,".$imagen."'>";
+                                }
                             }
                         }
                         else{
@@ -246,7 +248,7 @@
         
                     $nombre = $datos['nombre'];
                     $rol = $datos['rol'];
-                    $foto = $datos['foto'];
+                    $foto = base64_encode($datos['foto']);
                 }
                 else{
                     echo "No te has logueado bien";
@@ -255,7 +257,6 @@
             }
 
         }
-
         else{
             $logged = false;
             setSession('logged', false);
@@ -267,9 +268,9 @@
                         <div class="usuario-aside">
                             <p>$nombre</p>
                             <p>$rol</p>
-                            
-                            <img src="$foto" alt="Foto usuario">
-                            
+            HTML;
+                            echo "<img src='data:image/jpg;base64,".$foto."'>";
+            echo <<<HTML
                             <div class="envios">
                                 <form action="./edicionUsuario.php" method="POST"><input type="submit" value="Editar"></form> 
                                 <form method="POST"><input type="submit" name="logout" value="Logout"></form>

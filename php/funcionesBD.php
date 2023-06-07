@@ -5,7 +5,7 @@
     ini_set('display_errors', 1);
     $db = null;
 
-    $dev = "m";
+    $dev = "r";
 
     //Conexion a la BD
     function ConectarBD(){
@@ -268,14 +268,18 @@
 
             if($res){
                 $resultado = mysqli_fetch_assoc($res);
+                echo count($resultado);
             }
             else{
                 echo "<p>Error en la consulta</p>";
                 echo "<p>Código: ".mysqli_errno($db)."</p>";
                 echo "<p>Mensaje: ".mysqli_error($db)."</p>";
             }
+            mysqli_free_result($res);
         }
-        mysqli_free_result($res);
+        else{
+            echo "No se ha ejecutado";
+        }
         mysqli_stmt_close($prep);
 
         return $resultado ? $resultado : null;
@@ -318,8 +322,8 @@
                 echo "<p>Código: ".mysqli_errno($db)."</p>";
                 echo "<p>Mensaje: ".mysqli_error($db)."</p>";
             }
+            mysqli_free_result($res);
         }
-        mysqli_free_result($res);
         mysqli_stmt_close($prep);
 
         return $resultado ? $resultado : null;
@@ -333,11 +337,9 @@
         //echo "La contraseña de la bD es: " . $datos["clave"] . " ";
         //echo $contra;
         if($datos["clave"] == $contra){
-            echo "Contraseña correcta";
             return true;
         }
         else{
-            echo "fallaste";
             return false;
         }
 
