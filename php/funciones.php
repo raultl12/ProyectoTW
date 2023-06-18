@@ -193,12 +193,17 @@
 
                         <label for="comment"><img src="../img/comment.png" alt="comentar"></label>
                         <input type="submit" name="comment" id="comment">
-
+        HTML;
+        if(getSession("tipoCliente") != "anonimo"){
+            echo <<<HTML
                         <a href="./editarIncidencia.php"><img src="../img/editar.png" alt=""></a>
-
+                
                         <label for="eliminar"><img src="../img/basura.png" alt="eliminar"></label>
                         <input type="submit" name="eliminar" id="eliminar">
                     </form>
+            HTML;
+        }
+        echo <<<HTML
                 </div>
             </div>
         HTML;
