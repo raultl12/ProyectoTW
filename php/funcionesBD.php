@@ -258,17 +258,21 @@
     function ObtenerFotosIncidencia($inci){
         $resultado = null;
         global $db;
-        //$consulta = "SELECT email FROM Publica WHERE idIncidencia=?";
-        $consulta = "SELECT foto FROM Foto WHERE id=(SELECT idFoto FROM Tiene WHERE idIncidencia=?)";
+
+        $idsFotos = null;
+        $consulta = "SELECT idFoto FROM Tiene WHERE idIncidencia=?";
         $prep = mysqli_prepare($db, $consulta);
         mysqli_stmt_bind_param($prep,'i', $inci);
-
+        
         if(mysqli_stmt_execute($prep)){
             $res = mysqli_stmt_get_result($prep);
-
+            
             if($res){
-                $resultado = mysqli_fetch_assoc($res);
-                echo count($resultado);
+                while($idFoto = mysqli_fetch_assoc($res)){
+                    $idsFotos[] = $idFoto["idFoto"];
+                    echo $idFoto["idFoto"];
+
+                }
             }
             else{
                 echo "<p>Error en la consulta</p>";
@@ -281,6 +285,21 @@
             echo "No se ha ejecutado";
         }
         mysqli_stmt_close($prep);
+        
+        //Ya obtenidos los ids de las fotos de la incidencia, almacenados en idsFotos
+        //Hacer la consulta para obtener las fotos
+
+        if($idsFotos){
+            foreach($idsFotos as $id){
+                $res = mysqli_query($db, "SELECT foto FROM Foto WHERE id=$id");
+                if($res){
+                    while($foto = mysqli_fetch_assoc($res)){
+                        $resultado[] = $foto["foto"];
+    
+                    }
+                }
+            }
+        }
 
         return $resultado ? $resultado : null;
     }

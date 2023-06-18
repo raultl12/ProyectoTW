@@ -152,10 +152,8 @@
         HTML;
                         if($fotos){
                             foreach($fotos as $foto){
-                                foreach($foto as $f){
-                                    $imagen = base64_encode($f);
-                                    echo "<img src='data:image/jpg;base64,".$imagen."'>";
-                                }
+                                $imagen = base64_encode($foto);
+                                echo "<img src='data:image/jpg;base64,".$imagen."'>";
                             }
                         }
                         else{
