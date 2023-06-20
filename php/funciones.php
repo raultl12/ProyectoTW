@@ -21,7 +21,17 @@
     }
 
     function getSession($nombreVariable){
-        if(isset($_SESSION[$nombreVariable])) return $_SESSION[$nombreVariable];
+        if(isset($_SESSION[$nombreVariable])){
+            return $_SESSION[$nombreVariable];  
+        }
+        else{
+            return null;
+        }
+    }
+
+    function Recargar(){
+        header("Location: ".$_SERVER['PHP_SELF']);
+        exit();
     }
 
     /************************************************************************************************************** */
@@ -89,7 +99,7 @@
         HTML;
 
         switch($tipoUsuario){
-            case "miembro":
+            case "colaborador":
                 echo <<<HTML
                     <li><a href="./index.php">Ver incidencias</a></li>
                     <li><a href="./nuevaIncidencia.php">Nueva incidencia</a></li>
@@ -227,45 +237,55 @@
 
     function MostrarAside(){
         $correcto = false;
+        $datos = null;
+        $error = false;
+        $errorText = "Error en email o contraseña. Si no tienes cuenta solicita una a un administrador";
 
-        if (isset($_POST['logout']))
-            setSession('logged', false);
+        if (isset($_POST['logout'])){
+            /*setSession('logged', false);
+            setSession("tipoCliente", "anonimo");*/
+            session_unset();
+            Recargar();
+        }
+        else if(getSession("logged")){
+            $datos = ObtenerDatosUsuario(getSession("currentUser"));
+        }
+        else if (isset($_POST['login'])){
 
-        else if (isset($_POST['login']) or getSession("logged")){
-            //$email = getSession('actualUser');
+            //Validar mail
+            $email = htmlentities($_POST['email']);
+            $email = filter_var($email, FILTER_VALIDATE_EMAIL) ? filter_var($email, FILTER_VALIDATE_EMAIL) : null;
 
-            if (isset($_POST['login'])){
-                $email = htmlentities($_POST['email']);
-                $email = filter_var($email, FILTER_VALIDATE_EMAIL);
-                
+            if($email == null){
+                $error = true;
+            }
+
+            if(!$error){
                 $contrasena = htmlentities($_POST['clave']);
                 $correcto = ComprobarUsuario($email, $contrasena);
-
-                
-                //echo " ". $email . " " . $contrasena . " ";
-
+    
                 if($correcto){
-                    setSession('actualUser', $email);
+                    setSession('currentUser', $email);
                     setSession('logged', true);
                     $datos = ObtenerDatosUsuario($email);
-        
-                    $nombre = $datos['nombre'];
-                    $rol = $datos['rol'];
-                    $foto = base64_encode($datos['foto']);
+                    setSession("tipoCliente", $datos["rol"]);
+                    Recargar();
                 }
                 else{
-                    echo "No te has logueado bien";
+                    $error = true;
                 }
-
             }
+            
 
         }
         else{
-            $logged = false;
-            setSession('logged', false);
+            session_unset();
         }
 
         if ($correcto or getSession("logged")){
+            $nombre = $datos["nombre"];
+            $rol = $datos["rol"];
+            $foto = base64_encode($datos['foto']);
             echo <<<HTML
                     <aside>
                         <div class="usuario-aside">
@@ -281,7 +301,6 @@
                         </div>
             HTML;
         }
-
         else{
             echo <<<HTML
                     <aside>
@@ -295,6 +314,11 @@
 
                                 <input type="submit" name="login" value="Log In">
                             </form>
+            HTML;
+            if($error){
+                echo "<p style=\"color: red;\">$errorText</p>";
+            }
+            echo <<<HTML
                         </div>
             HTML;
         }
@@ -303,13 +327,13 @@
         // Sintaxis: (numero) nombre
         // funcion de la base de datos pa sacar esta wea
 
-        $top1_quejas = null;
-        $top2_quejas = null;
-        $top3_quejas = null;
+        $top1_quejas = 0;
+        $top2_quejas = 0;
+        $top3_quejas = 0;
 
-        $top1_opinion = null;
-        $top2_opinion = null;
-        $top3_opinion = null;
+        $top1_opinion = 0;
+        $top2_opinion = 0;
+        $top3_opinion = 0;
 
         echo <<<HTML
 
@@ -340,23 +364,30 @@
 
     function MostrarContenidoIncidencias(){
         $incidencias = ObtenerTodasIncidencias();
-        foreach($incidencias as $i){
+        /*foreach($incidencias as $i){
             echo $i;
             echo "<br>";
-        }
+        }*/
         echo <<<HTML
             <div class="contenido">
                 <main>
         HTML;
 
-        MostrarFormularioBusqueda();
+        if($incidencias){
+            MostrarFormularioBusqueda();
+        }
+        else{
+            echo "<h2>Todavia no hay incidencias</h2>";
+        }
 
         echo <<<HTML
                     <section>
         HTML;
         
-        foreach($incidencias as $inci){
-            MostrarIncidencia($inci);
+        if($incidencias){
+            foreach($incidencias as $inci){
+                MostrarIncidencia($inci);
+            }
         }
         
 
@@ -522,13 +553,13 @@
     function MostrarContenidoEdicionUsuario($tipoUsuario, $desactivado, $nuevo){
         // GET BD
         if ($nuevo == false){
-            $datos = ObtenerDatosUsuario(getSession('actualUser'));
+            $datos = ObtenerDatosUsuario(getSession('currentUser'));
 
-            $foto = $datos['foto'];
+            $foto = base64_encode($datos['foto']);
             $nombre = $datos['nombre'];                   
             $apellidos = $datos['apellidos'];
             $email = $datos['email'];
-            $passw1 = $datos['clave'];
+            $passw1 = "";
             $passw2 = "";
             $direccion = $datos['direccion'];
             $telefono = $datos['tlf'];
@@ -575,11 +606,11 @@
             <h2>$titulo usuario</h2>
             <form action="$ruta" method="POST">
                 <div class="foto">
-                    <label>Foto: </label>
-                    <img src="$foto" alt="Imagen de usuario">
-
+        HTML;
+                    echo "<img src='data:image/jpg;base64,".$foto."'>";
+        echo <<<HTML
                     <div class="nuevo">
-                        <label for="seleccionar">Añadir imágen</label>
+                        <label for="seleccionar">Añadir/Cambiar imágen</label>
                         <input type="file" name="photo-selected" id="seleccionar" $desactivado>
                     </div>
                 </div>
@@ -651,14 +682,19 @@
 
     function MostrarCambiosExito($nuevo){
         // En teoría no hay que sanearlos ya que vienen del sticky y ahi ya estan saneados
-        if ($nuevo) InsertarUsuario($_POST['email'], $_POST['nombre'], $_POST['apellidos'], $_POST['passwd1'], $_POST['dir'], $_POST['telf'], $_POST['rol'], $_POST['estado'], $_POST['photo-selected']);
+        if ($nuevo) {
+            InsertarUsuario($_POST['email'], $_POST['nombre'], $_POST['apellidos'], $_POST['passwd1'], $_POST['dir'], $_POST['telf'], $_POST['rol'], $_POST['estado'], $_POST['photo-selected']);
+        }
+        else{
+            ActualizarUsuario($_POST['email'], $_POST['nombre'], $_POST['apellidos'], $_POST['passwd1'], $_POST['dir'], $_POST['telf'], $_POST['rol'], $_POST['estado'], $_POST['photo-selected']);
+            echo <<<HTML
+                <p style="text-align: center; font-weight: bold; font-size: 25px;">Se han modificado los datos del usuario</p>
+                <p style="text-align: center; font-size: 15px;">Redirigiendo a página principal...</p>
+            HTML;
+    
+            header('Refresh: 5; URL=./index.php');
+        }
 
-        echo <<<HTML
-            <p style="text-align: center; font-weight: bold; font-size: 25px;">Se han modificado los datos del usuario</p>
-            <p style="text-align: center; font-size: 15px;">Redirigiendo a página principal...</p>
-        HTML;
-
-        header('Refresh: 5; URL=./index.php');
     }
 
 

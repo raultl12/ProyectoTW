@@ -349,13 +349,8 @@
     }
 
     function ComprobarUsuario($email, $contra){
-        //$hash = password_hash($contra, PASSWORD_DEFAULT);
-        //echo " ".  $email . " ";
         $datos = ObtenerDatosUsuario($email);
-        //echo " " . $datos["email"] . " ";
-        //echo "La contraseña de la bD es: " . $datos["clave"] . " ";
-        //echo $contra;
-        if($datos["clave"] == $contra){
+        if(password_verify($contra, $datos["clave"])){
             return true;
         }
         else{
@@ -364,8 +359,28 @@
 
     }
 
-    ConectarBD();
-    ObtenerDatosUsuario("raultlopez@correo.ugr.es");
+    function ActualizarUsuario($email, $nombre, $apellidos, $clave, $direccion, $tlf, $rol, $estado, $foto){
+        global $db;
+        $consulta = "UPDATE Usuario SET nombre = $nombre, apellidos = $apellidos, clave = $clave, direccion = $direccion, 
+        tlf = $tlf, rol = $rol, estado = $estado, foto = $foto WHERE email = $email;";
+
+        if(mysqli_query($db, $consulta)){
+
+            echo "actualizado correctamente";
+        }
+        else{
+            echo "<p>Error en la insercion</p>";
+            echo "<p>Código: ".mysqli_errno($db)."</p>";
+            echo "<p>Mensaje: ".mysqli_error($db)."</p>";
+        }
+        
+    }
+
+    ConectarBD();/*
+    $contra = "1234"; //-->Es la contraseña del usuario raul $2y$10$qsArjeEi./DEGX3kucloGOED1szvDlOy3Om8/iaRJCqgCzQtFs/fK
+    $cifrada = password_hash($contra, PASSWORD_BCRYPT, ['salt' => $salt]);
+    echo $cifrada;*/
+    //ObtenerDatosUsuario("raultlopez@correo.ugr.es");
     //InsertarIncidencia("mi calle", "farola rota", "farola", "irresoluble", "Se han roto las farolas bobis", 0, 0);
     //ObtenerDatosIncidencia(1);
     //ObtenerTodasIncidencias();

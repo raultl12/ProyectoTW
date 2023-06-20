@@ -20,7 +20,6 @@
         MostrarContenidoEdicionUsuario("tipoCliente", "disabled", false);
         setcookie('correcto', true);
     }
-
     else{
         MostrarContenidoEdicionUsuario("tipoCliente", "", false);
     }
