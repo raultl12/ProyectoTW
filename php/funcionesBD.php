@@ -5,7 +5,7 @@
     ini_set('display_errors', 1);
     $db = null;
 
-    $dev = "r";
+    $dev = "m";
 
     //Conexion a la BD
     function ConectarBD(){
@@ -356,7 +356,6 @@
         else{
             return false;
         }
-
     }
 
     function ActualizarUsuario($email, $nombre, $apellidos, $clave, $direccion, $tlf, $rol, $estado, $foto){

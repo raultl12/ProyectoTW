@@ -57,7 +57,8 @@ input:focus{
     transition: background-color 0.3s ease-in-out;
 }
 
-/************ INPUT *************/
+/************ INPUT **************/
+/************ SELECT *************/
 
 select{
     background-color: #292F36;
@@ -83,6 +84,7 @@ select option{
     font-weight: bold;
 }
 
+/************ SELECT *************/
 
 h1, h2{
     color: #F7FFF7;
@@ -202,6 +204,8 @@ aside form{
 
 aside img{
     max-width: 10rem;
+    border-radius: 100px;
+    margin-bottom: 1rem;
 }
 
 aside h3{

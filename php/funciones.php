@@ -251,7 +251,6 @@
             $datos = ObtenerDatosUsuario(getSession("currentUser"));
         }
         else if (isset($_POST['login'])){
-
             //Validar mail
             $email = htmlentities($_POST['email']);
             $email = filter_var($email, FILTER_VALIDATE_EMAIL) ? filter_var($email, FILTER_VALIDATE_EMAIL) : null;
@@ -570,7 +569,7 @@
 
         // HACER STICKY
         if ($desactivado == "disabled"){
-            $foto = $_POST['photo-selected'];
+            $foto = $_FILES['photo-selected'];
             $nombre = htmlentities($_POST['nombre']);
             $apellidos = htmlentities($_POST['apellidos']);
 
@@ -586,7 +585,7 @@
             $direccion = htmlentities($_POST['dir']);
             $patron_tlf = "/^\d{9}$/";
             $telefono = htmlentities($_POST['telf']);
-            $telefono = preg_match($patron_tlf, $telefono);
+            if(preg_match($patron_tlf, $telefono)) $telefono;
 
             if ($tipoUsuario == "administrador"){ // No se si ira así bien
                 $rol = $_POST['rol'];
