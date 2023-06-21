@@ -549,12 +549,13 @@
         echo "<h2>No tienes permiso para estar aqui</h2>";
     }
 
-    function MostrarContenidoEdicionUsuario($tipoUsuario, $desactivado, $nuevo){
+    function MostrarContenidoEdicionUsuario($tipoUsuario, $desactivado, $nuevo, $numeroPost, $post, $files){
         // GET BD
-        if ($nuevo == false){
+        if ($nuevo == false and $desactivado != "readonly"){
             $datos = ObtenerDatosUsuario(getSession('currentUser'));
 
             $foto = base64_encode($datos['foto']);
+            $foto_nombre = $foto;
             $nombre = $datos['nombre'];                   
             $apellidos = $datos['apellidos'];
             $email = $datos['email'];
@@ -568,29 +569,29 @@
 
 
         // HACER STICKY
-        if ($desactivado == "disabled"){
-            $foto = $_FILES['photo-selected'];
-            $nombre = htmlentities($_POST['nombre']);
-            $apellidos = htmlentities($_POST['apellidos']);
+        
+        if ($desactivado == "readonly"){
+            $foto = base64_encode(file_get_contents($files['photo-selected']['tmp_name']));
+            $foto_nombre = $files['photo-selected']['name'];
+            $nombre = htmlentities($post['nombre']);
+            $apellidos = htmlentities($post['apellidos']);
 
-            $email = htmlentities($_POST['email']);
+            $email = htmlentities($post['email']);
             $email = filter_var($email, FILTER_VALIDATE_EMAIL);
 
-            $passw1 = htmlentities($_POST['passw1']);
-            $passw2 = htmlentities($_POST['passw2']);
+            $passw1 = htmlentities($post['passw1']);
+            $passw2 = htmlentities($post['passw2']);
             if ($passw1 != $passw2){
                 $hacer_algo = "";  // No se en verdad pero seguro que hay que hacer algo
             }
             
-            $direccion = htmlentities($_POST['dir']);
+            $direccion = htmlentities($post['dir']);
             $patron_tlf = "/^\d{9}$/";
-            $telefono = htmlentities($_POST['telf']);
-            if(preg_match($patron_tlf, $telefono)) $telefono;
+            $telefono = htmlentities($post['telf']);
+            if(preg_match($patron_tlf, $telefono)) $telefono; // Completar else en caso de que haya error
 
-            if ($tipoUsuario == "administrador"){ // No se si ira así bien
-                $rol = $_POST['rol'];
-                $estado = $_POST['estado'];
-            }
+            $rol = $post['rol'];
+            $estado = $post['estado'];
         }
 
         $titulo = "Edición de";
@@ -603,14 +604,14 @@
 
         echo <<<HTML
             <h2>$titulo usuario</h2>
-            <form action="$ruta" method="POST">
+            <form action="$ruta" method="POST" enctype='multipart/form-data'>
                 <div class="foto">
         HTML;
                     echo "<img src='data:image/jpg;base64,".$foto."'>";
         echo <<<HTML
                     <div class="nuevo">
                         <label for="seleccionar">Añadir/Cambiar imágen</label>
-                        <input type="file" name="photo-selected" id="seleccionar" $desactivado>
+                        <input type="file" name="photo-selected" id="seleccionar" value=$foto_nombre $desactivado>
                     </div>
                 </div>
 
@@ -645,6 +646,7 @@
                         <label>Telefono:</label>
                         <input type="tel" placeholder="123456789" name="telf" value="$telefono" $desactivado>
                     </div>
+                    <input type="hidden" name="numeroPost" value="$numeroPost"/>
         HTML;
 
         // si es un usuario nuevo o si se esta modificando
@@ -665,6 +667,12 @@
                     </div>
             HTML;
         }
+        else{
+            echo <<<HTML
+                    <input type="hidden" name="rol" value="$rol"/>
+                    <input type="hidden" name="estado" value="$estado"/>
+            HTML;
+        }
 
         $valor = "modificación";
         if ($nuevo == true) $valor = "creación";
@@ -679,14 +687,14 @@
         HTML;
     }
 
-    function MostrarCambiosExito($nuevo){
+    function MostrarCambiosExito($nuevo, $post, $files){
         // En teoría no hay que sanearlos ya que vienen del sticky y ahi ya estan saneados
         if ($nuevo) {
-            InsertarUsuario($_POST['email'], $_POST['nombre'], $_POST['apellidos'], $_POST['passwd1'], $_POST['dir'], $_POST['telf'], $_POST['rol'], $_POST['estado'], $_POST['photo-selected']);
+            InsertarUsuario($post['email'], $post['nombre'], $post['apellidos'], $post['passw1'], $post['dir'], $post['telf'], $post['rol'], $post['estado'], $post['photo-selected']);
         }
         else{
-            print_r($_POST);
-            ActualizarUsuario($_POST['email'], $_POST['nombre'], $_POST['apellidos'], $_POST['passwd1'], $_POST['dir'], $_POST['telf'], $_POST['rol'], $_POST['estado'], $_POST['photo-selected']);
+            print_r($post);
+            ActualizarUsuario($post['email'], $post['nombre'], $post['apellidos'], $post['passw1'], $post['dir'], $post['telf'], $post['rol'], $post['estado'], $files['photo-selected']['tmp_name']);
             echo <<<HTML
                 <p style="text-align: center; font-weight: bold; font-size: 25px;">Se han modificado los datos del usuario</p>
                 <p style="text-align: center; font-size: 15px;">Redirigiendo a página principal...</p>

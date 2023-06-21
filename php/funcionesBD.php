@@ -5,7 +5,7 @@
     ini_set('display_errors', 1);
     $db = null;
 
-    $dev = "r";
+    $dev = "m";
 
     //Conexion a la BD
     function ConectarBD(){
@@ -360,7 +360,7 @@
 
     function ActualizarUsuario($email, $nombre, $apellidos, $clave, $direccion, $tlf, $rol, $estado, $foto){
         global $db;
-        $consulta = "UPDATE Usuario SET nombre = $nombre, apellidos = '$apellidos', clave = '$clave', direccion = '$direccion', 
+        $consulta = "UPDATE Usuario SET nombre = '$nombre', apellidos = '$apellidos', clave = '$clave', direccion = '$direccion', 
         tlf = '$tlf', rol = '$rol', estado = '$estado', foto = '$foto' WHERE email = '$email';";
 
         if(mysqli_query($db, $consulta)){
