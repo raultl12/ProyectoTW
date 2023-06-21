@@ -617,7 +617,7 @@
                 <div class="inputs">
                     <div>
                         <label>Nombre:</label>
-                        <input type="text" placeholder="Introduzca su nombre" name="nombre" value="$nombre" $desactivado>
+                        <input type="text" placeholder="Introduzca su nombre" name="nombre" value=$nombre $desactivado>
                     </div>
 
                     <div>
@@ -685,6 +685,7 @@
             InsertarUsuario($_POST['email'], $_POST['nombre'], $_POST['apellidos'], $_POST['passwd1'], $_POST['dir'], $_POST['telf'], $_POST['rol'], $_POST['estado'], $_POST['photo-selected']);
         }
         else{
+            print_r($_POST);
             ActualizarUsuario($_POST['email'], $_POST['nombre'], $_POST['apellidos'], $_POST['passwd1'], $_POST['dir'], $_POST['telf'], $_POST['rol'], $_POST['estado'], $_POST['photo-selected']);
             echo <<<HTML
                 <p style="text-align: center; font-weight: bold; font-size: 25px;">Se han modificado los datos del usuario</p>

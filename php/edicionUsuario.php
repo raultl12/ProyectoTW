@@ -10,7 +10,16 @@
     // hacer algunos requiered
     // si no se rellena alguno se queda como antes
     // las contraseñas deben coincidir
+/*
+    if(isset($_POST["hidden"])){
+        if($_POST["hidder"] == "2"){
+            MostrarCambiosExito(false);
+        }
+        else{
 
+        }
+    }*/
+/*
     if (isset($_COOKIE['correcto']) and $_COOKIE == true){
         setcookie('correcto', false);
         MostrarCambiosExito(false);
@@ -21,9 +30,9 @@
         setcookie('correcto', true);
     }
     else{
-        MostrarContenidoEdicionUsuario("tipoCliente", "", false);
+        MostrarContenidoEdicionUsuario("tipoCliente", "", false, null);
     }
-
+*/
     MostrarFooter();
     HTMLFin();
 ?>
