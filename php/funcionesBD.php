@@ -139,14 +139,15 @@
             ('$lugar', '$titulo', '$palClave', '$estado', '$descripcion', '$valPos', '$valNeg')";
 
         if(mysqli_query($db, $consulta)){
-
-            echo "insertado correctamente";
+            echo "Insertado correctamente";
         }
         else{
             echo "<p>Error en la insercion</p>";
             echo "<p>Código: ".mysqli_errno($db)."</p>";
             echo "<p>Mensaje: ".mysqli_error($db)."</p>";
         }
+
+        return mysqli_insert_id($db);
     }
 
     function ObtenerUsuarioPublica($idInci){
@@ -305,23 +306,122 @@
     }
 
     function votoPositivo($id){
-        // aumentar un voto positivo en una incidencia
+        global $db;
+        $consulta = "SELECT valPos FROM Incidencia where id = $id";
+
+        if ($res = mysqli_query($db, $consulta)){
+            $resultado = mysqli_fetch_assoc($res);
+            $valor = (int) $resultado['valPos'];
+
+            $valor += 1;
+
+            $act = "UPDATE Incidencia SET valPos = $valor WHERE id = $id";
+            if (mysqli_query($db, $act)){
+                echo "Insertado correctamente";
+            }
+            else{
+                echo "<p>Error en la insercion</p>";
+                echo "<p>Código: ".mysqli_errno($db)."</p>";
+                echo "<p>Mensaje: ".mysqli_error($db)."</p>";
+            }
+        }
+        else{
+            echo "<p>Error en la extraccion</p>";
+            echo "<p>Código: ".mysqli_errno($db)."</p>";
+            echo "<p>Mensaje: ".mysqli_error($db)."</p>";
+        }
     }
 
     function votoNegativo($id){
-        // aumentar un voto negativo en una incidencia
+        global $db;
+        $consulta = "SELECT valNeg FROM Incidencia where id = $id";
+
+        if ($res = mysqli_query($db, $consulta)){
+            $resultado = mysqli_fetch_assoc($res);
+            $valor = (int) $resultado['valPos'];
+
+            $valor += 1;
+
+            $act = "UPDATE Incidencia SET valNeg = $valor WHERE id = $id";
+            if (mysqli_query($db, $act)){
+                echo "Insertado correctamente";
+            }
+            else{
+                echo "<p>Error en la insercion</p>";
+                echo "<p>Código: ".mysqli_errno($db)."</p>";
+                echo "<p>Mensaje: ".mysqli_error($db)."</p>";
+            }
+        }
+        else{
+            echo "<p>Error en la extraccion</p>";
+            echo "<p>Código: ".mysqli_errno($db)."</p>";
+            echo "<p>Mensaje: ".mysqli_error($db)."</p>";
+        }
     }
 
     function eliminarIncidencia($id){
-        // eliminar incidencia entera
+        global $db;
+        $consulta = "DELETE FROM Incidencias WHERE id = $id";
+
+        if (mysqli_query($db, $consulta)){
+            echo "Insertado correctamente";
+        }
+        else{
+            echo "<p>Error en el borrado</p>";
+            echo "<p>Código: ".mysqli_errno($db)."</p>";
+            echo "<p>Mensaje: ".mysqli_error($db)."</p>";
+        }
     }
 
-    function nuevoComentario($id){
-        // añadir un comentario a una incidencia
+    function nuevoComentario($id, $comentario){
+        global $db;
+        $consulta = "INSERT INTO Comentario(descripcion) VALUES '$comentario'";
+
+        if (mysqli_query($db, $consulta)){
+            $idCom = $db->lastInsertId();
+            $consulta = "INSERT INTO Contiene(idComentario, idIncidencia) VALUES ('$idCom', '$id')";
+
+            if (mysqli_query($db, $consulta)){
+                echo "Insertado correctamente";
+            }
+            else{
+                echo "<p>Error en la primera insercion</p>";
+                echo "<p>Código: ".mysqli_errno($db)."</p>";
+                echo "<p>Mensaje: ".mysqli_error($db)."</p>";
+            }
+        }
+        else{
+            echo "<p>Error en la segunda insercion</p>";
+            echo "<p>Código: ".mysqli_errno($db)."</p>";
+            echo "<p>Mensaje: ".mysqli_error($db)."</p>";
+        }
     }
 
-    function InsertarImagenesIncidencia($id){
-        // añadir un array de imagenes a una INIcidencia
+    function InsertarImagenesIncidencia($id, $imagenes){
+        global $db;
+
+        foreach ($imagenes as $imagen){
+            $consulta = "INSERT INTO Foto(foto) VALUES '$imagen'";
+
+            if (mysqli_query($db, $consulta)){
+                $idPic = $db->lastInsertId();
+                $consulta = "INSERT INTO Tiene (idFoto, idIncidencia) VALUES ('$idPic', '$id')";
+
+                if (mysqli_query($db, $consulta)){
+                    echo "Insertado correctamente";
+                }
+                else{
+                    echo "<p>Error en la primera insercion</p>";
+                    echo "<p>Código: ".mysqli_errno($db)."</p>";
+                    echo "<p>Mensaje: ".mysqli_error($db)."</p>";
+                }
+            }
+            else{
+                echo "<p>Error en la segunda insercion</p>";
+                echo "<p>Código: ".mysqli_errno($db)."</p>";
+                echo "<p>Mensaje: ".mysqli_error($db)."</p>";
+            }
+        }
     }
 
     function ObtenerDatosLog(){
@@ -375,7 +475,8 @@
         
     }
 
-    ConectarBD();/*
+    ConectarBD();
+    /*mysqli_close($db); (?)
     $contra = "1234"; //-->Es la contraseña del usuario raul $2y$10$qsArjeEi./DEGX3kucloGOED1szvDlOy3Om8/iaRJCqgCzQtFs/fK
     $cifrada = password_hash($contra, PASSWORD_BCRYPT, ['salt' => $salt]);
     echo $cifrada;*/

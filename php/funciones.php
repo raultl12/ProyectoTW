@@ -218,10 +218,10 @@
             </div>
         HTML;
 
-        if (isset($_POST['plus'])) votoPositivo(null);
-        if (isset($_POST['minus'])) votoNegativo(null);
-        if (isset($_POST['eliminar'])) eliminarIncidencia(null);
-        if (isset($_POST['nuevoComentario'])) nuevoComentario(null);
+        if (isset($_POST['plus'])) votoPositivo($datos['id']);
+        if (isset($_POST['minus'])) votoNegativo($datos['id']);
+        if (isset($_POST['eliminar'])) eliminarIncidencia($datos['id']);
+        if (isset($_POST['nuevoComentario'])) nuevoComentario($datos['id'], $_POST['textoComentario']);
     }
 
     function comentarIncidencia(){
@@ -790,7 +790,7 @@
         }
     }
 
-    function MostrarEditarIncidencia(){
+    function MostrarEditarIncidencia($post, $files){
         echo <<<HTML
             <h2>Editar incidencia</h2>
 
@@ -799,9 +799,9 @@
 
                 <form action="" method="POST">
                     <input type="radio" name="estado" value="pendiente"><label>Pendiente</label>
-                    <input type="radio" name="estado" value="comprobada"><label>Comprobada</label>
+                    <input type="radio" name="estado" value="Comprobada"><label>Comprobada</label>
                     <input type="radio" name="estado" value="Tramitada"><label>Tramitada</label>
-                    <input type="radio" name="estado" value="irresoluble"><label>Irresoluble</label>
+                    <input type="radio" name="estado" value="Irresoluble"><label>Irresoluble</label>
                     <input type="radio" name="estado" value="Resuelta"><label>Resuelta</label>
 
                     <div class="envio"><input type="submit" value="Modificar estado"></div>
@@ -832,14 +832,14 @@
         HTML;
 
         if (isset($_POST['editarNueva'])){
-            $titulo = htmlentities($_POST['titulo']);
-            $desc = htmlentities($_POST['descripcion']);
-            $lugar = htmlentities($_POST['lugar']);
-            $palClave = htmlentities($_POST['palClave']);
-            $estado = $_POST['estado'];
-            $fotos = $_FILES['fotos'];
+            $titulo = htmlentities($post['titulo']);
+            $desc = htmlentities($post['descripcion']);
+            $lugar = htmlentities($post['lugar']);
+            $palClave = htmlentities($post['palClave']);
+            $estado = $post['estado'];
+            $fotos = $files['fotos'];
 
-            $id = InsertarIncidencia($lugar, $titulo, $palClave, "pediente", $desc, 0, 0);
+            $id = InsertarIncidencia($lugar, $titulo, $palClave, $estado, $desc, 0, 0);
             InsertarImagenesIncidencia($id, $fotos);
         }
     }

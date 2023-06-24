@@ -6,7 +6,7 @@
     HTMLInicio();
     MostrarHeader(getSession("tipoCliente"));
     
-    MostrarEditarIncidencia();
+    MostrarEditarIncidencia($_POST, $_FILES);
 
     MostrarFooter();
     HTMLFin();
