@@ -154,9 +154,7 @@ a:hover{
 }
 
 footer{
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    text-align: center;
     border-top: 1px solid #4ECDC4;
     margin-top: 2rem;
     padding: 1rem;
@@ -166,6 +164,7 @@ h3{
     color: #f7f7f7;
     background-color: #2875703f;
     padding: 10px;
+    word-wrap: break-word;
 }
 
 textarea{

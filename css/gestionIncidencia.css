@@ -34,6 +34,7 @@
 
 .nueva-incidencia input, textarea{
     max-width: 80%;
+    padding-left: 5px;
 }
 
 .estado{

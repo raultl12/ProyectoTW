@@ -83,11 +83,10 @@
     function MostrarFooter(){
         echo <<<HTML
         <footer>
-            <p>
-                Creado por <a href="https://www.linkedin.com/in/ra%C3%BAl-torrente-l%C3%B3pez-6b9760250/">Raúl Torrente López</a>
-                y <a href="https://www.linkedin.com/in/mario-pi%C3%B1a-munera-465116225/">Mario Piña Munera</a>
-            </p>
-            <p>Poner documentación cuando esté</p>
+            <p>Creado por <a href="https://www.linkedin.com/in/ra%C3%BAl-torrente-l%C3%B3pez-6b9760250/">Raúl Torrente López</a>
+               y <a href="https://www.linkedin.com/in/mario-pi%C3%B1a-munera-465116225/">Mario Piña Munera</a></p>
+
+            <p><a href="../doc/doc.pdf">Documentación</a></p>
         </footer>
         HTML;
     }
@@ -550,7 +549,14 @@
     }
 
     function MostrarContenidoEdicionUsuario($tipoUsuario, $desactivado, $nuevo, $numeroPost, $post, $files){
-        // GET BD
+        $titulo = "Edición de";
+        $ruta = "./edicionUsuario.php";
+
+        if ($nuevo == true){
+            $titulo = "Nuevo";
+            $ruta = "./aniadirUsuario.php";
+        }
+
         if ($nuevo == false and $desactivado != "readonly"){
             $datos = ObtenerDatosUsuario(getSession('currentUser'));
 
@@ -568,10 +574,9 @@
         }
 
 
-        // HACER STICKY
-        
+        // Sticky        
         if ($desactivado == "readonly"){
-            $foto = base64_encode(file_get_contents($files['photo-selected']['tmp_name']));
+            //$foto = base64_encode(file_get_contents($files['photo-selected']['tmp_name']));
             $foto_nombre = $files['photo-selected']['name'];
             $nombre = htmlentities($post['nombre']);
             $apellidos = htmlentities($post['apellidos']);
@@ -582,7 +587,7 @@
             $passw1 = htmlentities($post['passw1']);
             $passw2 = htmlentities($post['passw2']);
             if ($passw1 != $passw2){
-                $hacer_algo = "";  // No se en verdad pero seguro que hay que hacer algo
+                header('Location: ' . $ruta);
             }
             
             $direccion = htmlentities($post['dir']);
@@ -592,14 +597,6 @@
 
             $rol = $post['rol'];
             $estado = $post['estado'];
-        }
-
-        $titulo = "Edición de";
-        $ruta = "./edicionUsuario.php";
-
-        if ($nuevo == true){
-            $titulo = "Nuevo";
-            $ruta = "./aniadirUsuario.php";
         }
 
         echo <<<HTML
@@ -634,7 +631,7 @@
                     <div>
                         <label>Clave:</label>
                         <input type="password" placeholder="Nueva contraseña" name="passw1" value="$passw1" $desactivado>  
-                        <input type="password" placeholder="Repita nueva contraseña" name="passw2" $desactivado> 
+                        <input type="password" placeholder="Repita nueva contraseña" name="passw2" value="$passw2" $desactivado> 
                     </div>
 
                     <div>
@@ -765,7 +762,7 @@
 
                     <div>
                         <label>Palabras clave:</label>
-                        <input type="text" value="palClave" required>
+                        <input type="text" name="palClave" required>
                     </div>
 
         HTML;
@@ -786,7 +783,7 @@
             $lugar = htmlentities($_POST['lugar']);
             $palClave = htmlentities($_POST['palClave']);
 
-            InsertarIncidencia($lugar, $titulo, $palClave, null, $desc, 0, 0);
+            InsertarIncidencia($lugar, $titulo, $palClave, "pendiente", $desc, 0, 0);
         }
     }
 

@@ -62,6 +62,12 @@ form{
     background-color: #292F36;
 }
 
+.inputs input[readonly]{
+    transition: none;
+    background-color: #4ecdc570;
+    
+}
+
 .enviar{
     display: flex;
     justify-content: center;

@@ -338,7 +338,7 @@
 
         if ($res = mysqli_query($db, $consulta)){
             $resultado = mysqli_fetch_assoc($res);
-            $valor = (int) $resultado['valPos'];
+            $valor = (int) $resultado['valNeg'];
 
             $valor += 1;
 
@@ -361,7 +361,7 @@
 
     function eliminarIncidencia($id){
         global $db;
-        $consulta = "DELETE FROM Incidencias WHERE id = $id";
+        $consulta = "DELETE FROM Incidencia WHERE id = $id";
 
         if (mysqli_query($db, $consulta)){
             echo "Insertado correctamente";
@@ -427,6 +427,7 @@
     function ObtenerDatosLog(){
         $resultado = null;
         global $db;
+
         $consulta = "SELECT * FROM Log";
         $prep = mysqli_prepare($db, $consulta);
 
@@ -450,7 +451,8 @@
 
     function ComprobarUsuario($email, $contra){
         $datos = ObtenerDatosUsuario($email);
-        if(password_verify($contra, $datos["clave"])){
+        $cifrada = password_hash($datos["clave"], PASSWORD_BCRYPT);
+        if(password_verify($contra, $cifrada)){
             return true;
         }
         else{
@@ -460,6 +462,8 @@
 
     function ActualizarUsuario($email, $nombre, $apellidos, $clave, $direccion, $tlf, $rol, $estado, $foto){
         global $db;
+        //$clave = password_hash($clave, PASSWORD_BCRYPT);
+
         $consulta = "UPDATE Usuario SET nombre = '$nombre', apellidos = '$apellidos', clave = '$clave', direccion = '$direccion', 
         tlf = '$tlf', rol = '$rol', estado = '$estado', foto = '$foto' WHERE email = '$email';";
 
