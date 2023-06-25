@@ -1,41 +1,43 @@
 
 <?php
 
+    // Inclusión de las funciones que modifican la base de datos
     require_once 'funcionesBD.php';
 
     /************************************************************************************************************** */
     // Variables globales
 
+    // Guarda el usuario actual
     $actualUser = null;
+
+    // Guarda el tipo del usuario actual
     $tipoCliente = "anonimo";
+
+    // Guarda si estamos logeados
     $logged = false;
 
-    /*$actualUser = getSession('actualUser');     // identificador del usuario actual loggeado
-    $tipoCliente = getSession('tipoCliente');   // tipo del usuario actual loggeado
-    $logged = getSession('logged');             // hay un usuario loggeado ?*/
-
     /************************************************************************************************************** */
-    // Codigo de guardado y obtencion de sesion
+    // Guardado de variables de sesión
     function setSession($nombreVariable, $valor){
         $_SESSION[$nombreVariable] = $valor;
     }
 
+    // Obtención de variables de sesión
     function getSession($nombreVariable){
         if(isset($_SESSION[$nombreVariable])){
             return $_SESSION[$nombreVariable];  
         }
-        else{
-            return null;
-        }
+        else return null;
     }
 
+    // Función de recarga de la página
     function Recargar(){
-        header("Location: ".$_SERVER['PHP_SELF']);
+        header("Location: ". $_SERVER['PHP_SELF']);
         exit();
     }
 
     /************************************************************************************************************** */
-    // Codigo de generación de HTML
+    // Generación de HTML inicial e inclusión de archivos CSS
     function HTMLInicio(){
         echo <<<HTML
         <!DOCTYPE html>
@@ -58,6 +60,7 @@
         HTML;
     }
 
+    // Generación de HTML final
     function HTMLFin(){
         echo <<<HTML
             </body>
@@ -65,6 +68,7 @@
         HTML;
     }
 
+    // Generación del Header
     function MostrarHeader($tipoUsuario){
         echo <<<HTML
         <header>
@@ -80,6 +84,7 @@
         MostrarNav($tipoUsuario);
     }
 
+    // Generación del Footer
     function MostrarFooter(){
         echo <<<HTML
         <footer>
@@ -91,12 +96,14 @@
         HTML;
     }
 
+    // Generación de la barra de navegación
     function MostrarNav($tipoUsuario){
         echo <<<HTML
             <nav>
                 <ul>
         HTML;
 
+        // Dependiendo del tipo de usuario se muestra una información u otra
         switch($tipoUsuario){
             case "colaborador":
                 echo <<<HTML
@@ -128,17 +135,22 @@
         HTML;
     }
 
+    // Mostrar una incidencia determinada por el id
     function MostrarIncidencia($inci){
+        // Obtener la información
         $datos = ObtenerDatosIncidencia($inci);
-        //Obtener el usuario que la ha publicado
+
+        // Obtener el usuario que la ha publicado
         $usuarioPublica = ObtenerUsuarioPublica($inci);
         $nombreUsuario = $usuarioPublica["nombre"] . " " . $usuarioPublica["apellidos"];
 
-        //Obtener los comentarios
-        //Obtener el numero total de comentarios (los ids)
+        // Obtener los comentarios
         $comentarios = ObtenerTodosComentarios($inci);
+
+        // Obtener las imágenes
         $fotos = ObtenerFotosIncidencia($inci);
 
+        // Mostrar datos
         echo <<<HTML
             <div class="incidencia">
                 <h2>{$datos["titulo"]}</h2>
@@ -176,6 +188,7 @@
                 <div class="seccionComentarios">
         HTML;
 
+        // Mostrar comentarios
         if($comentarios){
             foreach($comentarios as $c){
                 MostrarComentario($c);
@@ -185,9 +198,17 @@
             echo "<h2>Todavia no hay comentarios</h2>";
         }
 
-        if (isset($_POST['comment']))
-            comentarIncidencia();
+        // Acciones especificas para cada incidencia
+        $plus = "plus" . $inci;
+        $minus = "minus" . $inci;
+        $comment = "comment" . $inci;
+        $eliminar = "eliminar" . $inci;
 
+        // Mostrar formulario para añadir un comentario
+        if (isset($_POST[$comment]))
+            comentarIncidencia($inci);
+
+        // Mostrar opciones de acción
         echo <<<HTML
 
                 </div>
@@ -195,20 +216,22 @@
                 <div class="iconos">
                     <form method="post" action="./index.php">
                         <label for="plus"><img src="../img/plus.png" alt="+"></label>
-                        <input type="submit" name="plus" id="plus">
+                        <input type="submit" name="$plus" id="plus">
                         
                         <label for="minus"><img src="../img/minus.png" alt="-"></label>
-                        <input type="submit" name="minus" id="minus">
+                        <input type="submit" name="$minus" id="minus">
 
                         <label for="comment"><img src="../img/comment.png" alt="comentar"></label>
-                        <input type="submit" name="comment" id="comment">
+                        <input type="submit" name="$comment" id="comment">
         HTML;
-        if(getSession("tipoCliente") != "anonimo"){
+
+        // Mostrar opciones de accion asociadas al administrador
+        if(getSession("tipoCliente") == "administrador"){
             echo <<<HTML
                         <a href="./editarIncidencia.php"><img src="../img/editar.png" alt=""></a>
                 
                         <label for="eliminar"><img src="../img/basura.png" alt="eliminar"></label>
-                        <input type="submit" name="eliminar" id="eliminar">
+                        <input type="submit" name="$eliminar" id="eliminar">
                     </form>
             HTML;
         }
@@ -217,51 +240,64 @@
             </div>
         HTML;
 
-        if (isset($_POST['plus'])) votoPositivo($datos['id']);
-        if (isset($_POST['minus'])) votoNegativo($datos['id']);
-        if (isset($_POST['eliminar'])) eliminarIncidencia($datos['id']);
-        if (isset($_POST['nuevoComentario'])) nuevoComentario($datos['id'], $_POST['textoComentario']);
+        $nuevoCom = "nuevoComentario . $inci";
+
+        // Actuar según la acción seleccionada
+        if (isset($_POST[$plus])) votoPositivo($inci);
+        if (isset($_POST[$minus])) votoNegativo($inci);
+        if (isset($_POST[$nuevoCom])) nuevoComentario($inci, $_POST[$nuevoCom]);
+        if (isset($_POST[$eliminar])) eliminarIncidencia($inci);
     }
 
-    function comentarIncidencia(){
+    // Añadir un comentario a una incidencia
+    function comentarIncidencia($inci){
+        // Acción especifica para la incidencia concreta
+        $nuevoCom = "nuevoComentario" . $inci;
+
         echo <<<HTML
             <div class="nuevoComentario">
                 <form action="./index.php" method="post">
                     <textarea name="textoComentario"></textarea>
-                    <input type="submit" name="nuevoComentario" value="Enviar comentario">
+                    <input type="submit" name="$nuevoCom" value="Enviar comentario">
                 </form>
             </div>
         HTML;
     }
 
+    // Mostrar la barra lateral
     function MostrarAside(){
         $correcto = false;
         $datos = null;
         $error = false;
         $errorText = "Error en email o contraseña. Si no tienes cuenta solicita una a un administrador";
 
+        // Desloguear
         if (isset($_POST['logout'])){
             /*setSession('logged', false);
             setSession("tipoCliente", "anonimo");*/
             session_unset();
             Recargar();
         }
+
+        // Obtener datos del usuario logeado
         else if(getSession("logged")){
             $datos = ObtenerDatosUsuario(getSession("currentUser"));
         }
+
+        // Comprobar intento de logeo
         else if (isset($_POST['login'])){
             //Validar mail
             $email = htmlentities($_POST['email']);
             $email = filter_var($email, FILTER_VALIDATE_EMAIL) ? filter_var($email, FILTER_VALIDATE_EMAIL) : null;
 
-            if($email == null){
-                $error = true;
-            }
+            if($email == null) $error = true;
 
+            // Comprobar contraseña
             if(!$error){
                 $contrasena = htmlentities($_POST['clave']);
                 $correcto = ComprobarUsuario($email, $contrasena);
     
+                // Establecer datos
                 if($correcto){
                     setSession('currentUser', $email);
                     setSession('logged', true);
@@ -269,28 +305,30 @@
                     setSession("tipoCliente", $datos["rol"]);
                     Recargar();
                 }
-                else{
-                    $error = true;
-                }
+
+                else $error = true;
             }
             
 
         }
-        else{
-            session_unset();
-        }
 
+        else session_unset(); // Mantener sesion sin iniciar
+
+        // Mostrar datos del usuario
         if ($correcto or getSession("logged")){
             $nombre = $datos["nombre"];
             $rol = $datos["rol"];
             $foto = base64_encode($datos['foto']);
+
             echo <<<HTML
                     <aside>
                         <div class="usuario-aside">
                             <p>$nombre</p>
                             <p>$rol</p>
             HTML;
-                            echo "<img src='data:image/jpg;base64,".$foto."'>";
+
+            echo "<img src='data:image/jpg;base64," . $foto . "'>";
+
             echo <<<HTML
                             <div class="envios">
                                 <form action="./edicionUsuario.php" method="POST"><input type="submit" value="Editar"></form> 
@@ -299,6 +337,8 @@
                         </div>
             HTML;
         }
+
+        // Mostrar formulario de inicio de sesión
         else{
             echo <<<HTML
                     <aside>
@@ -313,26 +353,25 @@
                                 <input type="submit" name="login" value="Log In">
                             </form>
             HTML;
-            if($error){
-                echo "<p style=\"color: red;\">$errorText</p>";
-            }
+
+            // Mostrar error si algo no funciono correctamente
+            if($error) echo "<p style=\"color: red;\">$errorText</p>";
+
             echo <<<HTML
                         </div>
             HTML;
         }
 
-        // Pedir a la base de datos
-        // Sintaxis: (numero) nombre
-        // funcion de la base de datos pa sacar esta wea
+        // Variables del ranking
+        $top1_quejas = Ranking(true, 1);
+        $top2_quejas = Ranking(true, 2);
+        $top3_quejas = Ranking(true, 3);
 
-        $top1_quejas = 0;
-        $top2_quejas = 0;
-        $top3_quejas = 0;
+        $top1_opinion = Ranking(false, 1);
+        $top2_opinion = Ranking(false, 2);
+        $top3_opinion = Ranking(false, 3);
 
-        $top1_opinion = 0;
-        $top2_opinion = 0;
-        $top3_opinion = 0;
-
+        // Mostrar ambas tablas
         echo <<<HTML
 
                     <div class="rankings">
@@ -360,17 +399,15 @@
         HTML;
     }
 
+    // Página de incidencias
     function MostrarContenidoIncidencias(){
         $incidencias = ObtenerTodasIncidencias();
-        /*foreach($incidencias as $i){
-            echo $i;
-            echo "<br>";
-        }*/
         echo <<<HTML
             <div class="contenido">
                 <main>
         HTML;
 
+        // Filtro de busqueda
         if($incidencias){
             MostrarFormularioBusqueda();
         }
@@ -382,21 +419,24 @@
                     <section>
         HTML;
         
+        // Mostrar cada incidencia
         if($incidencias){
             foreach($incidencias as $inci){
                 MostrarIncidencia($inci);
             }
         }
         
-
         echo <<<HTML
                     </section>
             </main>
         HTML;
+
+        // Mostrar barra lateral
         MostrarAside();
         echo "</div>";
     }
 
+    // Mostrar filtro de busqueda de incidencias
     function MostrarFormularioBusqueda(){
         echo <<<HTML
             <section class="formBusqueda">
@@ -452,6 +492,7 @@
             </section>
         HTML;
 
+        // Establecer las opciones elegidas
         if (isset($_POST['busqueda'])){
             setSession('ordenar', $_POST['ordenar']);
             setSession('textoBusqueda', $_POST['buscarTexto']);
@@ -461,6 +502,7 @@
         }
     }
 
+    // Gestión de los usuarios registrados
     function MostrarContenidoGestionUsuarios(){
         echo <<<HTML
             <div class="menu">
@@ -477,86 +519,58 @@
             </div>
         HTML;
 
+        // Listar los usuarios registrados
         if ($_POST['listado']){
             echo <<<HTML
                 <div class="listado">
-                    <div class="usuario">
-                        <img src="../img/basura.png" alt="fotoPerfil">
-
-                        <div class="infoUsuario">
-                            <label>Usuario: <em>Mario Piña Munera</em> Email: <em>mariomario</em></label>
-                            <label>Direccion: <em>su casa</em></label>
-                            <label>Rol: <em>administrador</em> Estado: <em>Activo</em></label>
-                        </div>
-
-                        <div class="botones">
-                            <img src="../img/editar.png" alt="editar">
-                            <img src="../img/basura.png" alt="borrar">
-                        </div>
-                    </div>
-
-                    <div class="usuario">
-                        <img src="../img/basura.png" alt="fotoPerfil">
-
-                        <div class="infoUsuario">
-                            <label>Usuario: <em>Mario Piña Munera</em> Email: <em>mariomario</em></label>
-                            <label>Direccion: <em>su casa</em></label>
-                            <label>Rol: <em>administrador</em> Estado: <em>Activo</em></label>
-                        </div>
-
-                        <div class="botones">
-                            <img src="../img/editar.png" alt="editar">
-                            <img src="../img/basura.png" alt="borrar">
-                        </div>
-                    </div>
-
-                    <div class="usuario">
-                        <img src="../img/basura.png" alt="fotoPerfil">
-
-                        <div class="infoUsuario">
-                            <label>Usuario: <em>Mario Piña Munera</em> Email: <em>mariomario</em></label>
-                            <label>Direccion: <em>su casa</em></label>
-                            <label>Rol: <em>administrador</em> Estado: <em>Activo</em></label>
-                        </div>
-
-                        <div class="botones">
-                            <img src="../img/editar.png" alt="editar">
-                            <img src="../img/basura.png" alt="borrar">
-                        </div>
-                    </div>
-
-                    <div class="usuario">
-                        <img src="../img/basura.png" alt="fotoPerfil">
-
-                        <div class="infoUsuario">
-                            <label>Usuario: <em>Mario Piña Munera</em> Email: <em>mariomario</em></label>
-                            <label>Direccion: <em>su casa</em></label>
-                            <label>Rol: <em>administrador</em> Estado: <em>Activo</em></label>
-                        </div>
-
-                        <div class="botones">
-                            <img src="../img/editar.png" alt="editar">
-                            <img src="../img/basura.png" alt="borrar">
-                        </div>
-                    </div>
-                </div>
+                    
             HTML;
+
+            $usuarios = MostrarUsuariosRegistrados();
+
+            foreach ($usuarios as $usuario){
+                $foto = $usuario['foto'];
+                
+                echo <<<HTML
+                        <div class="usuario">
+                            <img src=$foto alt="fotoPerfil">
+
+                            <div class="infoUsuario">
+                                <label>Usuario: <em>{$usuario['nombre']}/em> Email: <em>{$usuario['email']}</em></label>
+                                <label>Direccion: <em>{$usuario['direccion']}</em></label>
+                                <label>Rol: <em>{$usuario['rol']}</em> Estado: <em>{$usuario['estado']}</em></label>
+                            </div>
+                            
+                            <div class="botones">
+                                <img src="../img/editar.png" alt="editar">
+                                <img src="../img/basura.png" alt="borrar">
+                            </div>
+                        </div>
+                    </div>
+                HTML;
+            }
         }
     }
 
+    // Mostrar error de aceso
     function MostrarAccesoDenegado(){
         echo "<h2>No tienes permiso para estar aqui</h2>";
     }
 
+    // Edición o adición de un usuario
     function MostrarContenidoEdicionUsuario($tipoUsuario, $desactivado, $nuevo, $numeroPost, $post, $files){
+        // Elección de información según se edite o se añada
         $titulo = "Edición de";
         $ruta = "./edicionUsuario.php";
+        $valor = "modificación"; // Botón de envio
 
         if ($nuevo == true){
             $titulo = "Nuevo";
             $ruta = "./aniadirUsuario.php";
+            $valor = "creación";
         }
 
+        // Obbtener datos del usuario a editar
         if ($nuevo == false and $desactivado != "readonly"){
             $datos = ObtenerDatosUsuario(getSession('currentUser'));
 
@@ -574,7 +588,7 @@
         }
 
 
-        // Sticky        
+        // Mantener datos para confirmación (sticky)   
         if ($desactivado == "readonly"){
             //$foto = base64_encode(file_get_contents($files['photo-selected']['tmp_name']));
             $foto_nombre = $files['photo-selected']['name'];
@@ -599,12 +613,15 @@
             $estado = $post['estado'];
         }
 
+        // Mostrar formulario
         echo <<<HTML
             <h2>$titulo usuario</h2>
             <form action="$ruta" method="POST" enctype='multipart/form-data'>
                 <div class="foto">
         HTML;
-                    echo "<img src='data:image/jpg;base64,".$foto."'>";
+
+        echo "<img src='data:image/jpg;base64," . $foto . "'>";
+
         echo <<<HTML
                     <div class="nuevo">
                         <label for="seleccionar">Añadir/Cambiar imágen</label>
@@ -646,7 +663,7 @@
                     <input type="hidden" name="numeroPost" value="$numeroPost"/>
         HTML;
 
-        // si es un usuario nuevo o si se esta modificando
+        // Si es un usuario nuevo o si se esta modificando por el administrador
         if ($nuevo == true or ($nuevo == false and $tipoUsuario == "administrador")){
             echo <<<HTML
                     <div class="selectores">
@@ -664,6 +681,8 @@
                     </div>
             HTML;
         }
+
+        // Si no, enviarlo en oculto
         else{
             echo <<<HTML
                     <input type="hidden" name="rol" value="$rol"/>
@@ -671,9 +690,7 @@
             HTML;
         }
 
-        $valor = "modificación";
-        if ($nuevo == true) $valor = "creación";
-
+        // Boton de envio
         echo <<<HTML
                 </div>
 
@@ -684,6 +701,7 @@
         HTML;
     }
 
+    // Realizar acciones de usuario y mostrar mensaje
     function MostrarCambiosExito($nuevo, $post, $files){
         // En teoría no hay que sanearlos ya que vienen del sticky y ahi ya estan saneados
         if ($nuevo) {
@@ -699,10 +717,10 @@
     
             header('Refresh: 5; URL=./index.php');
         }
-
     }
 
 
+    // Mostrar registro
     function MostrarLog(){
         $datos = ObtenerDatosLog();
 
@@ -736,6 +754,7 @@
         }
     }
 
+    // Añadir o editar una incidencia
     function MostrarAniadirIncidencia($editar){
         if ($editar == false)
             echo "<h2>Nueva incidencia</h2>";
@@ -777,6 +796,7 @@
             </div>
         HTML;
 
+        // Filtrar datos y crear entrada en la bd
         if (isset($_POST['enviarNueva'])){
             $titulo = htmlentities($_POST['titulo']);
             $desc = htmlentities($_POST['descripcion']);
@@ -787,6 +807,8 @@
         }
     }
 
+
+    // Editar incidencia
     function MostrarEditarIncidencia($post, $files){
         echo <<<HTML
             <h2>Editar incidencia</h2>
@@ -807,8 +829,10 @@
 
         HTML;
 
+        // Mostrar contenido de edicion
         MostrarAniadirIncidencia(true);
 
+        // Adición de fotografías
         echo <<<HTML
             <div class="imagenes">
                 <h3>Fotografías adjuntas:</h3>
@@ -828,6 +852,7 @@
             </div>
         HTML;
 
+        // Realizar decisiones y filtrar datos
         if (isset($_POST['editarNueva'])){
             $titulo = htmlentities($post['titulo']);
             $desc = htmlentities($post['descripcion']);
@@ -841,11 +866,15 @@
         }
     }
 
+    // Mostrar comentarios
     function MostrarComentario($com){
-        //Obtener todo el contenido del comentario
+        // Obtener todo el contenido del comentario
         $comentario = ObtenerComentario($com);
+
+        // Obtener autor
         $nombreUsuario = ObtenerUsuarioComentario($com);
         $nombreUsuario = $nombreUsuario["nombre"] . " " . $nombreUsuario["apellidos"];
+
         echo <<<HTML
                     <div class="comentario">
                         <div class="infoComentario">
@@ -858,6 +887,7 @@
         HTML;
     }
 
+    // Mostrar incidencias pertenecientes a un mismo usuario
     function MostrarContenidoMisIncidencias(){
         $incidencias = ObtenerTodasIncidencias();
 
@@ -867,11 +897,11 @@
                     MostrarIncidencia($inci);
             }
         }
+
         else{
             echo <<<HTML
                 <h2 id="sinDatos">No hay incidencias</h2>
             HTML;
         }
     }
-
 ?>

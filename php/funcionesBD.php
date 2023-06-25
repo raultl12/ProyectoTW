@@ -76,6 +76,7 @@
     function ObtenerTodasIncidencias(){
         $resultado = null;
         $cont = 0;
+
         global $db;
         $consulta = "SELECT id FROM Incidencia";
         $prep = mysqli_prepare($db, $consulta);
@@ -104,6 +105,7 @@
     function ObtenerDatosIncidencia($id){
         $resultado = null;
         global $db;
+
         $consulta = "SELECT * FROM Incidencia WHERE id=?";
         $prep = mysqli_prepare($db, $consulta);
         mysqli_stmt_bind_param($prep,'i', $id);
@@ -477,6 +479,71 @@
             echo "<p>Mensaje: ".mysqli_error($db)."</p>";
         }
         
+    }
+
+    function Ranking($quejas, $pos){
+        global $db;
+
+        if ($quejas){
+            $consulta = "SELECT email, COUNT(*) AS total
+                     FROM Publica
+                     GROUP BY email
+                     ORDER BY total DESC
+                     LIMIT " . ($pos - 1) . ", 1";
+        }
+        else{
+            $consulta = "SELECT email, COUNT(*) AS total
+                     FROM Escribe
+                     GROUP BY email
+                     ORDER BY total DESC
+                     LIMIT " . ($pos - 1) . ", 1";
+        }
+
+        $resultado = mysqli_query($db, $consulta);
+
+        if (mysqli_num_rows($resultado) > 0) {
+            $res = mysqli_fetch_assoc($resultado);
+
+            $email = $res['email'];
+            $consulta = "SELECT nombre FROM Usuario WHERE email = '$email'";
+            $resultado = mysqli_query($db, $consulta);
+            $res1 = mysqli_fetch_assoc($resultado);
+
+            return "(" . $res['total'] . ") " . $res1['nombre'];
+        }
+        else{
+            return "Sin datos aún";
+        }
+    }
+
+    function MostrarUsuariosRegistrados(){
+        $resultado = null;
+        global $db;
+        $consulta = "SELECT * FROM Usuarios";
+
+        $prep = mysqli_prepare($db, $consulta);
+        mysqli_stmt_bind_param($prep,'i', $idInci);
+
+        if(mysqli_stmt_execute($prep)){
+            $res = mysqli_stmt_get_result($prep);
+
+            if($res){
+                while ($row = mysqli_fetch_assoc($res)) {
+                    foreach ($row as $r){
+                        $resultado[] = $r;
+                        echo $r;
+                    }
+                }
+            }
+            else{
+                echo "<p>Error en la consulta</p>";
+                echo "<p>Código: ".mysqli_errno($db)."</p>";
+                echo "<p>Mensaje: ".mysqli_error($db)."</p>";
+            }
+            mysqli_free_result($res);
+        }
+        mysqli_stmt_close($prep);
+        return $resultado ? $resultado : null;
     }
 
     ConectarBD();
