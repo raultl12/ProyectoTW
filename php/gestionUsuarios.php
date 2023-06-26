@@ -5,12 +5,15 @@
 
     HTMLInicio();
     MostrarHeader(getSession("tipoCliente"));
+
+    // Mostrar contenido
     if(getSession("tipoCliente") != "administrador"){
         MostrarAccesoDenegado();
     }
     else{
         MostrarContenidoGestionUsuarios($_POST);
     }
+
     MostrarFooter();
     HTMLFin();
 ?>

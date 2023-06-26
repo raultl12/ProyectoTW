@@ -7,6 +7,8 @@
 
     $dev = "m";
 
+    /************************************************************************************************************** */
+
     //Conexion a la BD
     function ConectarBD(){
         global $db;
@@ -115,12 +117,6 @@
             
             if($res){
                 $resultado = mysqli_fetch_assoc($res);
-                /*while ($row = mysqli_fetch_assoc($res)) {
-                    foreach ($row as $r){
-                        echo $r;
-                        echo "<br>";
-                    }
-                }*/
             }
             else{
                 echo "<p>Error en la consulta</p>";
@@ -153,10 +149,11 @@
         return mysqli_insert_id($db);
     }
 
+    // Obtener autro de incidencia
     function ObtenerUsuarioPublica($idInci){
         $resultado = null;
         global $db;
-        //$consulta = "SELECT email FROM Publica WHERE idIncidencia=?";
+
         $consulta = "SELECT nombre, apellidos FROM Usuario WHERE email=(SELECT email FROM Publica WHERE idIncidencia=?)";
         $prep = mysqli_prepare($db, $consulta);
         mysqli_stmt_bind_param($prep,'i', $idInci);
@@ -178,6 +175,8 @@
 
         return $resultado ? $resultado : null;
     }
+
+    // Obtener comentarios de una incidencia
     function ObtenerTodosComentarios($idInci){
         $resultado = null;
         global $db;
@@ -208,6 +207,7 @@
         return $resultado ? $resultado : null;
     }
 
+    // Obtener comentario
     function ObtenerComentario($id){
         $resultado = null;
         global $db;
@@ -233,6 +233,7 @@
         return $resultado ? $resultado : null;
     }
 
+    // Obtener autor de un comentario
     function ObtenerUsuarioComentario($idCom){
         $resultado = null;
         global $db;
@@ -259,6 +260,7 @@
         return $resultado ? $resultado : null;
     }
 
+    // Obtener fotos de una incidencia
     function ObtenerFotosIncidencia($inci){
         $resultado = null;
         global $db;
@@ -308,6 +310,7 @@
         return $resultado ? $resultado : null;
     }
 
+    // Añadir un voto positivo a una incidencia
     function votoPositivo($id){
         global $db;
         $consulta = "SELECT valPos FROM Incidencia where id = $id";
@@ -335,6 +338,7 @@
         }
     }
 
+    // Añadir un voto negativo a una incidencia
     function votoNegativo($id){
         global $db;
         $consulta = "SELECT valNeg FROM Incidencia where id = $id";
@@ -362,6 +366,7 @@
         }
     }
 
+    // Eliminar una incidencia
     function eliminarIncidencia($id){
         global $db;
         $consulta = "DELETE FROM Incidencia WHERE id = $id";
@@ -376,6 +381,7 @@
         }
     }
 
+    // Añadir un comentario a una incidencia
     function nuevoComentario($id, $comentario){
         global $db;
         $consulta = "INSERT INTO Comentario(descripcion) VALUES '$comentario'";
@@ -403,6 +409,7 @@
         GuardarLog("El usuario $usuario ha comentado en una incidencia");
     }
 
+    // Insertar imagenes en una incidencia
     function InsertarImagenesIncidencia($id, $imagenes){
         global $db;
 
@@ -430,6 +437,7 @@
         }
     }
 
+    // Obtener datos del registro
     function ObtenerDatosLog(){
         $resultado = null;
         global $db;
@@ -455,6 +463,7 @@
         return $resultado ? $resultado : null;
     }
 
+    // Añadir datos al registro
     function GuardarLog($texto){
         global $db;
 
@@ -471,6 +480,7 @@
         }
     }
 
+    // Verifica un usuario que intenta logearse
     function ComprobarUsuario($email, $contra){
         $datos = ObtenerDatosUsuario($email);
         if(password_verify($contra, $datos['clave'])){
@@ -483,6 +493,7 @@
         }
     }
 
+    // Edita los datos de un usuario
     function ActualizarUsuario($email, $nombre, $apellidos, $clave, $direccion, $tlf, $rol, $estado, $foto){
         global $db;
         $clave = password_hash($clave, PASSWORD_BCRYPT);
@@ -502,6 +513,7 @@
         
     }
 
+    // Extrae información para el relleno del ranking
     function Ranking($quejas, $pos){
         global $db;
 
@@ -537,6 +549,7 @@
         }
     }
 
+    // Obtener los usuarios guardados
     function MostrarUsuariosRegistrados(){
         $resultado = null;
         global $db;
@@ -562,6 +575,7 @@
         return $resultado ? $resultado : null;
     }
 
+    // Eliminar un usuario
     function BorrarUsuario($email){
         global $db;
         $consulta = "DELETE FROM Usuario WHERE email = '$email'";
@@ -577,6 +591,7 @@
     }
 
     ConectarBD();
+
     /*mysqli_close($db); (?)
     $contra = "1234"; //-->Es la contraseña del usuario raul 
     $cifrada = password_hash($contra, PASSWORD_BCRYPT);

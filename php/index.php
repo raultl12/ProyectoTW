@@ -1,17 +1,18 @@
 <?php
     require_once 'funciones.php';
 
+    // Iniciar un usuario anonimo si no hay registro
     session_start();
     if(getSession("tipoCliente") == null){
         setSession("tipoCliente", "anonimo");
     }
 
-    //Borra todas las variables de sesion
-    //session_unset();
-
     HTMLInicio();
     MostrarHeader(getSession("tipoCliente"));
+
+    // Mostrar contenido
     MostrarContenidoIncidencias();
+    
     MostrarFooter();
     HTMLFin();
 ?>

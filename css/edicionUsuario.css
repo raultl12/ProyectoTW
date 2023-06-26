@@ -65,7 +65,6 @@ form{
 .inputs input[readonly]{
     transition: none;
     background-color: #4ecdc570;
-    
 }
 
 .enviar{

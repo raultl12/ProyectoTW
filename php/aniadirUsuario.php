@@ -6,7 +6,8 @@
     HTMLInicio();
     MostrarHeader(getSession("tipoCliente"));
 
-    if(isset($_POST['numeroPost']) and $_POST['numeroPost'] == "uno"){ // Primera confiramacion
+    // Mostrar contenido
+    if(isset($_POST['numeroPost']) and $_POST['numeroPost'] == "uno"){ // Confiramacion
         $post = new ArrayObject($_POST);
         $files = new ArrayObject($_FILES);
 

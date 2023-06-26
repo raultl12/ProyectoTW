@@ -5,7 +5,10 @@
 
     HTMLInicio();
     MostrarHeader(getSession("tipoCliente"));
+
+    // Mostrar contenido
     MostrarContenidoMisIncidencias();
+    
     MostrarFooter();
     HTMLFin();
 ?>
