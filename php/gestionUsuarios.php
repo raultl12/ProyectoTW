@@ -9,7 +9,7 @@
         MostrarAccesoDenegado();
     }
     else{
-        MostrarContenidoGestionUsuarios();
+        MostrarContenidoGestionUsuarios($_POST);
     }
     MostrarFooter();
     HTMLFin();
