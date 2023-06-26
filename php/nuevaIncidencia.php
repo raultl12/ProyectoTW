@@ -7,7 +7,7 @@
     MostrarHeader(getSession("tipoCliente"));
     
     // Mostrar contenido
-    MostrarAniadirIncidencia(false);
+    MostrarAniadirIncidencia(false, $_POST);
 
     MostrarFooter();
     HTMLFin();

@@ -137,15 +137,20 @@
             ('$lugar', '$titulo', '$palClave', '$estado', '$descripcion', '$valPos', '$valNeg')";
 
         if(mysqli_query($db, $consulta)){
-            echo "Insertado correctamente";
+            $id = mysqli_insert_id($db);
+            $usuario = getSession('currentUser');
+
+            $consulta = "INSERT INTO Publica(idIncidencia, email) VALUES ('$id', '$usuario')";
+
+            mysqli_query($db, $consulta);
+            GuardarLog("El usuario $usuario ha creado una incidencia");
         }
         else{
             echo "<p>Error en la insercion</p>";
             echo "<p>Código: ".mysqli_errno($db)."</p>";
             echo "<p>Mensaje: ".mysqli_error($db)."</p>";
-        }
-        $usuario = getSession('currentUser');
-        GuardarLog("El usuario $usuario ha creado una incidencia");
+        }        
+
         return mysqli_insert_id($db);
     }
 
@@ -211,6 +216,7 @@
     function ObtenerComentario($id){
         $resultado = null;
         global $db;
+
         $consulta = "SELECT * FROM Comentario where id=?";
 
         $prep = mysqli_prepare($db, $consulta);
@@ -237,7 +243,7 @@
     function ObtenerUsuarioComentario($idCom){
         $resultado = null;
         global $db;
-        //$consulta = "SELECT email FROM Publica WHERE idIncidencia=?";
+        
         $consulta = "SELECT nombre, apellidos FROM Usuario WHERE email=(SELECT email FROM Escribe WHERE idComentario=?)";
         $prep = mysqli_prepare($db, $consulta);
         mysqli_stmt_bind_param($prep,'i', $idCom);
@@ -384,29 +390,36 @@
     // Añadir un comentario a una incidencia
     function nuevoComentario($id, $comentario){
         global $db;
-        $consulta = "INSERT INTO Comentario(descripcion) VALUES '$comentario'";
+        $consulta = "INSERT INTO Comentario(descripcion) VALUES ('$comentario')";
 
         if (mysqli_query($db, $consulta)){
-            $idCom = $db->lastInsertId();
+            $idCom = mysqli_insert_id($db);
             $consulta = "INSERT INTO Contiene(idComentario, idIncidencia) VALUES ('$idCom', '$id')";
 
             if (mysqli_query($db, $consulta)){
-                echo "Insertado correctamente";
+                $usuario = getSession('currentUser');
+                $consulta = "INSERT INTO Escribe(idComentario, email) VALUES ('$idCom', '$usuario')";
+
+                if (mysqli_query($db, $consulta)){
+                    GuardarLog("El usuario $usuario ha comentado en una incidencia");
+                }
+                else{
+                    echo "<p>Error en la primera insercion</p>";
+                    echo "<p>Código: ".mysqli_errno($db)."</p>";
+                    echo "<p>Mensaje: ".mysqli_error($db)."</p>";
+                }
             }
             else{
-                echo "<p>Error en la primera insercion</p>";
+                echo "<p>Error en la segunda insercion</p>";
                 echo "<p>Código: ".mysqli_errno($db)."</p>";
                 echo "<p>Mensaje: ".mysqli_error($db)."</p>";
             }
         }
         else{
-            echo "<p>Error en la segunda insercion</p>";
+            echo "<p>Error en la tercera insercion</p>";
             echo "<p>Código: ".mysqli_errno($db)."</p>";
             echo "<p>Mensaje: ".mysqli_error($db)."</p>";
         }
-
-        $usuario = getSession('currentUser');
-        GuardarLog("El usuario $usuario ha comentado en una incidencia");
     }
 
     // Insertar imagenes en una incidencia
@@ -417,7 +430,7 @@
             $consulta = "INSERT INTO Foto(foto) VALUES '$imagen'";
 
             if (mysqli_query($db, $consulta)){
-                $idPic = $db->lastInsertId();
+                $idPic = mysqli_insert_id($db);
                 $consulta = "INSERT INTO Tiene (idFoto, idIncidencia) VALUES ('$idPic', '$id')";
 
                 if (mysqli_query($db, $consulta)){
@@ -538,11 +551,11 @@
             $res = mysqli_fetch_assoc($resultado);
 
             $email = $res['email'];
-            $consulta = "SELECT nombre FROM Usuario WHERE email = '$email'";
+            $consulta = "SELECT nombre, apellidos FROM Usuario WHERE email = '$email'";
             $resultado = mysqli_query($db, $consulta);
             $res1 = mysqli_fetch_assoc($resultado);
 
-            return "(" . $res['total'] . ") " . $res1['nombre'];
+            return "(" . $res['total'] . ") " . $res1['nombre'] . " " . $res1['apellidos'];
         }
         else{
             return "Sin datos aún";

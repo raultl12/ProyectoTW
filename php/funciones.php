@@ -136,7 +136,7 @@
     }
 
     // Mostrar una incidencia determinada por el id
-    function MostrarIncidencia($inci){
+    function MostrarIncidencia($inci, $post){
         // Obtener la información
         $datos = ObtenerDatosIncidencia($inci);
 
@@ -205,8 +205,7 @@
         $eliminar = "eliminar" . $inci;
 
         // Mostrar formulario para añadir un comentario
-        if (isset($_POST[$comment]))
-            comentarIncidencia($inci);
+        if (isset($post[$comment])) comentarIncidencia($inci);
 
         // Mostrar opciones de acción
         echo <<<HTML
@@ -243,10 +242,10 @@
         $nuevoCom = "nuevoComentario . $inci";
 
         // Actuar según la acción seleccionada
-        if (isset($_POST[$plus])) votoPositivo($inci);
-        if (isset($_POST[$minus])) votoNegativo($inci);
-        if (isset($_POST[$nuevoCom])) nuevoComentario($inci, $_POST[$nuevoCom]);
-        if (isset($_POST[$eliminar])) eliminarIncidencia($inci);
+        if (isset($post[$plus])) votoPositivo($inci);
+        if (isset($post[$minus])) votoNegativo($inci);
+        if (isset($post[$nuevoCom])) nuevoComentario($inci, $post['textoComentario']);
+        if (isset($post[$eliminar])) eliminarIncidencia($inci);
     }
 
     // Añadir un comentario a una incidencia
@@ -256,7 +255,7 @@
 
         echo <<<HTML
             <div class="nuevoComentario">
-                <form action="./index.php" method="post">
+                <form action="./index.php" method="POST">
                     <textarea name="textoComentario"></textarea>
                     <input type="submit" name="$nuevoCom" value="Enviar comentario">
                 </form>
@@ -402,7 +401,7 @@
     }
 
     // Página de incidencias
-    function MostrarContenidoIncidencias(){
+    function MostrarContenidoIncidencias($post){
         $incidencias = ObtenerTodasIncidencias();
         echo <<<HTML
             <div class="contenido">
@@ -424,7 +423,7 @@
         // Mostrar cada incidencia
         if($incidencias){
             foreach($incidencias as $inci){
-                MostrarIncidencia($inci);
+                MostrarIncidencia($inci, $post);
             }
         }
         
@@ -532,11 +531,12 @@
 
             foreach ($usuarios as $usuario){
                 $foto = $usuario[8];
+                $imagen = base64_encode($foto);
                 $delete = "delete" . $usuario[0];
                 
                 echo <<<HTML
                         <div class="usuario">
-                            <img src=$foto alt="fotoPerfil">
+                            <img src='data:image/jpg;base64,".$imagen."' alt="fotoPerfil">
 
                             <div class="infoUsuario">
                                 <label>Usuario: <em>{$usuario[1]} {$usuario[2]}</em> Email: <em>{$usuario[0]}</em></label>
@@ -768,7 +768,7 @@
     }
 
     // Añadir o editar una incidencia
-    function MostrarAniadirIncidencia($editar){
+    function MostrarAniadirIncidencia($editar, $post){
         if ($editar == false)
             echo "<h2>Nueva incidencia</h2>";
 
@@ -776,7 +776,7 @@
             <h3>Datos principales:</h3>
                 
             <div class="nueva-incidencia">
-                <form action="./" method="POST">
+                <form action="" method="POST">
                     <div>
                         <label>Titulo:</label>
                         <input type="text" name="titulo" required>
@@ -810,13 +810,14 @@
         HTML;
 
         // Filtrar datos y crear entrada en la bd
-        if (isset($_POST['enviarNueva'])){
-            $titulo = htmlentities($_POST['titulo']);
-            $desc = htmlentities($_POST['descripcion']);
-            $lugar = htmlentities($_POST['lugar']);
-            $palClave = htmlentities($_POST['palClave']);
+        if (isset($post['enviarNueva'])){
+            $titulo = htmlentities($post['titulo']);
+            $desc = htmlentities($post['descripcion']);
+            $lugar = htmlentities($post['lugar']);
+            $palClave = htmlentities($post['palClave']);
 
             InsertarIncidencia($lugar, $titulo, $palClave, "pendiente", $desc, 0, 0);
+            header('Refresh: 0; URL=./index.php');
         }
     }
 
@@ -843,7 +844,7 @@
         HTML;
 
         // Mostrar contenido de edicion
-        MostrarAniadirIncidencia(true);
+        MostrarAniadirIncidencia(true, $post);
 
         // Adición de fotografías
         echo <<<HTML
@@ -885,8 +886,12 @@
         $comentario = ObtenerComentario($com);
 
         // Obtener autor
-        $nombreUsuario = ObtenerUsuarioComentario($com);
-        $nombreUsuario = $nombreUsuario["nombre"] . " " . $nombreUsuario["apellidos"];
+        $nombreUsuario = ObtenerUsuarioComentario($comentario['id']);
+
+        if ($nombreUsuario)
+            $nombreUsuario = $nombreUsuario['nombre'] . " " . $nombreUsuario['apellidos'];
+        else
+            $nombreUsuario = "Anónimo";
 
         echo <<<HTML
                     <div class="comentario">
@@ -901,13 +906,13 @@
     }
 
     // Mostrar incidencias pertenecientes a un mismo usuario
-    function MostrarContenidoMisIncidencias(){
+    function MostrarContenidoMisIncidencias($post){
         $incidencias = ObtenerTodasIncidencias();
 
         if ($incidencias != null){
             foreach($incidencias as $inci){
                 if (getSession('actualUser') == ObtenerUsuarioPublica($inci))
-                    MostrarIncidencia($inci);
+                    MostrarIncidencia($inci, $post);
             }
         }
 

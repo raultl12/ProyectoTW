@@ -11,7 +11,7 @@
     MostrarHeader(getSession("tipoCliente"));
 
     // Mostrar contenido
-    MostrarContenidoIncidencias();
+    MostrarContenidoIncidencias($_POST);
     
     MostrarFooter();
     HTMLFin();
