@@ -275,6 +275,8 @@
         if (isset($_POST['logout'])){
             /*setSession('logged', false);
             setSession("tipoCliente", "anonimo");*/
+            $usuario = getSession('currentUser');
+            GuardarLog("El usuario $usuario ha cerrado sesion");
             session_unset();
             Recargar();
         }

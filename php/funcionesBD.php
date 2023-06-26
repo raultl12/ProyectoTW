@@ -5,7 +5,7 @@
     ini_set('display_errors', 1);
     $db = null;
 
-    $dev = "m";
+    $dev = "r";
 
     //Conexion a la BD
     function ConectarBD(){
@@ -451,20 +451,37 @@
         return $resultado ? $resultado : null;
     }
 
+    function GuardarLog($texto){
+        global $db;
+
+        $consulta = "INSERT INTO Log(evento) values ('$texto')";
+
+        if(mysqli_query($db, $consulta)){
+
+            echo "Intertado correctamente";
+        }
+        else{
+            echo "<p>Error en la insercion</p>";
+            echo "<p>Código: ".mysqli_errno($db)."</p>";
+            echo "<p>Mensaje: ".mysqli_error($db)."</p>";
+        }
+    }
+
     function ComprobarUsuario($email, $contra){
         $datos = ObtenerDatosUsuario($email);
-        $cifrada = password_hash($datos["clave"], PASSWORD_BCRYPT);
-        if(password_verify($contra, $cifrada)){
+        if(password_verify($contra, $datos['clave'])){
+            GuardarLog("El usuario $email ha iniciado sesion");
             return true;
         }
         else{
             return false;
+            GuardarLog("El usuario $email ha intentado inciar sesion sin éxito");
         }
     }
 
     function ActualizarUsuario($email, $nombre, $apellidos, $clave, $direccion, $tlf, $rol, $estado, $foto){
         global $db;
-        //$clave = password_hash($clave, PASSWORD_BCRYPT);
+        $clave = password_hash($clave, PASSWORD_BCRYPT);
 
         $consulta = "UPDATE Usuario SET nombre = '$nombre', apellidos = '$apellidos', clave = '$clave', direccion = '$direccion', 
         tlf = '$tlf', rol = '$rol', estado = '$estado', foto = '$foto' WHERE email = '$email';";
@@ -548,8 +565,8 @@
 
     ConectarBD();
     /*mysqli_close($db); (?)
-    $contra = "1234"; //-->Es la contraseña del usuario raul $2y$10$qsArjeEi./DEGX3kucloGOED1szvDlOy3Om8/iaRJCqgCzQtFs/fK
-    $cifrada = password_hash($contra, PASSWORD_BCRYPT, ['salt' => $salt]);
+    $contra = "1234"; //-->Es la contraseña del usuario raul 
+    $cifrada = password_hash($contra, PASSWORD_BCRYPT);
     echo $cifrada;*/
     //ObtenerDatosUsuario("raultlopez@correo.ugr.es");
     //InsertarIncidencia("mi calle", "farola rota", "farola", "irresoluble", "Se han roto las farolas bobis", 0, 0);
