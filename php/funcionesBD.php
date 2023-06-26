@@ -5,7 +5,7 @@
     ini_set('display_errors', 1);
     $db = null;
 
-    $dev = "r";
+    $dev = "m";
 
     //Conexion a la BD
     function ConectarBD(){
@@ -148,7 +148,8 @@
             echo "<p>Código: ".mysqli_errno($db)."</p>";
             echo "<p>Mensaje: ".mysqli_error($db)."</p>";
         }
-
+        $usuario = getSession('currentUser');
+        GuardarLog("El usuario $usuario ha creado una incidencia");
         return mysqli_insert_id($db);
     }
 
@@ -397,6 +398,9 @@
             echo "<p>Código: ".mysqli_errno($db)."</p>";
             echo "<p>Mensaje: ".mysqli_error($db)."</p>";
         }
+
+        $usuario = getSession('currentUser');
+        GuardarLog("El usuario $usuario ha comentado en una incidencia");
     }
 
     function InsertarImagenesIncidencia($id, $imagenes){
@@ -474,8 +478,8 @@
             return true;
         }
         else{
-            return false;
             GuardarLog("El usuario $email ha intentado inciar sesion sin éxito");
+            return false;
         }
     }
 
@@ -536,21 +540,15 @@
     function MostrarUsuariosRegistrados(){
         $resultado = null;
         global $db;
-        $consulta = "SELECT * FROM Usuarios";
 
+        $consulta = "SELECT * FROM Usuario";
         $prep = mysqli_prepare($db, $consulta);
-        mysqli_stmt_bind_param($prep,'i', $idInci);
 
         if(mysqli_stmt_execute($prep)){
             $res = mysqli_stmt_get_result($prep);
 
             if($res){
-                while ($row = mysqli_fetch_assoc($res)) {
-                    foreach ($row as $r){
-                        $resultado[] = $r;
-                        echo $r;
-                    }
-                }
+                $resultado = mysqli_fetch_all($res);
             }
             else{
                 echo "<p>Error en la consulta</p>";
@@ -560,7 +558,22 @@
             mysqli_free_result($res);
         }
         mysqli_stmt_close($prep);
+
         return $resultado ? $resultado : null;
+    }
+
+    function BorrarUsuario($email){
+        global $db;
+        $consulta = "DELETE FROM Usuario WHERE email = '$email'";
+
+        if (mysqli_query($db, $consulta)){
+            echo "borrado correctamente";
+        }
+        else{
+            echo "<p>Error en la eliminación</p>";
+            echo "<p>Código: ".mysqli_errno($db)."</p>";
+            echo "<p>Mensaje: ".mysqli_error($db)."</p>";
+        }
     }
 
     ConectarBD();

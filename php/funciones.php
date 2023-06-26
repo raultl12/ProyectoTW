@@ -505,7 +505,7 @@
     }
 
     // Gestión de los usuarios registrados
-    function MostrarContenidoGestionUsuarios(){
+    function MostrarContenidoGestionUsuarios($post){
         echo <<<HTML
             <div class="menu">
                 <h2 id="gestionUsuario" >Gestion de Usuario</h2>
@@ -522,7 +522,7 @@
         HTML;
 
         // Listar los usuarios registrados
-        if ($_POST['listado']){
+        if (isset($_POST['listado'])){
             echo <<<HTML
                 <div class="listado">
                     
@@ -531,25 +531,36 @@
             $usuarios = MostrarUsuariosRegistrados();
 
             foreach ($usuarios as $usuario){
-                $foto = $usuario['foto'];
+                $foto = $usuario[8];
+                $delete = "delete" . $usuario[0];
                 
                 echo <<<HTML
                         <div class="usuario">
                             <img src=$foto alt="fotoPerfil">
 
                             <div class="infoUsuario">
-                                <label>Usuario: <em>{$usuario['nombre']}/em> Email: <em>{$usuario['email']}</em></label>
-                                <label>Direccion: <em>{$usuario['direccion']}</em></label>
-                                <label>Rol: <em>{$usuario['rol']}</em> Estado: <em>{$usuario['estado']}</em></label>
+                                <label>Usuario: <em>{$usuario[1]} {$usuario[2]}</em> Email: <em>{$usuario[0]}</em></label>
+                                <label>Direccion: <em>{$usuario[4]}</em></label>
+                                <label>Rol: <em>{$usuario[6]}</em> Estado: <em>{$usuario[7]}</em></label>
                             </div>
                             
                             <div class="botones">
-                                <img src="../img/editar.png" alt="editar">
-                                <img src="../img/basura.png" alt="borrar">
+                                <form action="./edicionUsuario.php" method="POST">
+                                    <label for="edit"><img src="../img/editar.png" alt="editar"></label>
+                                    <input type="submit" name="edit" id="edit">
+                                </form>
+
+                                <form action="" method="POST">
+                                    <label for="delete"><img src="../img/basura.png" alt="borrar"></label>
+                                    <input type="submit" name=$delete id="delete">
+                                </form>
                             </div>
                         </div>
                     </div>
                 HTML;
+
+                if (isset($post[$delete])) borrarUsuario($usuario[0]);
+                else print_r($post);
             }
         }
     }

@@ -6,23 +6,22 @@
     HTMLInicio();
     MostrarHeader(getSession("tipoCliente"));
 
-    // La contraseña si no esta la primera la segunda tampoco
-    // hacer algunos requiered
-    // si no se rellena alguno se queda como antes
-    // las contraseñas deben coincidir
+    if(isset($_POST['numeroPost']) and $_POST['numeroPost'] == "uno"){ // Primera confiramacion
+        $post = new ArrayObject($_POST);
+        $files = new ArrayObject($_FILES);
 
-    if (isset($_COOKIE['correcto']) and $_COOKIE == true){
-        setcookie('correcto', false);
-        MostrarCambiosExito(true);
+        MostrarContenidoEdicionUsuario("tipoCliente", "readonly", true, "dos", $post, $files);
+        print($_POST['numeroPost']);
     }
 
-    else if (isset($_POST['changes'])){
-        MostrarContenidoEdicionUsuario("tipoCliente", "disabled", true);
-        setcookie('correcto', true);
+    else if(isset($_POST['numeroPost']) and $_POST['numeroPost'] == "dos"){ // Éxito
+        $post = new ArrayObject($_POST);
+        $files = new ArrayObject($_FILES);
+        MostrarCambiosExito(true, $post, $files);
     }
 
-    else{
-        MostrarContenidoEdicionUsuario("tipoCliente", "", true);
+    else{ // Primera vez
+        MostrarContenidoEdicionUsuario("tipoCliente", "", true, "uno", null, null);
     }
 
     MostrarFooter();

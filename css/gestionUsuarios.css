@@ -59,6 +59,10 @@
     
 }
 
+.botones input{
+    display: none;
+}
+
 .botones img:hover {
     animation: shake 0.3s;
 }
