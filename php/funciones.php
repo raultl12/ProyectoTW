@@ -120,7 +120,7 @@
                     <li><a href="./misIncidencias.php">Mis incidencias</a></li>
                     <li><a href="./gestionUsuarios.php">Gestión de usuarios</a></li>
                     <li><a href="./log.php">Ver log</a></li>
-                    <li><a href="">Gestión de BBDD</a></li>
+                    <li><a href="./gestionBD.php">Gestión de BBDD</a></li>
                 HTML;
                 break;
 
@@ -227,7 +227,7 @@
         // Mostrar opciones de accion asociadas al administrador
         if(getSession("tipoCliente") == "administrador"){
             echo <<<HTML
-                        <a href="./editarIncidencia.php"><img src="../img/editar.png" alt=""></a>
+                        <a href="./editarIncidencia.php?src=$inci"><img src="../img/editar.png"></a>
                 
                         <label for="eliminar"><img src="../img/basura.png" alt="eliminar"></label>
                         <input type="submit" name="$eliminar" id="eliminar">
@@ -560,7 +560,6 @@
                 HTML;
 
                 if (isset($post[$delete])) borrarUsuario($usuario[0]);
-                else print_r($post);
             }
         }
     }
@@ -721,7 +720,6 @@
             InsertarUsuario($post['email'], $post['nombre'], $post['apellidos'], $post['passw1'], $post['dir'], $post['telf'], $post['rol'], $post['estado'], $post['photo-selected']);
         }
         else{
-            print_r($post);
             ActualizarUsuario($post['email'], $post['nombre'], $post['apellidos'], $post['passw1'], $post['dir'], $post['telf'], $post['rol'], $post['estado'], $files['photo-selected']['tmp_name']);
             echo <<<HTML
                 <p style="text-align: center; font-weight: bold; font-size: 25px;">Se han modificado los datos del usuario</p>
@@ -768,9 +766,22 @@
     }
 
     // Añadir o editar una incidencia
-    function MostrarAniadirIncidencia($editar, $post){
-        if ($editar == false)
+    function MostrarAniadirIncidencia($editar, $post, $datos){
+        if ($editar == false){
             echo "<h2>Nueva incidencia</h2>";
+
+            $titulo = "";
+            $desc = "";
+            $lugar = "";
+            $palCla = "";
+        }
+
+        else{
+            $titulo = $datos['titulo'];
+            $desc = $datos['descripcion'];
+            $lugar = $datos['lugar'];
+            $palCla = $datos['palClave'];
+        }
 
         echo <<<HTML
             <h3>Datos principales:</h3>
@@ -779,22 +790,22 @@
                 <form action="" method="POST">
                     <div>
                         <label>Titulo:</label>
-                        <input type="text" name="titulo" required>
+                        <input type="text" name="titulo" value = "$titulo" required>
                     </div>
 
                     <div class="desc">
                         <label>Descripción:</label>
-                        <textarea name="descripcion" required></textarea>
+                        <textarea name="descripcion" value = "$desc" required></textarea>
                     </div>
 
                     <div>
                         <label>Lugar:</label>
-                        <input type="text" name="lugar" required>
+                        <input type="text" name="lugar" value = "$lugar" required>
                     </div>
 
                     <div>
                         <label>Palabras clave:</label>
-                        <input type="text" name="palClave" required>
+                        <input type="text" name="palClave" value = "$palCla" required>
                     </div>
 
         HTML;
@@ -823,37 +834,38 @@
 
 
     // Editar incidencia
-    function MostrarEditarIncidencia($post, $files){
+    function MostrarEditarIncidencia($post, $files, $id){
         echo <<<HTML
             <h2>Editar incidencia</h2>
 
             <div class="estado">
                 <h3>Estado de la incidencia:</h3>
 
-                <form action="" method="POST">
+                <form action="./index.php" method="POST">
                     <input type="radio" name="estado" value="pendiente"><label>Pendiente</label>
                     <input type="radio" name="estado" value="Comprobada"><label>Comprobada</label>
                     <input type="radio" name="estado" value="Tramitada"><label>Tramitada</label>
                     <input type="radio" name="estado" value="Irresoluble"><label>Irresoluble</label>
                     <input type="radio" name="estado" value="Resuelta"><label>Resuelta</label>
 
-                    <div class="envio"><input type="submit" value="Modificar estado"></div>
+                    <div class="envio">
+                        <input type="submit" name="state" value="Modificar estado">
+                    </div>
                 </form> 
             </div>
 
         HTML;
 
         // Mostrar contenido de edicion
-        MostrarAniadirIncidencia(true, $post);
+        $datos = ObtenerDatosIncidencia($id);
+        MostrarAniadirIncidencia(true, $post, $datos);
 
         // Adición de fotografías
         echo <<<HTML
             <div class="imagenes">
                 <h3>Fotografías adjuntas:</h3>
-                <form action="" method="POST" enctype="multipart/form-data">
-                    <img src="../img/comment.png">
-                    <img src="../img/comment.png">
-                    <img src="../img/comment.png">
+                <form action="n" method="POST" enctype="multipart/form-data">
+                    
 
                     <div class="botones">
                         <label for="examinar">+</label>
@@ -867,16 +879,18 @@
         HTML;
 
         // Realizar decisiones y filtrar datos
+        if (isset($post['state'])) $estado = $post['estado'];
+        else $estado = $post['estado'];
+
         if (isset($_POST['editarNueva'])){
             $titulo = htmlentities($post['titulo']);
             $desc = htmlentities($post['descripcion']);
             $lugar = htmlentities($post['lugar']);
             $palClave = htmlentities($post['palClave']);
-            $estado = $post['estado'];
-            $fotos = $files['fotos'];
+            //$fotos = $files['fotos'];
 
             $id = InsertarIncidencia($lugar, $titulo, $palClave, $estado, $desc, 0, 0);
-            InsertarImagenesIncidencia($id, $fotos);
+            //InsertarImagenesIncidencia($id, $fotos);
         }
     }
 
@@ -921,5 +935,13 @@
                 <h2 id="sinDatos">No hay incidencias</h2>
             HTML;
         }
+    }
+
+    function MostrarGestionBD(){
+        echo <<<HTML
+            <form action="gestionBD.php" method="post">
+                <input type="submit" value="Crear copia de seguridad" name="copia">
+            </form>
+        HTML;
     }
 ?>
