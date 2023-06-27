@@ -2,10 +2,7 @@
     /************************************************************************************************************** */
     // Funciones de acceso a Base de Datos
 
-    ini_set('display_errors', 1);
     $db = null;
-
-    $dev = "m";
 
     /************************************************************************************************************** */
 
@@ -13,14 +10,14 @@
     function ConectarBD(){
         global $db;
         global $dev;
-        if($dev == "r"){
+        $db = mysqli_connect("localhost","mario252223","DWyd1cEO","mario252223");
+        /*if($dev == "r"){
             $db = mysqli_connect("localhost","tw","tw123","proyectoTW");
         }
         else{
             $db = mysqli_connect("localhost","tw","TW12345tw_","tw");
-        }
+        }*/
         if ($db) {
-            echo "<p>Conexión con éxito</p>";
         } else {
             echo "<p>Error de conexión</p>";
             echo "<p>Código: ".mysqli_connect_errno()."</p>";
@@ -65,7 +62,6 @@
 
         if(mysqli_query($db, $consulta)){
 
-            echo "insertado correctamente";
         }
         else{
             echo "<p>Error en la insercion</p>";
@@ -197,7 +193,6 @@
                 while ($row = mysqli_fetch_assoc($res)) {
                     foreach ($row as $r){
                         $resultado[] = $r;
-                        echo $r;
                     }
                 }
             }
@@ -282,7 +277,6 @@
             if($res){
                 while($idFoto = mysqli_fetch_assoc($res)){
                     $idsFotos[] = $idFoto["idFoto"];
-                    echo $idFoto["idFoto"];
 
                 }
             }
@@ -292,9 +286,6 @@
                 echo "<p>Mensaje: ".mysqli_error($db)."</p>";
             }
             mysqli_free_result($res);
-        }
-        else{
-            echo "No se ha ejecutado";
         }
         mysqli_stmt_close($prep);
         
@@ -329,7 +320,6 @@
 
             $act = "UPDATE Incidencia SET valPos = $valor WHERE id = $id";
             if (mysqli_query($db, $act)){
-                echo "Insertado correctamente";
             }
             else{
                 echo "<p>Error en la insercion</p>";
@@ -357,7 +347,6 @@
 
             $act = "UPDATE Incidencia SET valNeg = $valor WHERE id = $id";
             if (mysqli_query($db, $act)){
-                echo "Insertado correctamente";
             }
             else{
                 echo "<p>Error en la insercion</p>";
@@ -378,7 +367,6 @@
         $consulta = "DELETE FROM Incidencia WHERE id = $id";
 
         if (mysqli_query($db, $consulta)){
-            echo "Insertado correctamente";
         }
         else{
             echo "<p>Error en el borrado</p>";
@@ -434,7 +422,6 @@
                 $consulta = "INSERT INTO Tiene (idFoto, idIncidencia) VALUES ('$idPic', '$id')";
 
                 if (mysqli_query($db, $consulta)){
-                    echo "Insertado correctamente";
                 }
                 else{
                     echo "<p>Error en la primera insercion</p>";
@@ -484,7 +471,6 @@
 
         if(mysqli_query($db, $consulta)){
 
-            echo "Intertado correctamente";
         }
         else{
             echo "<p>Error en la insercion</p>";
@@ -516,7 +502,6 @@
 
         if(mysqli_query($db, $consulta)){
 
-            echo "actualizado correctamente";
         }
         else{
             echo "<p>Error en la insercion</p>";
@@ -594,7 +579,6 @@
         $consulta = "DELETE FROM Usuario WHERE email = '$email'";
 
         if (mysqli_query($db, $consulta)){
-            echo "borrado correctamente";
         }
         else{
             echo "<p>Error en la eliminación</p>";
