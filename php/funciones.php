@@ -281,9 +281,8 @@
         else if (isset($_POST['login'])){
             //Validar mail
             $email = htmlentities($_POST['email']);
-            $email = filter_var($email, FILTER_VALIDATE_EMAIL) ? filter_var($email, FILTER_VALIDATE_EMAIL) : null;
-
-            if($email == null) $error = true;
+            $email = filter_var($email, FILTER_VALIDATE_EMAIL);
+            if(!$email) $error = true;
 
             // Comprobar contraseña
             if(!$error){
@@ -399,17 +398,11 @@
                 <main>
         HTML;
 
-        // Filtro de busqueda
-        if($incidencias){
-            MostrarFormularioBusqueda();
-        }
-        else{
-            echo "<h2>Todavia no hay incidencias</h2>";
-        }
+        // Filtro de búsqueda
+        if($incidencias) MostrarFormularioBusqueda();
+        else echo "<h2>Todavia no hay incidencias</h2>";
 
-        echo <<<HTML
-                    <section>
-        HTML;
+        echo "<section>";
         
         // Mostrar cada incidencia
         if($incidencias){
@@ -498,7 +491,7 @@
     function MostrarContenidoGestionUsuarios($post){
         echo <<<HTML
             <div class="menu">
-                <h2 id="gestionUsuario" >Gestion de Usuario</h2>
+                <h2 id="gestionUsuario">Gestion de Usuario</h2>
                 <label>Indique la accion a realizar</label>
 
                 <form method="POST">    
@@ -523,11 +516,11 @@
             foreach ($usuarios as $usuario){
                 $foto = $usuario[8];
                 $imagen = base64_encode($foto);
-                $delete = "delete" . $usuario[0];
+                $delete = "delete-" . $usuario[0];
                 
                 echo <<<HTML
                         <div class="usuario">
-                            <img src='data:image/jpg;base64,".$imagen."' alt="fotoPerfil">
+                            <div class="imagenPerfil"><img src='data:image/jpg;base64,$imagen' alt="foto perfil"></div>
 
                             <div class="infoUsuario">
                                 <label>Usuario: <em>{$usuario[1]} {$usuario[2]}</em> Email: <em>{$usuario[0]}</em></label>
@@ -536,7 +529,7 @@
                             </div>
                             
                             <div class="botones">
-                                <form action="./edicionUsuario.php" method="POST">
+                                <form action="./edicionUsuario.php?src=$usuario[0]" method="POST">
                                     <label for="edit"><img src="../img/editar.png" alt="editar"></label>
                                     <input type="submit" name="edit" id="edit">
                                 </form>
@@ -547,11 +540,15 @@
                                 </form>
                             </div>
                         </div>
-                    </div>
                 HTML;
-
-                if (isset($post[$delete])) borrarUsuario($usuario[0]);
             }
+
+            if (isset($post[$delete])){
+                $user = explode("-", $delete); // Separa la acción del usuario
+                borrarUsuario($user[1]);
+            }
+
+            echo "</div>";
         }
     }
 
@@ -561,7 +558,7 @@
     }
 
     // Edición o adición de un usuario
-    function MostrarContenidoEdicionUsuario($tipoUsuario, $desactivado, $nuevo, $numeroPost, $post, $files){
+    function MostrarContenidoEdicionUsuario($tipoUsuario, $desactivado, $nuevo, $numeroPost, $post, $files, $get){
         // Elección de información según se edite o se añada
         $titulo = "Edición de";
         $ruta = "./edicionUsuario.php";
@@ -572,25 +569,39 @@
             $titulo = "Nuevo";
             $ruta = "./aniadirUsuario.php";
             $valor = "creación";
+
+            $foto = null;
+            $foto_nombre = null;
+            $nombre = null;            
+            $apellidos = null;
+            $email = null;
+            $passw1 = null;
+            $passw2 = $passw1;
+            $direccion = null;
+            $telefono = null;
+            $rol = null;
+            $estado = null;
         }
 
-        // Obbtener datos del usuario a editar
-        if ($nuevo == false and $desactivado != "readonly"){
-            $datos = ObtenerDatosUsuario(getSession('currentUser'));
+        else{
+            // Obtener datos del usuario a editar
+            if ($desactivado != "readonly"){
+                if ($get != null) $datos = ObtenerDatosUsuario($get['src']);    // Administrador editando cualquier usuario
+                else $datos = ObtenerDatosUsuario(getSession('currentUser'));   // Editar un perfil propio
 
-            $foto = base64_encode($datos['foto']);
-            $foto_nombre = $foto;
-            $nombre = $datos['nombre'];                   
-            $apellidos = $datos['apellidos'];
-            $email = $datos['email'];
-            $passw1 = "";
-            $passw2 = "";
-            $direccion = $datos['direccion'];
-            $telefono = $datos['tlf'];
-            $rol = $datos['rol'];
-            $estado = $datos['estado'];
+                $foto = base64_encode($datos['foto']);
+                $foto_nombre = $foto;
+                $nombre = $datos['nombre'];                   
+                $apellidos = $datos['apellidos'];
+                $email = $datos['email'];
+                $passw1 = "";
+                $passw2 = $passw1;
+                $direccion = $datos['direccion'];
+                $telefono = $datos['tlf'];
+                $rol = $datos['rol'];
+                $estado = $datos['estado'];
+            }
         }
-
 
         // Mantener datos para confirmación (sticky)   
         if ($desactivado == "readonly"){
@@ -604,7 +615,7 @@
             if (!$email){
                 header('Location: ' . $ruta);
             }
-
+            
             // Si la contraseña no coincide se reinicia el formulario
             $passw1 = htmlentities($post['passw1']);
             $passw2 = htmlentities($post['passw2']);
@@ -618,13 +629,13 @@
             if(!preg_match($patron_tlf, $telefono)){
                 header('Location: ' . $ruta);
             }
-
+            
             $rol = $post['rol'];
             $estado = $post['estado'];
-
+            
             $tipoImagen = "oculto";
         }
-
+        
         // Mostrar formulario
         echo <<<HTML
             <h2>$titulo usuario</h2>
@@ -715,19 +726,23 @@
 
     // Realizar acciones de usuario y mostrar mensaje
     function MostrarCambiosExito($nuevo, $post, $files){
-        // En teoría no hay que sanearlos ya que vienen del sticky y ahi ya estan saneados
         if ($nuevo) {
-            InsertarUsuario($post['email'], $post['nombre'], $post['apellidos'], $post['passw1'], $post['dir'], $post['telf'], $post['rol'], $post['estado'], $post['photo-selected']);
+            InsertarUsuario($post['email'], $post['nombre'], $post['apellidos'], $post['passw1'], $post['dir'], $post['telf'], "colaborador", $post['estado'], null); //$files['photo-selected']['name']);
+            echo <<<HTML
+                <p style="text-align: center; font-weight: bold; font-size: 25px;">Se ha creado el usuario</p>
+                <p style="text-align: center; font-size: 15px;">Redirigiendo a página principal...</p>
+            HTML;
         }
+
         else{
             ActualizarUsuario($post['email'], $post['nombre'], $post['apellidos'], $post['passw1'], $post['dir'], $post['telf'], $post['rol'], $post['estado'], $files['photo-selected']['tmp_name']);
             echo <<<HTML
                 <p style="text-align: center; font-weight: bold; font-size: 25px;">Se han modificado los datos del usuario</p>
                 <p style="text-align: center; font-size: 15px;">Redirigiendo a página principal...</p>
             HTML;
-    
-            header('Refresh: 5; URL=./index.php');
         }
+
+        header('Refresh: 5; URL=./index.php');
     }
 
 

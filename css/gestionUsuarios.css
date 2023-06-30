@@ -44,6 +44,14 @@
     max-width: 40px;
 }
 
+.botones input{
+    display: none;
+}
+
+.botones img:hover {
+    animation: shake 0.3s;
+}
+
 .infoUsuario{
     display: flex;
     flex-direction: column;
@@ -55,17 +63,15 @@
 }
   
 .listado .usuario:nth-child(odd){
-    background-color: #2875703f;
-    
+    background-color: #2875703f;   
 }
 
-.botones input{
-    display: none;
+.imagenPerfil{
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.botones img:hover {
-    animation: shake 0.3s;
-}
   
 @keyframes shake {
     0% {

@@ -32,8 +32,10 @@
     function ObtenerDatosUsuario($email){
         $resultado = null;
         global $db;
+
         $consulta = "SELECT * FROM Usuario WHERE email=?";
         $prep = mysqli_prepare($db, $consulta);
+        $email = mysqli_real_escape_string($db, $email);
         mysqli_stmt_bind_param($prep,'s', $email);
 
         if(mysqli_stmt_execute($prep)){
@@ -64,12 +66,13 @@
         $nombre = mysqli_real_escape_string($db, $nombre);
         $apellidos = mysqli_real_escape_string($db, $apellidos);
         $clave = mysqli_real_escape_string($db, $clave);
+        $clave = password_hash($clave, PASSWORD_BCRYPT);
         $dir = mysqli_real_escape_string($db, $dir);
         $tlf = mysqli_real_escape_string($db, $tlf);
         $rol = mysqli_real_escape_string($db, $rol);
         $estado = mysqli_real_escape_string($db, $estado);
 
-        $consulta = "INSERT INTO Usuario(email, nombre, apellidos, clave, direccion, tlf, rol, estado, foto) VALUES 
+        $consulta = "INSERT INTO Usuario (email, nombre, apellidos, clave, direccion, tlf, rol, estado, foto) VALUES 
                      ('$email', '$nombre', '$apellidos', '$clave', '$dir', '$tlf', '$rol', '$estado', '$foto')";
 
         if (mysqli_query($db, $consulta)){
@@ -651,26 +654,36 @@
     function BorrarUsuario($email){
         global $db;
         $email = mysqli_real_escape_string($db, $email);
-        $consulta = "DELETE FROM Usuario WHERE email = '$email'";
+        $consulta = "DELETE FROM Publica WHERE email = '$email'";
 
         if (mysqli_query($db, $consulta)){
-            GuardarLog("Usuario \"$email\" eliminado");
+            $consulta = "DELETE FROM Escribe WHERE email = '$email'";
+            
+            if (mysqli_query($db, $consulta)){
+                $consulta = "DELETE FROM Usuario WHERE email = '$email'";
+
+                if (mysqli_query($db, $consulta)){
+                    GuardarLog("Usuario \"$email\" eliminado");
+                }
+                else{
+                    echo "<p>Error en la primera eliminación</p>";
+                    echo "<p>Código: ".mysqli_errno($db)."</p>";
+                    echo "<p>Mensaje: ".mysqli_error($db)."</p>";
+                }
+            }
+            else{
+                echo "<p>Error en la segunda eliminación</p>";
+                echo "<p>Código: ".mysqli_errno($db)."</p>";
+                echo "<p>Mensaje: ".mysqli_error($db)."</p>";
+            }
         }
         else{
-            echo "<p>Error en la eliminación</p>";
+            echo "<p>Error en la tercera eliminación</p>";
             echo "<p>Código: ".mysqli_errno($db)."</p>";
             echo "<p>Mensaje: ".mysqli_error($db)."</p>";
         }
     }
 
+    // Iniciar conexión
     ConectarBD();
-
-    /*mysqli_close($db); (?)
-    $contra = "1234"; //-->Es la contraseña del usuario raul 
-    $cifrada = password_hash($contra, PASSWORD_BCRYPT);
-    echo $cifrada;*/
-    //ObtenerDatosUsuario("raultlopez@correo.ugr.es");
-    //InsertarIncidencia("mi calle", "farola rota", "farola", "irresoluble", "Se han roto las farolas bobis", 0, 0);
-    //ObtenerDatosIncidencia(1);
-    //ObtenerTodasIncidencias();  
 ?>

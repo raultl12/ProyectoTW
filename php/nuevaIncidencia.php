@@ -5,9 +5,15 @@
 
     HTMLInicio();
     MostrarHeader(getSession("tipoCliente"));
-    
-    // Mostrar contenido
-    MostrarAniadirIncidencia(false, $_POST, "");
+
+    // Restringir acceso
+    if(getSession("logged") == false){
+        MostrarAccesoDenegado();
+    }
+    else{
+        // Mostrar contenido
+        MostrarAniadirIncidencia(false, $_POST, "");
+    }
 
     MostrarFooter();
     HTMLFin();

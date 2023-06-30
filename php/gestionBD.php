@@ -11,11 +11,10 @@
         MostrarAccesoDenegado();
     }
     else{
-
         MostrarGestionBD();
     }
 
-    if(isset($_POST["copia"])){
+    if (isset($_POST["copia"])){
         // Datos de conexión a la base de datos
         $host = 'localhost';
         $username = 'tw';

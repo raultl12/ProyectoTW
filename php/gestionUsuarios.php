@@ -6,11 +6,14 @@
     HTMLInicio();
     MostrarHeader(getSession("tipoCliente"));
 
-    // Mostrar contenido
+    print_r($_POST);
+
+    // Restringir acceso
     if(getSession("tipoCliente") != "administrador"){
         MostrarAccesoDenegado();
     }
     else{
+        // Mostrar contenido
         MostrarContenidoGestionUsuarios($_POST);
     }
 

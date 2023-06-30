@@ -6,8 +6,14 @@
     HTMLInicio();
     MostrarHeader(getSession("tipoCliente"));
 
-    // Mostrar contenido
-    MostrarContenidoMisIncidencias($_POST);
+    // Restringir acceso
+    if (getSession('logged') == false){
+        MostrarAccesoDenegado();
+    }
+    else{
+        // Mostrar contenido
+        MostrarContenidoMisIncidencias($_POST);
+    }
     
     MostrarFooter();
     HTMLFin();
