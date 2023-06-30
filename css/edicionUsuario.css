@@ -104,3 +104,7 @@ form{
 .selectores select{
     margin-right: 1rem;
 }
+
+.oculto{
+    display: none;
+}

@@ -4,6 +4,9 @@
     // Inclusión de las funciones que modifican la base de datos
     require_once 'funcionesBD.php';
 
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+
     /************************************************************************************************************** */
     // Variables globales
 
@@ -28,12 +31,6 @@
             return $_SESSION[$nombreVariable];  
         }
         else return null;
-    }
-
-    // Función de recarga de la página
-    function Recargar(){
-        header("Location: ". $_SERVER['PHP_SELF']);
-        exit();
     }
 
     /************************************************************************************************************** */
@@ -143,6 +140,7 @@
         // Obtener el usuario que la ha publicado
         $usuarioPublica = ObtenerUsuarioPublica($inci);
         $nombreUsuario = $usuarioPublica["nombre"] . " " . $usuarioPublica["apellidos"];
+        $autor = $usuarioPublica["email"];
 
         // Obtener los comentarios
         $comentarios = ObtenerTodosComentarios($inci);
@@ -165,21 +163,17 @@
                         <label>Valoraciones: <em>Pos: {$datos["valPos"]} Neg: {$datos["valNeg"]}</em></label>
                     </div>
 
-                    <p>
-                    {$datos["descripcion"]}
-                    </p>
+                    <p>{$datos["descripcion"]}</p>
 
                     <div class="fotos">
         HTML;
                         if($fotos){
                             foreach($fotos as $foto){
                                 $imagen = base64_encode($foto);
-                                echo "<img src='data:image/jpg;base64,".$imagen."'>";
+                                echo "<img src='data:image/jpg;base64," . $imagen . "'>";
                             }
                         }
-                        else{
-                            echo "<h2>Todavia no hay fotos</h2>";
-                        }
+                        else echo "<h2>Todavia no hay fotos</h2>";
         echo <<<HTML
                     </div>
 
@@ -225,7 +219,7 @@
         HTML;
 
         // Mostrar opciones de accion asociadas al administrador
-        if(getSession("tipoCliente") == "administrador"){
+        if((getSession("tipoCliente") == "administrador") or (getSession("currentUser") == $autor)){
             echo <<<HTML
                         <a href="./editarIncidencia.php?src=$inci"><img src="../img/editar.png"></a>
                 
@@ -234,6 +228,7 @@
                     </form>
             HTML;
         }
+
         echo <<<HTML
                 </div>
             </div>
@@ -272,12 +267,9 @@
 
         // Desloguear
         if (isset($_POST['logout'])){
-            /*setSession('logged', false);
-            setSession("tipoCliente", "anonimo");*/
             $usuario = getSession('currentUser');
             GuardarLog("El usuario $usuario ha cerrado sesion");
             session_unset();
-            Recargar();
         }
 
         // Obtener datos del usuario logeado
@@ -304,7 +296,6 @@
                     setSession('logged', true);
                     $datos = ObtenerDatosUsuario($email);
                     setSession("tipoCliente", $datos["rol"]);
-                    Recargar();
                 }
 
                 else $error = true;
@@ -333,7 +324,7 @@
             echo <<<HTML
                             <div class="envios">
                                 <form action="./edicionUsuario.php" method="POST"><input type="submit" value="Editar"></form> 
-                                <form method="POST"><input type="submit" name="logout" value="Logout"></form>
+                                <form action="./" method="POST"><input type="submit" name="logout" value="Logout"></form>
                             </div>
                         </div>
             HTML;
@@ -575,6 +566,7 @@
         $titulo = "Edición de";
         $ruta = "./edicionUsuario.php";
         $valor = "modificación"; // Botón de envio
+        $tipoImagen = ""; // Etiqueta añadir foto
 
         if ($nuevo == true){
             $titulo = "Nuevo";
@@ -602,14 +594,18 @@
 
         // Mantener datos para confirmación (sticky)   
         if ($desactivado == "readonly"){
-            //$foto = base64_encode(file_get_contents($files['photo-selected']['tmp_name']));
+            $foto = null;                                               // ARREGLAR ESTO
             $foto_nombre = $files['photo-selected']['name'];
             $nombre = htmlentities($post['nombre']);
             $apellidos = htmlentities($post['apellidos']);
 
             $email = htmlentities($post['email']);
             $email = filter_var($email, FILTER_VALIDATE_EMAIL);
+            if (!$email){
+                header('Location: ' . $ruta);
+            }
 
+            // Si la contraseña no coincide se reinicia el formulario
             $passw1 = htmlentities($post['passw1']);
             $passw2 = htmlentities($post['passw2']);
             if ($passw1 != $passw2){
@@ -619,10 +615,14 @@
             $direccion = htmlentities($post['dir']);
             $patron_tlf = "/^\d{9}$/";
             $telefono = htmlentities($post['telf']);
-            if(preg_match($patron_tlf, $telefono)) $telefono; // Completar else en caso de que haya error
+            if(!preg_match($patron_tlf, $telefono)){
+                header('Location: ' . $ruta);
+            }
 
             $rol = $post['rol'];
             $estado = $post['estado'];
+
+            $tipoImagen = "oculto";
         }
 
         // Mostrar formulario
@@ -636,7 +636,7 @@
 
         echo <<<HTML
                     <div class="nuevo">
-                        <label for="seleccionar">Añadir/Cambiar imágen</label>
+                        <label for="seleccionar" class=$tipoImagen >Añadir/Cambiar imágen</label>
                         <input type="file" name="photo-selected" id="seleccionar" value=$foto_nombre $desactivado>
                     </div>
                 </div>
@@ -835,26 +835,30 @@
 
     // Editar incidencia
     function MostrarEditarIncidencia($post, $files, $id){
-        echo <<<HTML
-            <h2>Editar incidencia</h2>
+        echo "<h2>Editar incidencia</h2>";
 
-            <div class="estado">
-                <h3>Estado de la incidencia:</h3>
+        // Filtrar datos por permisos
+        if (getSession("tipoCliente") == "administrador"){
+            echo <<<HTML
+                <div class="estado">
+                    <h3>Estado de la incidencia:</h3>
+    
+                    <form action="" method="POST">
+                        <input type="radio" name="estado" value="pendiente"><label>Pendiente</label>
+                        <input type="radio" name="estado" value="Comprobada"><label>Comprobada</label>
+                        <input type="radio" name="estado" value="Tramitada"><label>Tramitada</label>
+                        <input type="radio" name="estado" value="Irresoluble"><label>Irresoluble</label>
+                        <input type="radio" name="estado" value="Resuelta"><label>Resuelta</label>
+    
+                        <div class="envio">
+                            <input type="submit" name="state" value="Modificar estado">
+                        </div>
+                    </form> 
+                </div>
+    
+            HTML;
+        }
 
-                <form action="./index.php" method="POST">
-                    <input type="radio" name="estado" value="pendiente"><label>Pendiente</label>
-                    <input type="radio" name="estado" value="Comprobada"><label>Comprobada</label>
-                    <input type="radio" name="estado" value="Tramitada"><label>Tramitada</label>
-                    <input type="radio" name="estado" value="Irresoluble"><label>Irresoluble</label>
-                    <input type="radio" name="estado" value="Resuelta"><label>Resuelta</label>
-
-                    <div class="envio">
-                        <input type="submit" name="state" value="Modificar estado">
-                    </div>
-                </form> 
-            </div>
-
-        HTML;
 
         // Mostrar contenido de edicion
         $datos = ObtenerDatosIncidencia($id);
@@ -879,8 +883,8 @@
         HTML;
 
         // Realizar decisiones y filtrar datos
-        if (isset($post['state'])) $estado = $post['estado'];
-        else $estado = $post['estado'];
+        if (isset($post['state'])) $estado = $post['state'];
+        else $estado = "pendiente";
 
         if (isset($_POST['editarNueva'])){
             $titulo = htmlentities($post['titulo']);
@@ -889,7 +893,7 @@
             $palClave = htmlentities($post['palClave']);
             //$fotos = $files['fotos'];
 
-            $id = InsertarIncidencia($lugar, $titulo, $palClave, $estado, $desc, 0, 0);
+            EditarIncidencia($id, $lugar, $titulo, $palClave, $desc);
             //InsertarImagenesIncidencia($id, $fotos);
         }
     }
@@ -925,15 +929,17 @@
 
         if ($incidencias != null){
             foreach($incidencias as $inci){
-                if (getSession('actualUser') == ObtenerUsuarioPublica($inci))
+                if (getSession('currentUser') == ObtenerUsuarioPublica($inci)['email']){
                     MostrarIncidencia($inci, $post);
+                }
+                else{
+                    echo "<h2 id=\"sinDatos\">No hay incidencias</h2>";
+                }
             }
         }
 
         else{
-            echo <<<HTML
-                <h2 id="sinDatos">No hay incidencias</h2>
-            HTML;
+            echo "<h2 id=\"sinDatos\">No hay incidencias</h2>";
         }
     }
 
