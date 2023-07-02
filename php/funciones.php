@@ -208,14 +208,14 @@
 
                 <div class="iconos">
                     <form method="post" action="./index.php">
-                        <label for="plus"><img src="../img/plus.png" alt="+"></label>
-                        <input type="submit" name="$plus" id="plus">
+                        <label for="$plus"><img src="../img/plus.png" alt="+"></label>
+                        <input type="submit" name="$plus" id="$plus">
                         
-                        <label for="minus"><img src="../img/minus.png" alt="-"></label>
-                        <input type="submit" name="$minus" id="minus">
+                        <label for="$minus"><img src="../img/minus.png" alt="-"></label>
+                        <input type="submit" name="$minus" id="$minus">
 
-                        <label for="comment"><img src="../img/comment.png" alt="comentar"></label>
-                        <input type="submit" name="$comment" id="comment">
+                        <label for="$comment"><img src="../img/comment.png" alt="comentar"></label>
+                        <input type="submit" name="$comment" id="$comment">
         HTML;
 
         // Mostrar opciones de accion asociadas al administrador
@@ -223,8 +223,8 @@
             echo <<<HTML
                         <a href="./editarIncidencia.php?src=$inci"><img src="../img/editar.png"></a>
                 
-                        <label for="eliminar"><img src="../img/basura.png" alt="eliminar"></label>
-                        <input type="submit" name="$eliminar" id="eliminar">
+                        <label for="$eliminar"><img src="../img/basura.png" alt="eliminar"></label>
+                        <input type="submit" name="$eliminar" id="$eliminar">
                     </form>
             HTML;
         }
@@ -268,6 +268,7 @@
         // Desloguear
         if (isset($_POST['logout'])){
             $usuario = getSession('currentUser');
+            LogOut($usuario);
             GuardarLog("El usuario $usuario ha cerrado sesion");
             session_unset();
         }
@@ -293,8 +294,10 @@
                 if($correcto){
                     setSession('currentUser', $email);
                     setSession('logged', true);
+
                     $datos = ObtenerDatosUsuario($email);
                     setSession("tipoCliente", $datos["rol"]);
+                    LogIn($datos["email"]);
                 }
 
                 else $error = true;
@@ -488,7 +491,7 @@
     }
 
     // Gestión de los usuarios registrados
-    function MostrarContenidoGestionUsuarios($post){
+    function MostrarContenidoGestionUsuarios($post, $get){
         echo <<<HTML
             <div class="menu">
                 <h2 id="gestionUsuario">Gestion de Usuario</h2>
@@ -534,22 +537,28 @@
                                     <input type="submit" name="edit" id="edit">
                                 </form>
 
-                                <form action="" method="POST">
-                                    <label for="delete"><img src="../img/basura.png" alt="borrar"></label>
-                                    <input type="submit" name=$delete id="delete">
+                                <form action="" method="GET">
+                                    <label for="$delete"><img src="../img/basura.png" alt="borrar"></label>
+                                    <input type="submit" name=$delete id="$delete">
                                 </form>
                             </div>
                         </div>
                 HTML;
             }
 
-            if (isset($post[$delete])){
-                $user = explode("-", $delete); // Separa la acción del usuario
-                borrarUsuario($user[1]);
-            }
-
             echo "</div>";
         }
+
+        // Obtener usuario a eliminar
+        if ($get != NULL){
+            $variables = reset($get); // primer valor de $_GET
+            $primera = array_search($variables, $_GET); // nombre de la variable
+            $email = explode("-", $primera); // separar usuario de acción
+            $email = str_replace("_", ".", $email[1]); // corregir codificación de la url
+            
+            borrarUsuario($email);
+        }
+        
     }
 
     // Mostrar error de aceso

@@ -13,8 +13,11 @@
         MostrarAccesoDenegado();
     }
     else{
+        if (!empty($_GET)) $GET = $_GET;
+        else $GET = NULL;
+
         // Mostrar contenido
-        MostrarContenidoGestionUsuarios($_POST);
+        MostrarContenidoGestionUsuarios($_POST, $GET);
     }
 
     MostrarFooter();

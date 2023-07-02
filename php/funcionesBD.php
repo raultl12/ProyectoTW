@@ -10,6 +10,7 @@
         global $db;
         global $dev;
         
+        // Conectar
         //$db = mysqli_connect("localhost","mario252223","DWyd1cEO","mario252223");
         
         if($dev == "r")
@@ -17,15 +18,29 @@
         else
             $db = mysqli_connect("localhost","tw","TW12345tw_","tw");
 
+        // Informar de errores
         if (!$db) {
-            echo "<p>Error de conexión</p>";
-            echo "<p>Código: ".mysqli_connect_errno()."</p>";
-            echo "<p>Mensaje: ".mysqli_connect_error()."</p>";
+            echo "<p>Error en la conexión a la base de datos</p>";
+            echo "<p>Código: " . mysqli_connect_errno() . "</p>";
+            echo "<p>Mensaje: " . mysqli_connect_error() . "</p>";
             die("Adiós");
         } 
 
         // Establecer el conjunto de caracteres del cliente
         mysqli_set_charset($db,"utf8");
+    }
+
+    // Facilitar errores al administrador
+    function Error($msg){
+        if (getSession('tipoCliente') == "administrador"){
+            global $db;
+
+            echo "<p>$msg</p>";
+            echo "<p>Código: ".mysqli_errno($db)."</p>";
+            echo "<p>Mensaje: ".mysqli_error($db)."</p>";
+        }
+
+        GuardarLog($msg);
     }
 
     //Obtener todos los datos del usuario
@@ -45,9 +60,7 @@
                 $resultado = mysqli_fetch_assoc($res);
             }
             else{
-                echo "<p>Error en la consulta</p>";
-                echo "<p>Código: ".mysqli_errno($db)."</p>";
-                echo "<p>Mensaje: ".mysqli_error($db)."</p>";
+                Error("Error en la obtención de datos del usuario");
             }
         }
 
@@ -79,9 +92,7 @@
             GuardarLog("Nuevo usuario: \"$email\" añadido");
         }
         else{
-            echo "<p>Error en la insercion</p>";
-            echo "<p>Código: ".mysqli_errno($db)."</p>";
-            echo "<p>Mensaje: ".mysqli_error($db)."</p>";
+            Error("Error en la inserción del nuevo usuario");
         }
     }
 
@@ -104,11 +115,7 @@
                 }
             }
 
-            else{
-                echo "<p>Error en la consulta</p>";
-                echo "<p>Código: ".mysqli_errno($db)."</p>";
-                echo "<p>Mensaje: ".mysqli_error($db)."</p>";
-            }
+            else Error("Error en la obtención de todas las incidencias");
         }
 
         mysqli_stmt_close($prep);
@@ -131,9 +138,7 @@
                 $resultado = mysqli_fetch_assoc($res);
             }
             else{
-                echo "<p>Error en la consulta</p>";
-                echo "<p>Código: ".mysqli_errno($db)."</p>";
-                echo "<p>Mensaje: ".mysqli_error($db)."</p>";
+                Error("Error en obtener los datos de la incidencia $id");
             }
         }
         
@@ -169,11 +174,7 @@
             mysqli_query($db, $consulta);
             GuardarLog("El usuario $usuario ha creado una incidencia");
         }
-        else{
-            echo "<p>Error en la insercion</p>";
-            echo "<p>Código: ".mysqli_errno($db)."</p>";
-            echo "<p>Mensaje: ".mysqli_error($db)."</p>";
-        }        
+        else Error("Error en la inserción de la nueva incidencia");    
 
         return mysqli_insert_id($db);
     }
@@ -196,13 +197,11 @@
             GuardarLog("Incidencia $id editada");
         }
         else{
-            echo "<p>Error en la insercion</p>";
-            echo "<p>Código: ".mysqli_errno($db)."</p>";
-            echo "<p>Mensaje: ".mysqli_error($db)."</p>";
+            Error("Error en la edición de la incidencia $id");
         }
     }
 
-    // Obtener autro de incidencia
+    // Obtener autor de incidencia
     function ObtenerUsuarioPublica($idInci){
         $resultado = null;
         global $db;
@@ -218,11 +217,10 @@
                 $resultado = mysqli_fetch_assoc($res);
             }
             else{
-                echo "<p>Error en la consulta</p>";
-                echo "<p>Código: ".mysqli_errno($db)."</p>";
-                echo "<p>Mensaje: ".mysqli_error($db)."</p>";
+                Error("Error en la obtención del autor de la incidenia $idInci");
             }
         }
+
         mysqli_free_result($res);
         mysqli_stmt_close($prep);
 
@@ -248,26 +246,26 @@
                     }
                 }
             }
-            else{
-                echo "<p>Error en la consulta</p>";
-                echo "<p>Código: ".mysqli_errno($db)."</p>";
-                echo "<p>Mensaje: ".mysqli_error($db)."</p>";
-            }
+
             mysqli_free_result($res);
         }
+        else{
+            Error("Error en la obtención de todos los comentarios");
+        }
+
         mysqli_stmt_close($prep);
         return $resultado ? $resultado : null;
     }
 
     // Obtener comentario
-    function ObtenerComentario($id){
+    function ObtenerComentario($idCom){
         $resultado = null;
         global $db;
 
         $consulta = "SELECT * FROM Comentario where id=?";
 
         $prep = mysqli_prepare($db, $consulta);
-        mysqli_stmt_bind_param($prep,'i', $id);
+        mysqli_stmt_bind_param($prep,'i', $idCom);
 
         if(mysqli_stmt_execute($prep)){
             $res = mysqli_stmt_get_result($prep);
@@ -275,13 +273,13 @@
             if($res){
                 $resultado = mysqli_fetch_assoc($res);
             }
-            else{
-                echo "<p>Error en la consulta</p>";
-                echo "<p>Código: ".mysqli_errno($db)."</p>";
-                echo "<p>Mensaje: ".mysqli_error($db)."</p>";
-            }
+
             mysqli_free_result($res);
         }
+        else{
+            Error("Error en la obtención del comentario $idCom");
+        }
+
         mysqli_stmt_close($prep);
         return $resultado ? $resultado : null;
     }
@@ -301,12 +299,12 @@
             if($res){
                 $resultado = mysqli_fetch_assoc($res);
             }
-            else{
-                echo "<p>Error en la consulta</p>";
-                echo "<p>Código: ".mysqli_errno($db)."</p>";
-                echo "<p>Mensaje: ".mysqli_error($db)."</p>";
-            }
         }
+        else{
+            Error("Error en la obtención del autor del comentario $idCom");
+        }
+
+
         mysqli_free_result($res);
         mysqli_stmt_close($prep);
 
@@ -331,13 +329,13 @@
                     $idsFotos[] = $idFoto["idFoto"];
                 }
             }
-            else{
-                echo "<p>Error en la consulta</p>";
-                echo "<p>Código: ".mysqli_errno($db)."</p>";
-                echo "<p>Mensaje: ".mysqli_error($db)."</p>";
-            }
+            
             mysqli_free_result($res);
         }
+        else{
+            Error("Error en la obtención de las imágenes de la incidencia $inci");
+        }
+
         mysqli_stmt_close($prep);
         
         // Ya obtenidos los ids de las fotos de la incidencia, almacenados en idsFotos
@@ -351,6 +349,9 @@
                         $resultado[] = $foto["foto"];
     
                     }
+                }
+                else{
+                    Error("Error en la obtención de las imágenes");
                 }
             }
         }
@@ -375,15 +376,11 @@
                 GuardarLog("Voto positivo añadido a incidencia $id");
             }
             else{
-                echo "<p>Error en la insercion</p>";
-                echo "<p>Código: ".mysqli_errno($db)."</p>";
-                echo "<p>Mensaje: ".mysqli_error($db)."</p>";
+                Error("Error en la inserción del nuevo voto positivo en la incidencia $id");
             }
         }
         else{
-            echo "<p>Error en la extraccion</p>";
-            echo "<p>Código: ".mysqli_errno($db)."</p>";
-            echo "<p>Mensaje: ".mysqli_error($db)."</p>";
+            Error("Error en la obtención de los votos positivos de la incidencia $id");
         }
     }
 
@@ -404,15 +401,11 @@
                 GuardarLog("Voto negativo añadido a incidencia $id");
             }
             else{
-                echo "<p>Error en la insercion</p>";
-                echo "<p>Código: ".mysqli_errno($db)."</p>";
-                echo "<p>Mensaje: ".mysqli_error($db)."</p>";
+                Error("Error en la inseción del nuevo voto negativo en la incidencia $id");
             }
         }
         else{
-            echo "<p>Error en la extraccion</p>";
-            echo "<p>Código: ".mysqli_errno($db)."</p>";
-            echo "<p>Mensaje: ".mysqli_error($db)."</p>";
+            Error("Error en la obtención de los votos negativos de la incidencia $id");
         }
     }
 
@@ -429,15 +422,11 @@
                 GuardarLog("Incidencia $id eliminada");
             }
             else{
-                echo "<p>Error en el primer borrado</p>";
-                echo "<p>Código: ".mysqli_errno($db)."</p>";
-                echo "<p>Mensaje: ".mysqli_error($db)."</p>";
+                Error("Error en el borrado de la tabla \"Incidencia\" para la incidencia $id");
             }
         }
         else{
-            echo "<p>Error en el segundo borrado</p>";
-            echo "<p>Código: ".mysqli_errno($db)."</p>";
-            echo "<p>Mensaje: ".mysqli_error($db)."</p>";
+            Error("Error en el borrado de la tabla \"Publica\" para la incidencia $id");
         }
     }
 
@@ -453,27 +442,22 @@
 
             if (mysqli_query($db, $consulta)){
                 $usuario = getSession('currentUser');
+                if ($usuario == NULL) $usuario = "Anonimo";
                 $consulta = "INSERT INTO Escribe(idComentario, email) VALUES ('$idCom', '$usuario')";
 
                 if (mysqli_query($db, $consulta)){
                     GuardarLog("El usuario $usuario ha comentado en una incidencia");
                 }
                 else{
-                    echo "<p>Error en la primera insercion</p>";
-                    echo "<p>Código: ".mysqli_errno($db)."</p>";
-                    echo "<p>Mensaje: ".mysqli_error($db)."</p>";
+                    Error("Error en la inserición de la tabla \"Escribe\" para el comentario $idCom");
                 }
             }
             else{
-                echo "<p>Error en la segunda insercion</p>";
-                echo "<p>Código: ".mysqli_errno($db)."</p>";
-                echo "<p>Mensaje: ".mysqli_error($db)."</p>";
+                Error("Error en la inserición de la tabla \"Contiene\" para la incidencia $id");
             }
         }
         else{
-            echo "<p>Error en la tercera insercion</p>";
-            echo "<p>Código: ".mysqli_errno($db)."</p>";
-            echo "<p>Mensaje: ".mysqli_error($db)."</p>";
+            Error("Error en la inserición de la tabla \"Comentario\"");
         }
     }
 
@@ -492,15 +476,11 @@
                     GuardarLog("Imagenes añadidas para la incidencia: $id");
                 }
                 else{
-                    echo "<p>Error en la primera insercion</p>";
-                    echo "<p>Código: ".mysqli_errno($db)."</p>";
-                    echo "<p>Mensaje: ".mysqli_error($db)."</p>";
+                    Error("Error en la inserición de la tabla \"Tiene\" para la incidencia $id");
                 }
             }
             else{
-                echo "<p>Error en la segunda insercion</p>";
-                echo "<p>Código: ".mysqli_errno($db)."</p>";
-                echo "<p>Mensaje: ".mysqli_error($db)."</p>";
+                Error("Error en la inserición de la tabla \"Foto\"");
             }
         }
     }
@@ -520,9 +500,7 @@
                 $resultado = mysqli_fetch_all($res);
             }
             else{
-                echo "<p>Error en la consulta</p>";
-                echo "<p>Código: ".mysqli_errno($db)."</p>";
-                echo "<p>Mensaje: ".mysqli_error($db)."</p>";
+                Error("Error en la obtención de los datos del registro");
             }
             mysqli_free_result($res);
         }
@@ -533,13 +511,13 @@
 
     // Añadir datos al registro
     // Este texto no es saneado porque se escribe automáticamente por el sistema,
-    // el usuario no interviene en la redaccion
+    // el usuario no interviene en la redacción
     function GuardarLog($texto){
         global $db;
         $consulta = "INSERT INTO Log(evento) values ('$texto')";
 
         if(!mysqli_query($db, $consulta)){
-            echo "<p>Error en la insercion</p>";
+            echo "<p>Error al guardar el nuevo registro</p>";
             echo "<p>Código: ".mysqli_errno($db)."</p>";
             echo "<p>Mensaje: ".mysqli_error($db)."</p>";
         }
@@ -556,6 +534,38 @@
             GuardarLog("El usuario $email ha intentado inciar sesion sin éxito");
             return false;
         }
+    }
+
+    // Cambiar estado del usuario
+    function LogIn($user){
+        global $db;
+        $user = mysqli_real_escape_string($db, $user);
+        $consulta = "UPDATE Usuario SET estado = 'activo' WHERE email = ?";
+
+        $prep = mysqli_prepare($db, $consulta);
+        mysqli_stmt_bind_param($prep, 's', $user);
+
+        if (!mysqli_stmt_execute($prep)){
+            Error("Error en el cambio de estado del usuario $user");
+        }
+
+        mysqli_stmt_close($prep);
+    }
+
+    // Cambiar estado del usuario
+    function LogOut($user){
+        global $db;
+        $user = mysqli_real_escape_string($db, $user);
+        $consulta = "UPDATE Usuario SET estado = 'inactivo' WHERE email = ?";
+
+        $prep = mysqli_prepare($db, $consulta);
+        mysqli_stmt_bind_param($prep, 's', $user);
+
+        if (!mysqli_stmt_execute($prep)){
+            Error("Error en el cambio de estado del usuario $user");
+        }
+
+        mysqli_stmt_close($prep);
     }
 
     // Edita los datos de un usuario
@@ -580,9 +590,7 @@
             GuardarLog("Usuario \"$email\" modificado");
         }
         else{
-            echo "<p>Error en la insercion</p>";
-            echo "<p>Código: ".mysqli_errno($db)."</p>";
-            echo "<p>Mensaje: ".mysqli_error($db)."</p>";
+            Error("Error en la modificación del usuario $email");
         }
         
     }
@@ -607,21 +615,23 @@
                      LIMIT " . ($pos - 1) . ", 1";
         }
 
-        $resultado = mysqli_query($db, $consulta);
-
-        if (mysqli_num_rows($resultado) > 0) {
-            $res = mysqli_fetch_assoc($resultado);
-
-            $email = $res['email'];
-            $consulta = "SELECT nombre, apellidos FROM Usuario WHERE email = '$email'";
-            $resultado = mysqli_query($db, $consulta);
-            $res1 = mysqli_fetch_assoc($resultado);
-
-            return "(" . $res['total'] . ") " . $res1['nombre'] . " " . $res1['apellidos'];
+        if ($resultado = mysqli_query($db, $consulta)){            
+            if (mysqli_num_rows($resultado) > 0) {
+                $res = mysqli_fetch_assoc($resultado);
+                
+                $email = $res['email'];
+                $consulta = "SELECT nombre, apellidos FROM Usuario WHERE email = '$email'";
+                $resultado = mysqli_query($db, $consulta);
+                $res1 = mysqli_fetch_assoc($resultado);
+                
+                return "(" . $res['total'] . ") " . $res1['nombre'] . " " . $res1['apellidos'];
+            }
+            else{
+                return "Sin datos aún";
+            }
         }
-        else{
-            return "Sin datos aún";
-        }
+
+        else Error("Error al obtener los datos del Ranking");
     }
 
     // Obtener los usuarios guardados
@@ -639,14 +649,13 @@
                 $resultado = mysqli_fetch_all($res);
             }
             else{
-                echo "<p>Error en la consulta</p>";
-                echo "<p>Código: ".mysqli_errno($db)."</p>";
-                echo "<p>Mensaje: ".mysqli_error($db)."</p>";
+                Error("Error en la obtención de todos los usuarios registrados");
             }
+
             mysqli_free_result($res);
         }
-        mysqli_stmt_close($prep);
 
+        mysqli_stmt_close($prep);
         return $resultado ? $resultado : null;
     }
 
@@ -666,21 +675,15 @@
                     GuardarLog("Usuario \"$email\" eliminado");
                 }
                 else{
-                    echo "<p>Error en la primera eliminación</p>";
-                    echo "<p>Código: ".mysqli_errno($db)."</p>";
-                    echo "<p>Mensaje: ".mysqli_error($db)."</p>";
+                    Error("Error en la eliminación de la tabla \"Publica\" para el usuario $email");
                 }
             }
             else{
-                echo "<p>Error en la segunda eliminación</p>";
-                echo "<p>Código: ".mysqli_errno($db)."</p>";
-                echo "<p>Mensaje: ".mysqli_error($db)."</p>";
+                Error("Error en la eliminación de la tabla \"Escribe\" para el usuario $email");
             }
         }
         else{
-            echo "<p>Error en la tercera eliminación</p>";
-            echo "<p>Código: ".mysqli_errno($db)."</p>";
-            echo "<p>Mensaje: ".mysqli_error($db)."</p>";
+            Error("Error en la eliminación de la tabla \"Usuario\" para el usuario $email");
         }
     }
 
