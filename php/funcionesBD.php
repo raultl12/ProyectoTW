@@ -3,7 +3,7 @@
     // Funciones de acceso a la base de datos
 
     $db = null; // Conexión con la base de datos
-    $dev = "m";
+    $dev = "v";
 
     //Conexion a la BD
     function ConectarBD(){
@@ -15,8 +15,10 @@
         
         if($dev == "r")
             $db = mysqli_connect("localhost","tw","tw123","proyectoTW");
-        else
+        else if($dev == "m")
             $db = mysqli_connect("localhost","tw","TW12345tw_","tw");
+        else
+            $db = mysqli_connect("localhost","mario252223","DWyd1cEO","mario252223");
 
         // Informar de errores
         if (!$db) {
@@ -370,7 +372,7 @@
             $valor = (int) $resultado['valPos'];
 
             $valor += 1;
-            $consulta = "UPDATE Incidencia SET valPos = $valor WHERE id = $id";
+            $consulta = "UPDATE Incidencia SET valPos = '$valor' WHERE id = $id";
 
             if (mysqli_query($db, $consulta)){
                 GuardarLog("Voto positivo añadido a incidencia $id");
@@ -442,7 +444,7 @@
 
             if (mysqli_query($db, $consulta)){
                 $usuario = getSession('currentUser');
-                if ($usuario == NULL) $usuario = "Anonimo";
+                if ($usuario == NULL) $usuario = "anonimo@anonimo.com";
                 $consulta = "INSERT INTO Escribe(idComentario, email) VALUES ('$idCom', '$usuario')";
 
                 if (mysqli_query($db, $consulta)){

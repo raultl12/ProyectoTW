@@ -134,6 +134,8 @@
 
     // Mostrar una incidencia determinada por el id
     function MostrarIncidencia($inci, $post){
+        
+
         // Obtener la información
         $datos = ObtenerDatosIncidencia($inci);
 
@@ -207,9 +209,9 @@
                 </div>
 
                 <div class="iconos">
-                    <form method="post" action="./index.php">
+                    <form action="./index.php" method="post">
                         <label for="$plus"><img src="../img/plus.png" alt="+"></label>
-                        <input type="submit" name="$plus" id="$plus">
+                        <input type="submit" name=$plus id="$plus">
                         
                         <label for="$minus"><img src="../img/minus.png" alt="-"></label>
                         <input type="submit" name="$minus" id="$minus">
@@ -237,10 +239,22 @@
         $nuevoCom = "nuevoComentario . $inci";
 
         // Actuar según la acción seleccionada
-        if (isset($post[$plus])) votoPositivo($inci);
-        if (isset($post[$minus])) votoNegativo($inci);
-        if (isset($post[$nuevoCom])) nuevoComentario($inci, $post['textoComentario']);
-        if (isset($post[$eliminar])) eliminarIncidencia($inci);
+        
+        if (isset($post[$plus])){
+            votoPositivo($inci);
+        }
+
+        if (isset($post[$minus])){
+            votoNegativo($inci);
+        }
+
+        if (isset($post[$nuevoCom])){
+            nuevoComentario($inci, $post['textoComentario']);
+        }
+
+        if (isset($post[$eliminar])){
+            eliminarIncidencia($inci);
+        }
     }
 
     // Añadir un comentario a una incidencia
@@ -497,7 +511,7 @@
                 <h2 id="gestionUsuario">Gestion de Usuario</h2>
                 <label>Indique la accion a realizar</label>
 
-                <form method="POST">    
+                <form method="POST" action="./gestionUsuarios.php">    
                     <div class="opciones" id="mostrarListado">
                         <label for="listado">Listado</label>
                         <input type="submit" name="listado" id="listado">
@@ -972,6 +986,13 @@
             <form action="gestionBD.php" method="post">
                 <input type="submit" value="Crear copia de seguridad" name="copia">
             </form>
+        HTML;
+    }
+
+    function MostrarIndex(){
+        echo <<<HTML
+            <h2>Bienvenido</h2>
+            <p>Explora las incidencias o crea una cuenta para publicar las tuyas!</p>
         HTML;
     }
 ?>
