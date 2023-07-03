@@ -134,8 +134,6 @@
 
     // Mostrar una incidencia determinada por el id
     function MostrarIncidencia($inci, $post){
-        
-
         // Obtener la información
         $datos = ObtenerDatosIncidencia($inci);
 
@@ -316,8 +314,6 @@
 
                 else $error = true;
             }
-            
-
         }
 
         else session_unset(); // Mantener sesion sin iniciar
@@ -416,13 +412,13 @@
         HTML;
 
         // Filtro de búsqueda
-        if($incidencias) MostrarFormularioBusqueda();
+        if ($incidencias) MostrarFormularioBusqueda($post);
         else echo "<h2>Todavia no hay incidencias</h2>";
 
         echo "<section>";
         
         // Mostrar cada incidencia
-        if($incidencias){
+        if ($incidencias){
             foreach($incidencias as $inci){
                 MostrarIncidencia($inci, $post);
             }
@@ -439,7 +435,7 @@
     }
 
     // Mostrar filtro de busqueda de incidencias
-    function MostrarFormularioBusqueda(){
+    function MostrarFormularioBusqueda($post){
         echo <<<HTML
             <section class="formBusqueda">
                 <h2>Listado de Incidencias</h2>
@@ -495,12 +491,12 @@
         HTML;
 
         // Establecer las opciones elegidas
-        if (isset($_POST['busqueda'])){
-            setSession('ordenar', $_POST['ordenar']);
-            setSession('textoBusqueda', $_POST['buscarTexto']);
-            setSession('lugarBusqueda', $_POST['buscarLugar']);
-            setSession('estadoBusqueda', $_POST['estadoBusqueda']);
-            setSession('itemsBusqueda', $_POST['items']);
+        if (isset($post['busqueda'])){
+            setSession('ordenar', $post['ordenar']);
+            setSession('textoBusqueda', $post['buscarTexto']);
+            setSession('lugarBusqueda', $post['buscarLugar']);
+            setSession('estadoBusqueda', $post['estadoBusqueda']);
+            setSession('itemsBusqueda', $post['items']);
         }
     }
 
@@ -572,7 +568,6 @@
             
             borrarUsuario($email);
         }
-        
     }
 
     // Mostrar error de aceso
@@ -710,7 +705,7 @@
         HTML;
 
         // Si es un usuario nuevo o si se esta modificando por el administrador
-        if ($nuevo == true or ($nuevo == false and $tipoUsuario == "administrador")){
+        if ($nuevo or (!$nuevo and getSession('tipoCliente') == "administrador")){
             echo <<<HTML
                     <div class="selectores">
                         <label>Rol:</label>
@@ -814,6 +809,7 @@
             $palCla = "";
         }
 
+        // Mostrar datos actuales
         else{
             $titulo = $datos['titulo'];
             $desc = $datos['descripcion'];
