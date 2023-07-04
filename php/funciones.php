@@ -347,7 +347,7 @@
             echo <<<HTML
                     <aside>
                         <div class="login-aside">
-                            <form action="./" method="POST">
+                            <form action="./procesar.php" method="POST">
                                 <p>Email:</p>
                                 <input type="email" name="email">
 
