@@ -199,8 +199,10 @@
         $eliminar = "eliminar" . $inci;
 
         // Mostrar formulario para añadir un comentario
-        if (isset($post[$comment])) comentarIncidencia($inci);
-
+        if (isset($post[$comment])){
+            comentarIncidencia($inci);
+        } 
+            
         // Mostrar opciones de acción
         echo <<<HTML
 
@@ -234,7 +236,7 @@
             </div>
         HTML;
 
-        $nuevoCom = "nuevoComentario . $inci";
+        $nuevoCom = "nuevoComentario" . $inci;
 
         // Actuar según la acción seleccionada
         
@@ -331,7 +333,7 @@
                             <p>$rol</p>
             HTML;
 
-            echo "<img src='data:image/jpg;base64," . $foto . "'>";
+            echo "<img style=\"width: 100%; margin-top: 10px;\" src='data:image/jpg;base64," . $foto . "'>";
 
             echo <<<HTML
                             <div class="envios">
@@ -349,10 +351,10 @@
                         <div class="login-aside">
                             <form action="./procesar.php" method="POST">
                                 <p>Email:</p>
-                                <input type="email" name="email">
+                                <input type="email" name="email" style="width: 100%;">
 
                                 <p>Clave:</p>
-                                <input type="password" name="clave">
+                                <input type="password" name="clave" style="width: 100%;">
 
                                 <input type="submit" name="login" value="Log In">
                             </form>
@@ -589,7 +591,6 @@
             $valor = "creación";
 
             $foto = null;
-            $foto_nombre = null;
             $nombre = null;            
             $apellidos = null;
             $email = null;
@@ -608,7 +609,6 @@
                 else $datos = ObtenerDatosUsuario(getSession('currentUser'));   // Editar un perfil propio
 
                 $foto = base64_encode($datos['foto']);
-                $foto_nombre = $foto;
                 $nombre = $datos['nombre'];                   
                 $apellidos = $datos['apellidos'];
                 $email = $datos['email'];
@@ -623,8 +623,10 @@
 
         // Mantener datos para confirmación (sticky)   
         if ($desactivado == "readonly"){
-            $foto = null;                                               // ARREGLAR ESTO
-            $foto_nombre = $files['photo-selected']['name'];
+            $foto = file_get_contents($files['photo-selected']['tmp_name']);
+            setSession('fotoPerfil', $foto);
+            $foto = base64_encode($foto);
+
             $nombre = htmlentities($post['nombre']);
             $apellidos = htmlentities($post['apellidos']);
 
@@ -661,12 +663,14 @@
                 <div class="foto">
         HTML;
 
-        echo "<img src='data:image/jpg;base64," . $foto . "'>";
+        // No mostrar imágen si se crea un usuario por primera vez
+        if ((!$nuevo) or ($nuevo and $desactivado == "readonly"))
+            echo "<img src='data:image/jpg;base64," . $foto . "'>";
 
         echo <<<HTML
                     <div class="nuevo">
                         <label for="seleccionar" class=$tipoImagen >Añadir/Cambiar imágen</label>
-                        <input type="file" name="photo-selected" id="seleccionar" value=$foto_nombre $desactivado>
+                        <input type="file" name="photo-selected" id="seleccionar" $desactivado>
                     </div>
                 </div>
 
@@ -710,8 +714,8 @@
                     <div class="selectores">
                         <label>Rol:</label>
                         <select name="rol" value="$rol" $desactivado>
-                            <option value="admin">Administrador</option>
-                            <option value="colab">Colaborador</option>
+                            <option value="administrador">Administrador</option>
+                            <option value="colaborador">Colaborador</option>
                         </select>
                     
                         <label>Estado:</label>
@@ -745,7 +749,7 @@
     // Realizar acciones de usuario y mostrar mensaje
     function MostrarCambiosExito($nuevo, $post, $files){
         if ($nuevo) {
-            InsertarUsuario($post['email'], $post['nombre'], $post['apellidos'], $post['passw1'], $post['dir'], $post['telf'], "colaborador", $post['estado'], null); //$files['photo-selected']['name']);
+            InsertarUsuario($post['email'], $post['nombre'], $post['apellidos'], $post['passw1'], $post['dir'], $post['telf'], "colaborador", $post['estado'], getSession('fotoPerfil'));
             echo <<<HTML
                 <p style="text-align: center; font-weight: bold; font-size: 25px;">Se ha creado el usuario</p>
                 <p style="text-align: center; font-size: 15px;">Redirigiendo a página principal...</p>
@@ -753,7 +757,7 @@
         }
 
         else{
-            ActualizarUsuario($post['email'], $post['nombre'], $post['apellidos'], $post['passw1'], $post['dir'], $post['telf'], $post['rol'], $post['estado'], $files['photo-selected']['tmp_name']);
+            ActualizarUsuario($post['email'], $post['nombre'], $post['apellidos'], $post['passw1'], $post['dir'], $post['telf'], $post['rol'], $post['estado'], getSession('fotoPerfil'));
             echo <<<HTML
                 <p style="text-align: center; font-weight: bold; font-size: 25px;">Se han modificado los datos del usuario</p>
                 <p style="text-align: center; font-size: 15px;">Redirigiendo a página principal...</p>
@@ -762,7 +766,6 @@
 
         header('Refresh: 5; URL=./index.php');
     }
-
 
     // Mostrar registro
     function MostrarLog(){
@@ -866,7 +869,6 @@
         }
     }
 
-
     // Editar incidencia
     function MostrarEditarIncidencia($post, $files, $id){
         echo "<h2>Editar incidencia</h2>";
@@ -879,10 +881,10 @@
     
                     <form action="" method="POST">
                         <input type="radio" name="estado" value="pendiente"><label>Pendiente</label>
-                        <input type="radio" name="estado" value="Comprobada"><label>Comprobada</label>
-                        <input type="radio" name="estado" value="Tramitada"><label>Tramitada</label>
-                        <input type="radio" name="estado" value="Irresoluble"><label>Irresoluble</label>
-                        <input type="radio" name="estado" value="Resuelta"><label>Resuelta</label>
+                        <input type="radio" name="estado" value="comprobada"><label>Comprobada</label>
+                        <input type="radio" name="estado" value="tramitada"><label>Tramitada</label>
+                        <input type="radio" name="estado" value="irresoluble"><label>Irresoluble</label>
+                        <input type="radio" name="estado" value="resuelta"><label>Resuelta</label>
     
                         <div class="envio">
                             <input type="submit" name="state" value="Modificar estado">
@@ -902,33 +904,41 @@
         echo <<<HTML
             <div class="imagenes">
                 <h3>Fotografías adjuntas:</h3>
-                <form action="n" method="POST" enctype="multipart/form-data">
-                    
-
-                    <div class="botones">
-                        <label for="examinar">+</label>
-                        <input type="file" id="examinar" value="Seleccionar archivo">
-
-                        <input type="submit" name="borrar" value="Borrar todo">
-                        <input type="file" name="fotos[]" value="Añadir fotografías" multiple>
+                <form action="" method="POST" enctype="multipart/form-data">
+                    <div class="botonesIncidencia">
+                        <input type="file" id="examinar" name="fotos[]" value="Seleccionar archivo" multiple>
+                        <input type="submit" name="sendPics" value="Subir fotos">
                     </div>
                 </form>
             </div>
         HTML;
 
         // Realizar decisiones y filtrar datos
-        if (isset($post['state'])) $estado = $post['state'];
-        else $estado = "pendiente";
+        if (isset($post['state'])){
+            $estado = $post['estado'];
+            print($estado);
+            EditarEstadoIncidencia($estado, $id);
+        } 
 
-        if (isset($_POST['editarNueva'])){
+        if (isset($post['editarNueva'])){
             $titulo = htmlentities($post['titulo']);
             $desc = htmlentities($post['descripcion']);
             $lugar = htmlentities($post['lugar']);
             $palClave = htmlentities($post['palClave']);
-            //$fotos = $files['fotos'];
 
             EditarIncidencia($id, $lugar, $titulo, $palClave, $desc);
-            //InsertarImagenesIncidencia($id, $fotos);
+        }
+        
+        if (isset($post['sendPics'])){
+            // Iterar sobre las diferentes fotos
+            foreach($files['fotos']['tmp_name'] as $img){
+                $foto = file_get_contents($img);
+                $res = InsertarImagenesIncidencia($id, $foto);
+            }
+
+            if ($res){
+                echo "<h3 style=\"text-align: center;\">Imágenes añadidas</h3>";
+            }
         }
     }
 
@@ -977,18 +987,19 @@
         }
     }
 
+    // Mostrar página de gestión de la BD
     function MostrarGestionBD(){
         echo <<<HTML
-            <form action="gestionBD.php" method="post">
-                <input type="submit" value="Crear copia de seguridad" name="copia">
-            </form>
-        HTML;
-    }
+            <div style="display: flex; justify-content: center; margin-bottom: -1rem;">
+                <form action="gestionBD.php" method="POST">
+                    <input type="submit" value="Crear copia de seguridad" name="copia">
+                </form>
+                
+                <form action="../backupBD.sql" method="post">
+                    <input type="submit" value="Descargar BD vacía" formtarget="_blank" formaction="../backupBD.sql" download="copia.sql">
+                </form>
 
-    function MostrarIndex(){
-        echo <<<HTML
-            <h2>Bienvenido</h2>
-            <p>Explora las incidencias o crea una cuenta para publicar las tuyas!</p>
+            </div>
         HTML;
     }
 ?>

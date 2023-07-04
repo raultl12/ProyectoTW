@@ -7,16 +7,11 @@
     MostrarHeader(getSession("tipoCliente"));
 
     if(isset($_POST['numeroPost']) and $_POST['numeroPost'] == "uno"){ // Confiramacion
-        $post = new ArrayObject($_POST);
-        $files = new ArrayObject($_FILES);
-
-        MostrarContenidoEdicionUsuario("tipoCliente", "readonly", false, "dos", $post, $files, null);
+        MostrarContenidoEdicionUsuario("tipoCliente", "readonly", false, "dos", $_POST, $_FILES, null);
     }
 
     else if(isset($_POST['numeroPost']) and $_POST['numeroPost'] == "dos"){ // Éxito
-        $post = new ArrayObject($_POST);
-        $files = new ArrayObject($_FILES);
-        MostrarCambiosExito(false, $post, $files);
+        MostrarCambiosExito(false, $_POST, $_FILES);
     }
 
     else{ // Primera vez

@@ -14,34 +14,43 @@
         MostrarGestionBD();
     }
 
+    // BD en estado actual
     if (isset($_POST["copia"])){
-        // Datos de conexión a la base de datos
         $host = 'localhost';
-        $username = 'tw';
-        $password = 'TW12345tw_';
-        $database = 'tw';
-        
-        // Nombre del archivo de copia de seguridad
-        $backupFile = 'backup.sql';
-        
-        // Comando para generar la copia de seguridad usando mysqldump
-        $command = "mysqldump --host={$host} --user={$username} --password={$password} {$database} > {$backupFile}";
-        
-        $returnValue = null;
-        $output = null;
-        // Ejecutar el comando del sistema
-        exec($command, $output, $returnValue);
-        echo $returnValue;
-        print_r($output);
-        
-        if ($returnValue === 0) {
-            // Descargar el archivo de copia de seguridad
-            header('Content-Description: File Transfer');
+        $db = 'tw';
+        $user = 'root';
+        $pw = 'YES';
+        $res = 'volcado.sql';
+
+        $command = "mysqldump --host=$host --user=$user --password=$pw $db > $res";
+
+        // Ejecutar el comando
+        exec($command, $output, $result);
+
+        // Verificar si el volcado se generó correctamente
+        if ($result === 0) {
             header('Content-Type: application/octet-stream');
-            header('Content-Disposition: attachment; filename="'.basename($backupFile).'"');
-            readfile($backupFile);
-            exit;
+            header('Content-Disposition: attachment; filename="' . $res . '"');
+
+            // Enviar el contenido del archivo
+            readfile($res);
+
+            // Eliminar el archivo del servidor
+            unlink($res);
+            //exit();
         }
+        else {
+            echo "Error al generar el volcado de la base de datos.";
+        }
+
+    }
+
+    // BD vacía, solo usuarios
+    if(isset($_POST['vacia'])){
+        header('Content-Type: application/octet-stream');
+        header('Content-Disposition: attachment; filename="backupBD.sql"');
+
+        readfile("../backupBD.sql");
     }
     
     MostrarFooter();

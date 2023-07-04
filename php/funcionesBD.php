@@ -3,7 +3,7 @@
     // Funciones de acceso a la base de datos
 
     $db = null; // Conexión con la base de datos
-    $dev = "v";
+    $dev = "m";
 
     //Conexion a la BD
     function ConectarBD(){
@@ -86,6 +86,7 @@
         $tlf = mysqli_real_escape_string($db, $tlf);
         $rol = mysqli_real_escape_string($db, $rol);
         $estado = mysqli_real_escape_string($db, $estado);
+        $foto = mysqli_real_escape_string($db, $foto);
 
         $consulta = "INSERT INTO Usuario (email, nombre, apellidos, clave, direccion, tlf, rol, estado, foto) VALUES 
                      ('$email', '$nombre', '$apellidos', '$clave', '$dir', '$tlf', '$rol', '$estado', '$foto')";
@@ -445,15 +446,24 @@
             $consulta = "INSERT INTO Contiene(idComentario, idIncidencia) VALUES ('$idCom', '$id')";
 
             if (mysqli_query($db, $consulta)){
-                $usuario = getSession('currentUser');
-                if ($usuario == NULL) $usuario = "anonimo@anonimo.com";
-                $consulta = "INSERT INTO Escribe(idComentario, email) VALUES ('$idCom', '$usuario')";
+                $tipo = getSession('tipoCliente'); 
 
-                if (mysqli_query($db, $consulta)){
-                    GuardarLog("El usuario $usuario ha comentado en una incidencia");
+                // Los comentarios anonimos no se tienen en cuenta en la siguiente sentencia
+                // ya que no estan registrados en la tabla de usuarios, aunque sí aparecerá el comentario,
+                // no se reflejará en el ranking.
+                if ($tipo != "anonimo"){
+                    $usuario = getSession('currentUser');
+                    $consulta = "INSERT INTO Escribe(idComentario, email) VALUES ('$idCom', '$usuario')";
+
+                    if (mysqli_query($db, $consulta)){
+                        GuardarLog("El usuario $usuario ha comentado en la incidencia $id");
+                    }
+                    else{
+                        Error("Error en la inserición de la tabla \"Escribe\" para el comentario $idCom");
+                    }
                 }
                 else{
-                    Error("Error en la inserición de la tabla \"Escribe\" para el comentario $idCom");
+                    GuardarLog("Un usuario anónimo ha comentado en la incidencia $id");
                 }
             }
             else{
@@ -466,26 +476,29 @@
     }
 
     // Insertar imagenes en una incidencia
-    function InsertarImagenesIncidencia($id, $imagenes){
+    function InsertarImagenesIncidencia($id, $imagen){
         global $db;
+        $consulta = "INSERT INTO Foto (foto) VALUES (?)";
 
-        foreach ($imagenes as $imagen){
-            $consulta = "INSERT INTO Foto(foto) VALUES '$imagen'";
+        $prep = mysqli_prepare($db, $consulta);
+        mysqli_stmt_bind_param($prep, 's', $imagen);
+
+        if (mysqli_stmt_execute($prep)){
+            $idPic = mysqli_insert_id($db);
+            $consulta = "INSERT INTO Tiene (idFoto, idIncidencia) VALUES ('$idPic', '$id')";
 
             if (mysqli_query($db, $consulta)){
-                $idPic = mysqli_insert_id($db);
-                $consulta = "INSERT INTO Tiene (idFoto, idIncidencia) VALUES ('$idPic', '$id')";
-
-                if (mysqli_query($db, $consulta)){
-                    GuardarLog("Imagenes añadidas para la incidencia: $id");
-                }
-                else{
-                    Error("Error en la inserición de la tabla \"Tiene\" para la incidencia $id");
-                }
+                GuardarLog("Imagen añadida a la incidencia: $id");
+                return true;
             }
             else{
-                Error("Error en la inserición de la tabla \"Foto\"");
+                Error("Error en la inserición de la tabla \"Tiene\" para la incidencia $id");
+                return false;
             }
+        }
+        else{
+            Error("Error en la inserición de la tabla \"Foto\"");
+            return false;
         }
     }
 
@@ -586,6 +599,7 @@
         $tlf = mysqli_real_escape_string($db, $tlf);
         $rol = mysqli_real_escape_string($db, $rol);
         $estado = mysqli_real_escape_string($db, $estado);
+        $foto = mysqli_real_escape_string($db, $foto);
 
         $consulta = "UPDATE Usuario SET nombre = '$nombre', apellidos = '$apellidos', clave = '$clave', direccion = '$direccion', 
         tlf = '$tlf', rol = '$rol', estado = '$estado', foto = '$foto' WHERE email = '$email';";
@@ -674,7 +688,7 @@
 
         if (mysqli_query($db, $consulta)){
             $consulta = "DELETE FROM Escribe WHERE email = '$email'";
-            
+
             if (mysqli_query($db, $consulta)){
                 $consulta = "DELETE FROM Usuario WHERE email = '$email'";
 
@@ -682,7 +696,7 @@
                     GuardarLog("Usuario \"$email\" eliminado");
                 }
                 else{
-                    Error("Error en la eliminación de la tabla \"Publica\" para el usuario $email");
+                    Error("Error en la eliminación de la tabla \"Usuario\" para el usuario $email");
                 }
             }
             else{
@@ -690,7 +704,22 @@
             }
         }
         else{
-            Error("Error en la eliminación de la tabla \"Usuario\" para el usuario $email");
+            Error("Error en la eliminación de la tabla \"Publica\" para el usuario $email");
+        }
+    }
+
+    // Edita el estado de una incidencia
+    function EditarEstadoIncidencia($estado, $id){
+        global $db;
+        $id = mysqli_real_escape_string($db, $id);
+        $estado = mysqli_real_escape_string($db, $estado);
+        $consulta = "UPDATE Incidencia SET estado = '$estado' WHERE id = $id";
+
+        if (mysqli_query($db, $consulta)){
+            GuardarLog("Estado de la incidencia $id cambiado a $estado");
+        }
+        else{
+            Error("Error al alterar el estado de la incidencia $id");
         }
     }
 

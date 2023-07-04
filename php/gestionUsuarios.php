@@ -6,8 +6,6 @@
     HTMLInicio();
     MostrarHeader(getSession("tipoCliente"));
 
-    print_r($_POST);
-
     // Restringir acceso
     if(getSession("tipoCliente") != "administrador"){
         MostrarAccesoDenegado();

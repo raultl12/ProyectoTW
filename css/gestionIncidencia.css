@@ -67,13 +67,13 @@
     text-align: center;
 }
 
+.imagenes h3{
+    text-align: left;
+}
+
 .imagenes img{
     max-width: 15%;
     min-width: 15%;
-}
-
-.imagenes input[type="file"]{
-    display: none;
 }
 
 .botonesIncidencia {
@@ -82,7 +82,7 @@
     justify-content: center;
 }
 
-.botonesIncidencia label{
+/*.botonesIncidencia label{
     font-size:x-large;
     padding: 0.2rem 0.7rem 0.6rem 0.7rem;
     cursor: pointer;
@@ -93,8 +93,8 @@
 .botonesIncidencia label:hover{
     background-color: #4ecdc570;
     transition: background-color 0.3s ease-in-out;
-}
+} */
 
-.botonesIncidencia input, label{
+.botonesIncidencia input{
     margin-left: 0.5rem;
 }
