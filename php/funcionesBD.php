@@ -522,8 +522,8 @@
 
         if(!mysqli_query($db, $consulta)){
             echo "<p>Error al guardar el nuevo registro</p>";
-            echo "<p>Código: ".mysqli_errno($db)."</p>";
-            echo "<p>Mensaje: ".mysqli_error($db)."</p>";
+            echo "<p>Código: " . mysqli_errno($db) . "</p>";
+            echo "<p>Mensaje: " . mysqli_error($db) . "</p>";
         }
     }
 
@@ -604,19 +604,22 @@
         global $db;
         $pos = mysqli_real_escape_string($db, $pos);
 
+        // Incidencias
         if ($quejas){
             $consulta = "SELECT email, COUNT(*) AS total
-                     FROM Publica
-                     GROUP BY email
-                     ORDER BY total DESC
-                     LIMIT " . ($pos - 1) . ", 1";
+                      FROM Publica
+                      GROUP BY email
+                      ORDER BY total DESC
+                      LIMIT " . ($pos - 1) . ", 1";
         }
+
+        // Comentarios
         else{
             $consulta = "SELECT email, COUNT(*) AS total
-                     FROM Escribe
-                     GROUP BY email
-                     ORDER BY total DESC
-                     LIMIT " . ($pos - 1) . ", 1";
+                      FROM Escribe
+                      GROUP BY email
+                      ORDER BY total DESC
+                      LIMIT " . ($pos - 1) . ", 1";
         }
 
         if ($resultado = mysqli_query($db, $consulta)){            
