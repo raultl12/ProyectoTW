@@ -88,7 +88,7 @@
             <p>Creado por <a href="https://www.linkedin.com/in/ra%C3%BAl-torrente-l%C3%B3pez-6b9760250/">Raúl Torrente López</a>
                y <a href="https://www.linkedin.com/in/mario-pi%C3%B1a-munera-465116225/">Mario Piña Munera</a></p>
 
-            <p><a href="../doc/doc.pdf">Documentación</a></p>
+            <p><a href="../doc/documentacion.pdf">Documentación</a></p>
         </footer>
         HTML;
     }
