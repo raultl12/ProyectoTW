@@ -407,7 +407,7 @@
 
     // Página de incidencias
     function MostrarContenidoIncidencias($post){
-        $incidencias = ObtenerTodasIncidencias();
+        $incidencias = ObtenerTodasIncidencias($post);
         echo <<<HTML
             <div class="contenido">
                 <main>
@@ -466,11 +466,11 @@
                         <h2>Estado</h2>
 
                         <div class="inputsEstado">
-                            <label><input type="checkbox" name="estadoBusqueda" value="pendiente"> Pendiente </label>
-                            <label><input type="checkbox" name="estadoBusqueda" value="comprobada"> Comprobada </label>
-                            <label><input type="checkbox" name="estadoBusqueda" value="tramitada"> Tramitada </label>
-                            <label><input type="checkbox" name="estadoBusqueda" value="irresoluble"> Irresoluble </label>
-                            <label><input type="checkbox" name="estadoBusqueda" value="resuelta"> Resuelta </label>
+                            <label><input type="checkbox" name="estadoBusqueda[]" value="pendiente"> Pendiente </label>
+                            <label><input type="checkbox" name="estadoBusqueda[]" value="comprobada"> Comprobada </label>
+                            <label><input type="checkbox" name="estadoBusqueda[]" value="tramitada"> Tramitada </label>
+                            <label><input type="checkbox" name="estadoBusqueda[]" value="irresoluble"> Irresoluble </label>
+                            <label><input type="checkbox" name="estadoBusqueda[]" value="resuelta"> Resuelta </label>
                         </div>
                     </div>
 
@@ -493,13 +493,13 @@
         HTML;
 
         // Establecer las opciones elegidas
-        if (isset($post['busqueda'])){
+        /*if (isset($post['busqueda'])){
             setSession('ordenar', $post['ordenar']);
             setSession('textoBusqueda', $post['buscarTexto']);
             setSession('lugarBusqueda', $post['buscarLugar']);
             setSession('estadoBusqueda', $post['estadoBusqueda']);
             setSession('itemsBusqueda', $post['items']);
-        }
+        }*/
     }
 
     // Gestión de los usuarios registrados
