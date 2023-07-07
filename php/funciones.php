@@ -920,7 +920,6 @@
         // Realizar decisiones y filtrar datos
         if (isset($post['state'])){
             $estado = $post['estado'];
-            print($estado);
             EditarEstadoIncidencia($estado, $id);
         } 
 
