@@ -556,7 +556,7 @@
             $consulta = "INSERT INTO Tiene (idFoto, idIncidencia) VALUES ('$idPic', '$id')";
 
             if (mysqli_query($db, $consulta)){
-                GuardarLog("Imagen añadida a la incidencia: $id");
+                GuardarLog("Imagen añadida a la incidencia $id");
                 return true;
             }
             else{
