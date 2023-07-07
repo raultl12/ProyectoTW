@@ -283,7 +283,7 @@
         if (isset($_POST['logout'])){
             $usuario = getSession('currentUser');
             LogOut($usuario);
-            GuardarLog("El usuario $usuario ha cerrado sesion");
+            GuardarLog("El usuario $usuario ha cerrado sesión");
             session_unset();
         }
 

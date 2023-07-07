@@ -612,11 +612,11 @@
     function ComprobarUsuario($email, $contra){
         $datos = ObtenerDatosUsuario($email);
         if(password_verify($contra, $datos['clave'])){
-            GuardarLog("El usuario $email ha iniciado sesion");
+            GuardarLog("El usuario $email ha iniciado sesión");
             return true;
         }
         else{
-            GuardarLog("El usuario $email ha intentado inciar sesion sin éxito");
+            GuardarLog("El usuario $email ha intentado inciar sesión sin éxito");
             return false;
         }
     }
