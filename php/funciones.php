@@ -349,7 +349,7 @@
             echo <<<HTML
                     <aside>
                         <div class="login-aside">
-                            <form action="./procesar.php" method="POST">
+                            <form action="" method="POST">
                                 <p>Email:</p>
                                 <input type="email" name="email" style="width: 100%;">
 
@@ -414,15 +414,28 @@
         HTML;
 
         // Filtro de búsqueda
-        if ($incidencias) MostrarFormularioBusqueda($post);
+        if ($incidencias or isset($post['busqueda'])){
+            MostrarFormularioBusqueda($post);
+
+            if ($incidencias == null) 
+                echo "<h2>Sin resultados conincidentes</h2>";
+        }
         else echo "<h2>Todavia no hay incidencias</h2>";
 
-        echo "<section>";
+        // Filtrar elementos a mostrar
+        if (isset($post["items"])) $max = $post["items"];
+        else $max = INF;
+        $cont = 0;
         
         // Mostrar cada incidencia
+        echo "<section>";
+
         if ($incidencias){
             foreach($incidencias as $inci){
-                MostrarIncidencia($inci, $post);
+                if ($cont < $max){
+                    MostrarIncidencia($inci, $post);
+                    $cont++;
+                }
             }
         }
         
@@ -476,13 +489,13 @@
 
                     <div class="opciones">
                         <div class="incidenciasPagina">
-                            <label>Incidencias por página</label>
+                            <label>Mostrar:</label>
 
                             <select name="items">
-                                <option value="1">1 item</option>
-                                <option value="3">3 items</option>
-                                <option value="5">5 items</option>
-                                <option value="10">10 items</option>
+                                <option value="todo">Todas las incidencias</option>
+                                <option value="5">5 incidencias</option>
+                                <option value="3">3 incidencias</option>
+                                <option value="1">1 incidencia</option>
                             </select>
                         </div>
 
@@ -491,15 +504,6 @@
                 </form>
             </section>
         HTML;
-
-        // Establecer las opciones elegidas
-        /*if (isset($post['busqueda'])){
-            setSession('ordenar', $post['ordenar']);
-            setSession('textoBusqueda', $post['buscarTexto']);
-            setSession('lugarBusqueda', $post['buscarLugar']);
-            setSession('estadoBusqueda', $post['estadoBusqueda']);
-            setSession('itemsBusqueda', $post['items']);
-        }*/
     }
 
     // Gestión de los usuarios registrados
@@ -969,21 +973,21 @@
 
     // Mostrar incidencias pertenecientes a un mismo usuario
     function MostrarContenidoMisIncidencias($post){
-        $incidencias = ObtenerTodasIncidencias();
+        $incidencias = ObtenerTodasIncidencias($post);
 
         if ($incidencias != null){
+            $cont = 0;
+
             foreach($incidencias as $inci){
                 if (getSession('currentUser') == ObtenerUsuarioPublica($inci)['email']){
                     MostrarIncidencia($inci, $post);
-                }
-                else{
-                    echo "<h2 id=\"sinDatos\">No hay incidencias</h2>";
+                    $cont++;
                 }
             }
-        }
 
-        else{
-            echo "<h2 id=\"sinDatos\">No hay incidencias</h2>";
+            if ($cont == 0){
+                echo "<h2 id=\"sinDatos\">No hay incidencias</h2>";
+            }
         }
     }
 

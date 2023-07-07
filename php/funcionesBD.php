@@ -3,7 +3,7 @@
     // Funciones de acceso a la base de datos
 
     $db = null; // Conexión con la base de datos
-    $dev = "v";
+    $dev = "m";
 
     //Conexion a la BD
     function ConectarBD(){
@@ -103,42 +103,93 @@
     function ObtenerTodasIncidencias($post){
         $resultado = null;
         global $db;
+        $consulta = "SELECT id FROM Incidencia"; // Sin filtros
 
-        if(isset($post["buscarTexto"])){
-            $resultado = buscarPorTexto($post["buscarTexto"]);
+        // Filtro de texto
+        if(isset($post["buscarTexto"]) and $post["buscarTexto"] != ""){
+            $texto = mysqli_real_escape_string($db, $post["buscarTexto"]);
+            $consulta .= " WHERE LOWER (descripcion) LIKE '%$texto%'";
         }
-        else if(isset($post["buscarLugar"])){
-            $resultado = buscarPorLugar($post["buscarLugar"]);
-        }
-        else if(isset($post["ordenar"])){
-            echo $post["ordenar"];
-            $resultado = OrdenarPor($post["ordenar"]);
 
+        // Filtro de lugar
+        if(isset($post["buscarLugar"]) and $post["buscarLugar"] != ""){
+            $lugar = mysqli_real_escape_string($db, $post["buscarLugar"]);
+
+            if (isset($post["buscarTexto"]) and $post["buscarTexto"] != "")
+                $consulta .= "  AND lugar='$lugar'";
+            else
+                $consulta .= "  WHERE lugar='$lugar'";
         }
-        else if(isset($post["estado"])){
-            echo $post["estado"];
+
+        // Filtro de estados
+        if(isset($post["estadoBusqueda"])){
+            // Comprobar que esté la condición
+            if (strpos($consulta, 'WHERE') === false) {
+                $consulta .= " WHERE (";
+            }
+            else{
+                $consulta .= " AND (";
+            }
+
+            foreach ($post["estadoBusqueda"] as $estado){
+                switch($estado){
+                    case 'pendiente':
+                        $consulta .= "estado = 'pendiente' OR ";
+                        break;
+                    case 'comprobada':
+                        $consulta .= "estado = 'comprobada' OR ";
+                        break;
+                    case 'tramitada':
+                        $consulta .= "estado = 'tramitada' OR ";
+                        break;
+                    case 'irresoluble':
+                        $consulta .= "estado = 'irresoluble' OR ";
+                        break;
+                    case 'resuelta':
+                        $consulta .= "estado = 'resuelta' OR ";
+                        break;
+                }
+            }
+
+            // Eliminar último "OR"
+            $consulta = rtrim($consulta, " OR ");
+            $consulta .= ")";
         }
-        else{
-            $consulta = "SELECT id FROM Incidencia";
-            $prep = mysqli_prepare($db, $consulta);
+
+        // Ordenación
+        if(isset($post["ordenar"])){
+            switch($post["ordenar"]){
+                case "antiguedad":
+                    $consulta .= " ORDER BY fecha DESC";
+                    break;
     
-            if(mysqli_stmt_execute($prep)){
-                $res = mysqli_stmt_get_result($prep);
+                case "positivos":
+                    $consulta .= " ORDER BY valPos DESC";
+                    break;
     
-                if($res){
-                    while ($row = mysqli_fetch_assoc($res)) {
-                        foreach ($row as $r){
-                            $resultado[] = $r;
-                        }
+                case "netos":
+                    $consulta .= " ORDER BY posNetos DESC";
+                    break;
+            }
+        }
+        
+        $prep = mysqli_prepare($db, $consulta);
+
+        if(mysqli_stmt_execute($prep)){
+            $res = mysqli_stmt_get_result($prep);
+
+            if($res){
+                while ($row = mysqli_fetch_assoc($res)) {
+                    foreach ($row as $r){
+                        $resultado[] = $r;
                     }
                 }
-    
-                else Error("Error en la obtención de todas las incidencias");
             }
-    
-            mysqli_stmt_close($prep);
+
+            else Error("Error en la obtención de todas las incidencias");
         }
 
+        mysqli_stmt_close($prep);
         return $resultado ? $resultado : null;
     }
 
@@ -738,101 +789,6 @@
         else{
             Error("Error al alterar el estado de la incidencia $id");
         }
-    }
-
-    function OrdenarPor($orden){
-        $resultado = null;
-        global $db;
-        echo $orden;
-        switch($oren){
-            case "antiguedad":
-                $consulta = "SELECT id FROM Incidencia order by fecha desc";
-                break;
-
-            case "positivos":
-                $consulta = "SELECT id FROM Incidencia order by valPos desc";
-                break;
-
-            case "netos":
-                $consulta = "SELECT id FROM Incidencia order by posNetos desc";
-                break;
-        }
-        $prep = mysqli_prepare($db, $consulta);
-
-        if(mysqli_stmt_execute($prep)){
-            $res = mysqli_stmt_get_result($prep);
-
-            if($res){
-                while ($row = mysqli_fetch_assoc($res)) {
-                    foreach ($row as $r){
-                        $resultado[] = $r;
-                    }
-                }
-            }
-
-            else Error("Error en la obtención de las incidencias");
-        }
-        
-        mysqli_free_result($res);
-        mysqli_stmt_close($prep);
-        return $resultado ? $resultado : null;
-    }
-
-    function buscarPorLugar($lugar){
-        $resultado = null;
-        global $db;
-
-        $consulta = "SELECT id FROM Incidencia WHERE lugar=?";
-        $prep = mysqli_prepare($db, $consulta);
-        mysqli_stmt_bind_param($prep,'s', $lugar);
-
-        if(mysqli_stmt_execute($prep)){
-            $res = mysqli_stmt_get_result($prep);
-
-            if($res){
-                while ($row = mysqli_fetch_assoc($res)) {
-                    foreach ($row as $r){
-                        $resultado[] = $r;
-                    }
-                }
-            }
-
-            else Error("Error en la obtención de las incidencias");
-        }
-        
-        mysqli_free_result($res);
-        mysqli_stmt_close($prep);
-        return $resultado ? $resultado : null;
-    }
-
-    function buscarPorTexto($texto){
-        $resultado = null;
-        global $db;
-
-        $consulta = "SELECT id FROM Incidencia WHERE LOWER(descripcion) LIKE '%$texto%'";
-        $prep = mysqli_prepare($db, $consulta);
-
-        if(mysqli_stmt_execute($prep)){
-            $res = mysqli_stmt_get_result($prep);
-
-            if($res){
-                while ($row = mysqli_fetch_assoc($res)) {
-                    foreach ($row as $r){
-                        $resultado[] = $r;
-                    }
-                }
-            }
-
-            else Error("Error en la obtención de las incidencias");
-        }
-        
-        mysqli_free_result($res);
-        mysqli_stmt_close($prep);
-        return $resultado ? $resultado : null;
-    }
-
-    function buscarPorEstado(){
-
     }
 
     // Iniciar conexión
