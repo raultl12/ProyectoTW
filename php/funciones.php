@@ -4,9 +4,6 @@
     // Inclusión de las funciones que modifican la base de datos
     require_once 'funcionesBD.php';
 
-    error_reporting(E_ALL);
-    ini_set('display_errors', 1);
-
     /************************************************************************************************************** */
     // Variables globales
 
@@ -423,7 +420,12 @@
         else echo "<h2>Todavia no hay incidencias</h2>";
 
         // Filtrar elementos a mostrar
-        if (isset($post["items"])) $max = $post["items"];
+        if (isset($post["items"])){
+            if (is_numeric($post["items"]))
+                $max = $post["items"];
+            else
+                $max = INF;
+        }
         else $max = INF;
         $cont = 0;
         
@@ -998,8 +1000,8 @@
                     <input type="submit" value="Crear copia de seguridad" name="copia">
                 </form>
                 
-                <form action="../backupBD.sql" method="post">
-                    <input type="submit" value="Descargar BD vacía" formtarget="_blank" formaction="../backupBD.sql" download="copia.sql">
+                <form action="../vacia.sql" method="POST">
+                    <input type="submit" value="Descargar BD vacía" formtarget="_blank" formaction="../vacia.sql" download="copia.sql">
                 </form>
 
             </div>

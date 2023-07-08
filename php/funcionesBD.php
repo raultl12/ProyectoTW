@@ -494,8 +494,6 @@
 
     // Añadir un comentario a una incidencia
     function nuevoComentario($id, $comentario){
-        echo $id;
-        echo $comentario;
         global $db;
         $comentario = mysqli_real_escape_string($db, $comentario);
         $consulta = "INSERT INTO Comentario(descripcion) VALUES ('$comentario')";

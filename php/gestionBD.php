@@ -23,6 +23,8 @@
         $res = 'volcado.sql';
 
         $command = "mysqldump --host=$host --user=$user --password=$pw $db > $res";
+        $output = null;
+        $result = null;
 
         // Ejecutar el comando
         exec($command, $output, $result);
@@ -37,7 +39,7 @@
 
             // Eliminar el archivo del servidor
             unlink($res);
-            //exit();
+            exit();
         }
         else {
             echo "Error al generar el volcado de la base de datos.";
@@ -48,9 +50,9 @@
     // BD vacía, solo usuarios
     if(isset($_POST['vacia'])){
         header('Content-Type: application/octet-stream');
-        header('Content-Disposition: attachment; filename="backupBD.sql"');
+        header('Content-Disposition: attachment; filename="vacia.sql"');
 
-        readfile("../backupBD.sql");
+        readfile("../vacia.sql");
     }
     
     MostrarFooter();
