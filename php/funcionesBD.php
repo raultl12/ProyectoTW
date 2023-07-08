@@ -3,7 +3,6 @@
     // Funciones de acceso a la base de datos
 
     $db = null; // Conexión con la base de datos
-    $dev = "m";
 
     //Conexion a la BD
     function ConectarBD(){
@@ -11,14 +10,7 @@
         global $dev;
         
         // Conectar
-        //$db = mysqli_connect("localhost","mario252223","DWyd1cEO","mario252223");
-        
-        if($dev == "r")
-            $db = mysqli_connect("localhost","tw","tw123","proyectoTW");
-        else if($dev == "m")
-            $db = mysqli_connect("localhost","tw","TW12345tw_","tw");
-        else
-            $db = mysqli_connect("localhost","mario252223","DWyd1cEO","mario252223");
+        $db = mysqli_connect("localhost","mario252223","DWyd1cEO","mario252223");
 
         // Informar de errores
         if (!$db) {
