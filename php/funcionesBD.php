@@ -7,8 +7,7 @@
     //Conexion a la BD
     function ConectarBD(){
         global $db;
-        global $dev;
-        
+
         // Conectar
         $db = mysqli_connect("localhost","mario252223","DWyd1cEO","mario252223");
 
